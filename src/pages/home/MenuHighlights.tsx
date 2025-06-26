@@ -6,6 +6,15 @@ import { Star, Leaf, GlassWater } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
 export default function MenuHighlights() {
   const highlightedDishes = [
     {
@@ -44,6 +53,19 @@ export default function MenuHighlights() {
       featured: true,
       rating: 4.8,
     },
+    {
+      id: 4,
+      name: "Grilled pork",
+      description:
+        "Fresh Pacific mahi-mahi with coconut rice, grilled pineapple, and cilantro-lime sauce",
+      price: 32.0,
+      image:
+        "https://res.cloudinary.com/dhlyei79o/image/upload/v1748901618/samples/food/pot-mussels.jpg",
+      dietary: ["gluten-free"],
+      featured: true,
+      rating: 4.9,
+    },
+    // Add more dishes if needed
   ];
 
   const getDietaryIcon = (dietary: string) => {
@@ -58,8 +80,8 @@ export default function MenuHighlights() {
   };
 
   return (
-    <section className="section font-roboto bg-[#fcfafa]">
-      <div className="max-w-7xl mx-auto">
+    <section className="section font-roboto bg-[#fcfafa] py-16">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl mb-4 font-bold">Menu Highlights</h2>
           <p className="text-lg max-w-2xl mx-auto font-semibold">
@@ -68,69 +90,78 @@ export default function MenuHighlights() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {highlightedDishes.map((dish) => (
-            <Card key={dish.id} className="overflow-hidden">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Image
-                  fill
-                  src={dish.image || "/placeholder.svg"}
-                  alt={dish.name}
-                  className="w-full h-full object-cover"
-                  // sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                />
+        <Carousel className="w-full">
+          <CarouselContent className="-ml-4">
+            {highlightedDishes.map((dish) => (
+              <CarouselItem
+                key={dish.id}
+                className="pl-4 basis-full sm:basis-1/1 md:basis-1/2 lg:basis-1/3"
+              >
+                <Card className="overflow-hidden h-full flex flex-col">
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      fill
+                      src={dish.image || "/placeholder.svg"}
+                      alt={dish.name}
+                      className="w-full h-full object-cover"
+                    />
 
-                {dish.featured && (
-                  <div className="absolute top-3 left-3">
-                    <Badge>Chef&apos;s Choice</Badge>
-                  </div>
-                )}
+                    {dish.featured && (
+                      <div className="absolute top-3 left-3">
+                        <Badge>Chef&apos;s Choice</Badge>
+                      </div>
+                    )}
 
-                <div className="absolute top-3 right-3">
-                  <Badge variant="outline">
-                    <Star className="h-3 w-3 mr-1" />
-                    {dish.rating}
-                  </Badge>
-                </div>
-
-                <div className="absolute bottom-3 right-3">
-                  <div className="px-3 py-1 rounded-full">${dish.price}</div>
-                </div>
-              </div>
-
-              <CardContent className="p-6">
-                <div className="space-y-3">
-                  <h3 className="text-xl font-semibold">{dish.name}</h3>
-
-                  <p className="text-sm leading-relaxed line-clamp-3">
-                    {dish.description}
-                  </p>
-
-                  {dish.dietary && dish.dietary.length > 0 && (
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {dish.dietary.map((diet, index) => (
-                        <Badge
-                          key={index}
-                          variant="outline"
-                          className="text-xs"
-                        >
-                          <span className="flex items-center gap-1">
-                            {getDietaryIcon(diet)}
-                            <span className="capitalize">
-                              {diet.replace("-", " ")}
-                            </span>
-                          </span>
-                        </Badge>
-                      ))}
+                    <div className="absolute top-3 right-3">
+                      <Badge variant="outline">
+                        <Star className="h-3 w-3 mr-1" />
+                        {dish.rating}
+                      </Badge>
                     </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
 
-        <div className="text-center mt-12">
+                    <div className="absolute bottom-3 right-3 bg-white px-3 py-1 rounded-full text-sm font-semibold">
+                      ${dish.price}
+                    </div>
+                  </div>
+
+                  <CardContent className="p-6 grow">
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-semibold">{dish.name}</h3>
+                      <p className="text-sm leading-relaxed line-clamp-3">
+                        {dish.description}
+                      </p>
+                      {dish.dietary.length > 0 && (
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          {dish.dietary.map((diet, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              <span className="flex items-center gap-1">
+                                {getDietaryIcon(diet)}
+                                <span className="capitalize">
+                                  {diet.replace("-", " ")}
+                                </span>
+                              </span>
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <div className="mt-6 flex justify-center gap-6">
+            <CarouselPrevious />
+            <CarouselNext />
+          </div>
+        </Carousel>
+
+        <div className="text-center mt-16">
           <p className="mb-4">
             Explore our complete selection of ocean-fresh dishes
           </p>
