@@ -32,8 +32,8 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 w-full section-x  z-50 transition-all duration-300 border-b border-white/20  ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg text-foreground"
-          : "bg-transparent text-background"
+          ? "bg-white/95 backdrop-blur-md shadow-lg text-foreground "
+          : "bg-transparent text-background  "
       }`}
     >
       <div className="container mx-auto px-4">
@@ -85,13 +85,13 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-md border-t">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+          <div className="md:hidden bg-white/95 text-black backdrop-blur-md border-t">
+            <div className="px-2 pt-2 text-foreground pb-3 space-y-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`block px-3 py-2 text-ocean-800 hover:text-ocean-600 transition-colors ${
+                  className={`block px-3 py-2 text-black hover:text-ocean-600 transition-colors ${
                     pathname === link.href ? "text-blue-500" : ""
                   }`}
                   onClick={() => setIsMobileMenuOpen(false)}
