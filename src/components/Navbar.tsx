@@ -30,8 +30,10 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 w-full section-x  z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"
+      className={`fixed top-0 w-full section-x  z-50 transition-all duration-300 border-b border-white/20  ${
+        isScrolled
+          ? "bg-white/95 backdrop-blur-md shadow-lg text-foreground"
+          : "bg-transparent text-background"
       }`}
     >
       <div className="container mx-auto px-4">

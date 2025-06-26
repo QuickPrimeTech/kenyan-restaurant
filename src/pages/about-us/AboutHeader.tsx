@@ -13,10 +13,10 @@ export default function AboutHeader() {
           priority
         />
         {/* Optional overlay for readability */}
-        <div className="absolute inset-0 bg-white/50"></div>
+        <div className="absolute inset-0 bg-header-foreground/20"></div>
       </div>
 
-      <div className="container mx-auto px-4 text-center">
+      <div className="container mx-auto px-4 text-center text-background">
         <div className="inline-block px-4 py-2 rounded-full text-sm font-medium mb-4">
           About Us
         </div>

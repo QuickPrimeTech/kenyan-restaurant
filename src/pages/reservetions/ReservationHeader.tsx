@@ -1,6 +1,6 @@
 export default function ReservationHeader() {
   return (
-    <section className="section bg-gradient-to-b from-blue-50 to-white">
+    <section className="section bg-header-foreground/20">
       <div className="container mx-auto px-4">
         <div className="text-center">
           <div className="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-4">

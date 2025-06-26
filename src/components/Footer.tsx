@@ -37,10 +37,14 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <div className="bg-gray-800 hover:bg-gray-700 p-2 rounded-full transition-colors cursor-pointer">
-                <Instagram className="w-5 h-5 text-gray-300 hover:text-white" />
+                <Link href={"https://www.instagram.com/quickprimetech/"}>
+                  <Instagram className="w-5 h-5 text-gray-300 hover:text-white" />
+                </Link>
               </div>
               <div className="bg-gray-800 hover:bg-gray-700 p-2 rounded-full transition-colors cursor-pointer">
-                <Facebook className="w-5 h-5 text-gray-300 hover:text-white" />
+                <Link href={"https://www.instagram.com/quickprimetech/"}>
+                  <Facebook className="w-5 h-5 text-gray-300 hover:text-white" />
+                </Link>
               </div>
               <div className="bg-gray-800 hover:bg-gray-700 p-2 rounded-full transition-colors cursor-pointer">
                 <Twitter className="w-5 h-5 text-gray-300 hover:text-white" />
