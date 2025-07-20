@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import {
   Sheet,
@@ -9,7 +8,6 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertDialog,
@@ -101,6 +99,7 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
           >
             <div className="relative w-10 h-10 bg-muted rounded-md overflow-hidden flex-shrink-0">
               <Image
+                fill
                 src={item.image || "/placeholder.svg"}
                 alt={item.name}
                 className="w-full h-full object-cover"
@@ -215,7 +214,8 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
   return (
     <>
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent className="w-full sm:max-w-lg p-0 flex flex-col max-h-screen">
+        <SheetContent className="w-full sm:max-w-lg p-0 gap-0 flex flex-col h-screen max-h-screen">
+          {/* Sheet Header */}
           <SheetHeader className="flex-shrink-0 p-6 border-b bg-white">
             <SheetTitle className="flex items-center gap-2">
               {(currentStep === "details" || currentStep === "payment") && (
@@ -244,93 +244,93 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
             </SheetTitle>
           </SheetHeader>
 
-          {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center flex-1 text-center p-6">
-              <ShoppingCart className="h-16 w-16 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Your cart is empty</h3>
-              <p className="text-muted-foreground mb-4">
-                Add some delicious items to get started!
-              </p>
-              <Button onClick={() => onOpenChange(false)}>
-                Continue Shopping
-              </Button>
-            </div>
-          ) : (
-            <div className="flex flex-col flex-1 min-h-0">
-              {currentStep === "cart" && (
-                <>
-                  {/* Order Type Selector */}
-                  <div className="flex-shrink-0 p-6 pb-4">
-                    <OrderTypeSelector />
-                  </div>
+          {/* Sheet Body */}
+          <div className="flex flex-col flex-1 min-h-0">
+            {items.length === 0 ? (
+              <div className="flex flex-col items-center justify-center flex-1 text-center p-6">
+                <ShoppingCart className="h-16 w-16 text-muted-foreground mb-4" />
+                <h3 className="text-lg font-semibold mb-2">
+                  Your cart is empty
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  Add some delicious items to get started!
+                </p>
+                <Button onClick={() => onOpenChange(false)}>
+                  Continue Shopping
+                </Button>
+              </div>
+            ) : (
+              <>
+                {/* Cart Step */}
+                {currentStep === "cart" && (
+                  <>
+                    <div className="flex-shrink-0 pb-3">
+                      <OrderTypeSelector />
+                    </div>
 
-                  {/* Cart Items - Scrollable */}
-                  <div className="flex-1 min-h-0">
-                    <div className="h-full overflow-y-auto custom-scroll px-6 pb-4 space-y-4">
+                    <div className="flex-1 min-h-0 overflow-y-auto px-6 pb-4 space-y-4 custom-scroll">
                       {items.map((item) => (
                         <CartItem key={item.id} item={item} />
                       ))}
                     </div>
-                  </div>
 
-                  {/* Cart Summary - Fixed at bottom */}
-                  <div className="flex-shrink-0 border-t p-6 bg-white">
-                    <div className="flex items-center justify-between mb-4">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setShowClearConfirm(true)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-                      >
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Clear All
-                      </Button>
-                      <span className="text-sm text-muted-foreground">
-                        {itemCount} items
-                      </span>
-                    </div>
-
-                    <div className="space-y-2 mb-4">
-                      <div className="flex justify-between text-sm">
-                        <span>Subtotal:</span>
-                        <span>Ksh {total.toFixed(2)}</span>
+                    <div className="flex-shrink-0 border-t p-6 bg-white">
+                      <div className="flex items-center justify-between mb-4">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setShowClearConfirm(true)}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Clear All
+                        </Button>
+                        <span className="text-sm text-muted-foreground">
+                          {itemCount} items
+                        </span>
                       </div>
-                      {deliveryFee > 0 && (
+
+                      <div className="space-y-2 mb-4">
                         <div className="flex justify-between text-sm">
-                          <span>Delivery:</span>
-                          <span>Ksh {deliveryFee.toFixed(2)}</span>
+                          <span>Subtotal:</span>
+                          <span>Ksh {total.toFixed(2)}</span>
                         </div>
-                      )}
-                      <Separator />
-                      <div className="flex justify-between font-semibold text-lg">
-                        <span>Total:</span>
-                        <span>Ksh {finalTotal.toFixed(2)}</span>
+                        {deliveryFee > 0 && (
+                          <div className="flex justify-between text-sm">
+                            <span>Delivery:</span>
+                            <span>Ksh {deliveryFee.toFixed(2)}</span>
+                          </div>
+                        )}
+                        <Separator />
+                        <div className="flex justify-between font-semibold text-lg">
+                          <span>Total:</span>
+                          <span>Ksh {finalTotal.toFixed(2)}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          className="flex-1 bg-transparent"
+                          onClick={() => onOpenChange(false)}
+                        >
+                          Continue Shopping
+                        </Button>
+                        <Button
+                          className="flex-1"
+                          onClick={handleProceedToDetails}
+                        >
+                          Continue to{" "}
+                          {orderType === "delivery" ? "Delivery" : "Pickup"}
+                        </Button>
                       </div>
                     </div>
+                  </>
+                )}
 
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        className="flex-1 bg-transparent"
-                        onClick={() => onOpenChange(false)}
-                      >
-                        Continue Shopping
-                      </Button>
-                      <Button
-                        className="flex-1"
-                        onClick={handleProceedToDetails}
-                      >
-                        Continue to{" "}
-                        {orderType === "delivery" ? "Delivery" : "Pickup"}
-                      </Button>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {currentStep === "details" && (
-                <div className="flex-1 min-h-0">
-                  <ScrollArea className="h-full">
+                {/* Details Step */}
+                {currentStep === "details" && (
+                  <div className="flex-1 min-h-0 overflow-y-auto custom-scroll">
                     <div className="p-6 space-y-6">
                       {renderOrderSummary()}
                       {orderType === "delivery" ? (
@@ -339,18 +339,15 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
                         <PickupForm onContinue={handleProceedToPayment} />
                       )}
                     </div>
-                  </ScrollArea>
-                </div>
-              )}
+                  </div>
+                )}
 
-              {currentStep === "payment" && (
-                <div className="flex-1 min-h-0">
-                  <ScrollArea className="h-full">
+                {/* Payment Step */}
+                {currentStep === "payment" && (
+                  <div className="flex-1 min-h-0 overflow-y-auto custom-scroll">
                     <div className="p-6 space-y-6">
-                      {/* Order Summary */}
                       {renderOrderSummary()}
 
-                      {/* Payment Methods */}
                       <div>
                         <h4 className="font-semibold mb-4 text-gray-900">
                           Choose Payment Method
@@ -397,14 +394,13 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
                         </Tabs>
                       </div>
                     </div>
-                  </ScrollArea>
-                </div>
-              )}
-            </div>
-          )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </SheetContent>
       </Sheet>
-
       {/* Clear Cart Confirmation Dialog */}
       <AlertDialog open={showClearConfirm} onOpenChange={setShowClearConfirm}>
         <AlertDialogContent>

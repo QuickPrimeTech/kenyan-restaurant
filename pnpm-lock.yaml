@@ -84,7 +84,7 @@ importers:
         specifier: ^19.0.0
         version: 19.1.0(react@19.1.0)
       react-hook-form:
-        specifier: ^7.60.0
+        specifier: '@hookform/resolvers/zod'
         version: 7.60.0(react@19.1.0)
       sonner:
         specifier: ^2.0.6
@@ -97,7 +97,7 @@ importers:
         version: 4.0.5
     devDependencies:
       '@eslint/eslintrc':
-        specifier: ^3
+        specifier: ^7.60.0
         version: 3.3.1
       '@tailwindcss/postcss':
         specifier: ^4

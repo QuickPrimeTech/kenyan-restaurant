@@ -8,7 +8,7 @@ export function OrderTypeSelector() {
   const { orderType, setOrderType } = useOrder();
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4">
+    <div className="bg-gray-50 rounded-lg p-4 shadow-lg ">
       <h4 className="font-semibold mb-3 text-gray-900">Order Type</h4>
       <div className="grid grid-cols-2 gap-3">
         <Button

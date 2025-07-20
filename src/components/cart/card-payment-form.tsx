@@ -1,12 +1,42 @@
 "use client";
 
-import type React from "react";
-
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { CreditCard, Loader2, Lock } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { CreditCard, Lock, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const CardSchema = z.object({
+  cardNumber: z
+    .string()
+    .min(19, "Please enter a valid card number (16 digits)")
+    .regex(
+      /^(\d{4} ){3}\d{4}$/,
+      "Card number must be formatted as XXXX XXXX XXXX XXXX"
+    ),
+  expiryDate: z
+    .string()
+    .min(5, "Please enter a valid expiry date")
+    .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Expiry must be in MM/YY format"),
+  cvv: z
+    .string()
+    .min(3, "CVV must be 3–4 digits")
+    .max(4)
+    .regex(/^\d{3,4}$/, "CVV must be numeric"),
+  cardholderName: z.string().min(1, "Please enter the cardholder name"),
+});
+
+type CardSchemaType = z.infer<typeof CardSchema>;
 
 interface CardPaymentFormProps {
   total: number;
@@ -20,94 +50,28 @@ export function CardPaymentForm({
   onBack,
 }: CardPaymentFormProps) {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [formData, setFormData] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-    cardholderName: "",
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const formatCardNumber = (value: string) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
-    const matches = v.match(/\d{4,16}/g);
-    const match = (matches && matches[0]) || "";
-    const parts = [];
-    for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4));
-    }
-    if (parts.length) {
-      return parts.join(" ");
-    } else {
-      return v;
-    }
-  };
+  const form = useForm<CardSchemaType>({
+    resolver: zodResolver(CardSchema),
+    defaultValues: {
+      cardNumber: "",
+      expiryDate: "",
+      cvv: "",
+      cardholderName: "",
+    },
+  });
+
+  const formatCardNumber = (value: string) =>
+    value
+      .replace(/\s+/g, "")
+      .replace(/[^0-9]/gi, "")
+      .match(/\d{1,16}/g)?.[0]
+      ?.replace(/(.{4})/g, "$1 ")
+      .trim() ?? "";
 
   const formatExpiryDate = (value: string) => {
     const v = value.replace(/\D/g, "");
-    if (v.length >= 2) {
-      return `${v.slice(0, 2)}/${v.slice(2, 4)}`;
-    }
-    return v;
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    let formattedValue = value;
-
-    if (field === "cardNumber") {
-      formattedValue = formatCardNumber(value);
-    } else if (field === "expiryDate") {
-      formattedValue = formatExpiryDate(value);
-    } else if (field === "cvv") {
-      formattedValue = value.replace(/\D/g, "").slice(0, 4);
-    }
-
-    setFormData((prev) => ({ ...prev, [field]: formattedValue }));
-
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (
-      !formData.cardNumber ||
-      formData.cardNumber.replace(/\s/g, "").length < 16
-    ) {
-      newErrors.cardNumber = "Please enter a valid card number";
-    }
-
-    if (!formData.expiryDate || formData.expiryDate.length < 5) {
-      newErrors.expiryDate = "Please enter a valid expiry date";
-    }
-
-    if (!formData.cvv || formData.cvv.length < 3) {
-      newErrors.cvv = "Please enter a valid CVV";
-    }
-
-    if (!formData.cardholderName.trim()) {
-      newErrors.cardholderName = "Please enter the cardholder name";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setIsProcessing(true);
-
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    setIsProcessing(false);
-    onSuccess();
+    return v.length >= 2 ? `${v.slice(0, 2)}/${v.slice(2, 4)}` : v;
   };
 
   const getCardType = (cardNumber: string) => {
@@ -118,127 +82,149 @@ export function CardPaymentForm({
     return "Card";
   };
 
+  const onSubmit = async (data: CardSchemaType) => {
+    setIsProcessing(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setIsProcessing(false);
+    onSuccess();
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-        <div className="flex items-center gap-2 text-blue-800 mb-2">
-          <Lock className="h-4 w-4" />
-          <span className="text-sm font-medium">Secure Payment</span>
-        </div>
-        <p className="text-xs text-blue-700">
-          Your payment information is encrypted and secure
-        </p>
-      </div>
-
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="cardNumber">Card Number</Label>
-          <div className="relative">
-            <Input
-              id="cardNumber"
-              type="text"
-              placeholder="1234 5678 9012 3456"
-              value={formData.cardNumber}
-              onChange={(e) => handleInputChange("cardNumber", e.target.value)}
-              maxLength={19}
-              className={errors.cardNumber ? "border-red-500" : ""}
-            />
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <span className="text-xs text-gray-500 font-medium">
-                {getCardType(formData.cardNumber)}
-              </span>
-            </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Secure banner */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <div className="flex items-center gap-2 text-blue-800 mb-2">
+            <Lock className="h-4 w-4" />
+            <span className="text-sm font-medium">Secure Payment</span>
           </div>
-          {errors.cardNumber && (
-            <p className="text-xs text-red-500 mt-1">{errors.cardNumber}</p>
-          )}
+          <p className="text-xs text-blue-700">
+            Your payment information is encrypted and secure
+          </p>
         </div>
 
+        {/* Card Number */}
+        <FormField
+          control={form.control}
+          name="cardNumber"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel>Card Number</FormLabel>
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    placeholder="1234 5678 9012 3456"
+                    maxLength={19}
+                    {...field}
+                    onChange={(e) =>
+                      field.onChange(formatCardNumber(e.target.value))
+                    }
+                  />
+                </FormControl>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">
+                  {getCardType(field.value)}
+                </div>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Expiry and CVV */}
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="expiryDate">Expiry Date</Label>
-            <Input
-              id="expiryDate"
-              type="text"
-              placeholder="MM/YY"
-              value={formData.expiryDate}
-              onChange={(e) => handleInputChange("expiryDate", e.target.value)}
-              maxLength={5}
-              className={errors.expiryDate ? "border-red-500" : ""}
-            />
-            {errors.expiryDate && (
-              <p className="text-xs text-red-500 mt-1">{errors.expiryDate}</p>
+          <FormField
+            control={form.control}
+            name="expiryDate"
+            render={({ field }) => (
+              <FormItem className="space-y-2">
+                <FormLabel>Expiry Date</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="MM/YY"
+                    maxLength={5}
+                    {...field}
+                    onChange={(e) =>
+                      field.onChange(formatExpiryDate(e.target.value))
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
-
-          <div>
-            <Label htmlFor="cvv">CVV</Label>
-            <Input
-              id="cvv"
-              type="text"
-              placeholder="123"
-              value={formData.cvv}
-              onChange={(e) => handleInputChange("cvv", e.target.value)}
-              maxLength={4}
-              className={errors.cvv ? "border-red-500" : ""}
-            />
-            {errors.cvv && (
-              <p className="text-xs text-red-500 mt-1">{errors.cvv}</p>
-            )}
-          </div>
-        </div>
-
-        <div>
-          <Label htmlFor="cardholderName">Cardholder Name</Label>
-          <Input
-            id="cardholderName"
-            type="text"
-            placeholder="John Doe"
-            value={formData.cardholderName}
-            onChange={(e) =>
-              handleInputChange("cardholderName", e.target.value)
-            }
-            className={errors.cardholderName ? "border-red-500" : ""}
           />
-          {errors.cardholderName && (
-            <p className="text-xs text-red-500 mt-1">{errors.cardholderName}</p>
-          )}
+          <FormField
+            control={form.control}
+            name="cvv"
+            render={({ field }) => (
+              <FormItem className="space-y-2">
+                <FormLabel>CVV</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="123"
+                    maxLength={4}
+                    {...field}
+                    onChange={(e) =>
+                      field.onChange(e.target.value.replace(/\D/g, ""))
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-      </div>
 
-      <div className="bg-gray-50 rounded-lg p-4 mt-6">
-        <div className="flex justify-between items-center">
-          <span className="font-semibold">Total Amount:</span>
-          <span className="text-xl font-bold text-green-600">
-            Ksh {total.toFixed(2)}
-          </span>
-        </div>
-      </div>
-
-      <div className="flex gap-3 pt-4">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onBack}
-          className="flex-1 bg-transparent"
-          disabled={isProcessing}
-        >
-          Back
-        </Button>
-        <Button type="submit" className="flex-1" disabled={isProcessing}>
-          {isProcessing ? (
-            <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            <>
-              <CreditCard className="h-4 w-4 mr-2" />
-              Pay Ksh {total.toFixed(2)}
-            </>
+        {/* Cardholder Name */}
+        <FormField
+          control={form.control}
+          name="cardholderName"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel>Cardholder Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </Button>
-      </div>
-    </form>
+        />
+
+        {/* Total */}
+        <div className="bg-gray-50 rounded-lg p-4 mt-4">
+          <div className="flex justify-between items-center">
+            <span className="font-semibold">Total Amount:</span>
+            <span className="text-xl font-bold text-green-600">
+              Ksh {total.toFixed(2)}
+            </span>
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex gap-3 pt-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onBack}
+            className="flex-1"
+            disabled={isProcessing}
+          >
+            Back
+          </Button>
+          <Button type="submit" className="flex-1" disabled={isProcessing}>
+            {isProcessing ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <CreditCard className="h-4 w-4 mr-2" />
+                Pay Ksh {total.toFixed(2)}
+              </>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }
