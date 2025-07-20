@@ -46,7 +46,7 @@
 :root {
   --radius: 0.625rem;
 
-  --background: oklch(0.985 0.02 75); /* Warm off-white */
+  --background: var(--color-white); /* Warm off-white */
   --foreground: oklch(0.25 0.05 29); /* Deep brown */
 
   --card: oklch(0.97 0.018 75);
