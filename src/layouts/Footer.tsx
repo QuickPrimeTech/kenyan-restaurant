@@ -139,9 +139,21 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+        <div className="border-t flex flex-col lg:flex-row gap-3 items-center justify-between border-gray-800 mt-8 pt-8">
+          <p className="text-gray-400 text-sm text-center">
+            © {new Date().getFullYear()} Ziwa Seafood Restaurant. All rights
+            reserved.
+          </p>
           <p className="text-gray-400 text-sm">
-            © 2024 Coastal Breeze Restaurant. All rights reserved.
+            Proudly made by{" "}
+            <Link
+              href="https://quickprimetech.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-primary transition-colors"
+            >
+              QuickPrimeTech
+            </Link>
           </p>
         </div>
       </div>
