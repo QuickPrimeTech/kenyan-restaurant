@@ -1,8 +1,8 @@
-import AboutHeader from "@/pages/about-us/AboutHeader";
-import OurStory from "@/pages/about-us/OurStory";
-import TeamSection from "@/pages/about-us/TeamSection";
-import ValuesSection from "@/pages/about-us/ValuesSection";
-import TimelineSection from "@/pages/about-us/TimelineSection";
+import AboutHeader from "@/sections/about-us/AboutHeader";
+import OurStory from "@/sections/about-us/OurStory";
+import TeamSection from "@/sections/about-us/TeamSection";
+import ValuesSection from "@/sections/about-us/ValuesSection";
+import TimelineSection from "@/sections/about-us/TimelineSection";
 
 export default function AboutPage() {
   return (

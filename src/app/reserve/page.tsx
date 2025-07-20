@@ -1,6 +1,6 @@
-import ReservationHeader from "@/pages/reservetions/ReservationHeader";
-import ReservationForm from "@/pages/reservetions/ReservationForm";
-import ReservationInfo from "@/pages/reservetions/ReservationInfo";
+import ReservationHeader from "@/sections/reservetions/ReservationHeader";
+import ReservationForm from "@/sections/reservetions/ReservationForm";
+import ReservationInfo from "@/sections/reservetions/ReservationInfo";
 
 export default function ReservePage() {
   return (

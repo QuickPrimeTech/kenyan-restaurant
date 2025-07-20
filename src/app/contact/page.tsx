@@ -1,7 +1,7 @@
-import ContactHeader from "@/pages/contact/ContactHeader";
-import ContactForm from "@/pages/contact/ContactForm";
-import ContactInfo from "@/pages/contact/ContactInfo";
-import ContactMap from "@/pages/contact/ContactMap";
+import ContactHeader from "@/sections/contact/ContactHeader";
+import ContactForm from "@/sections/contact/ContactForm";
+import ContactInfo from "@/sections/contact/ContactInfo";
+import ContactMap from "@/sections/contact/ContactMap";
 
 export default function ContactPage() {
   return (

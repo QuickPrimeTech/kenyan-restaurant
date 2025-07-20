@@ -1,11 +1,11 @@
-import HeroSection from "@/pages/home/HeroSection";
-import MenuHighlights from "@/pages/home/MenuHighlights";
-import AboutSection from "@/pages/home/AboutSection";
-import ReviewsSection from "@/pages/home/ReviewsSection";
-import CallToAction from "@/pages/home/CallToAction";
-import FAQ from "@/pages/home/FAQ";
-import ContactSummary from "@/pages/home/ContactSummary";
-import InstagramFeed from "@/pages/home/InstagramFeed";
+import HeroSection from "@/sections/home/HeroSection";
+import MenuHighlights from "@/sections/home/MenuHighlights";
+import AboutSection from "@/sections/home/AboutSection";
+import ReviewsSection from "@/sections/home/ReviewsSection";
+import CallToAction from "@/sections/home/CallToAction";
+import FAQ from "@/sections/home/FAQ";
+import ContactSummary from "@/sections/home/ContactSummary";
+import InstagramFeed from "@/sections/home/InstagramFeed";
 
 export default function HomePage() {
   return (

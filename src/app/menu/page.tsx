@@ -1,6 +1,6 @@
-import MenuHeader from "@/pages/menu/MenuHeader";
-import MenuGrid from "@/pages/menu/MenuGrid";
-import MenuCTA from "@/pages/menu/MenuCTA";
+import MenuHeader from "@/sections/menu/MenuHeader";
+import MenuGrid from "@/sections/menu/MenuGrid";
+import MenuCTA from "@/sections/menu/MenuCTA";
 
 export default function MenuPage() {
   return (
