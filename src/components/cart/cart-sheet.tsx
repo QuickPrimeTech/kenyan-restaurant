@@ -308,21 +308,29 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
                         </div>
                       </div>
 
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          className="flex-1 bg-transparent"
-                          onClick={() => onOpenChange(false)}
-                        >
-                          Continue Shopping
-                        </Button>
-                        <Button
-                          className="flex-1"
-                          onClick={handleProceedToDetails}
-                        >
-                          Continue to{" "}
-                          {orderType === "delivery" ? "Delivery" : "Pickup"}
-                        </Button>
+                      <div
+                        className="sticky bottom-0 left-0 w-full bg-white border-t p-8 z-50"
+                        style={{
+                          paddingBottom: "env(safe-area-inset-bottom)", // supports iOS notch
+                        }}
+                      >
+                        {/* Buttons */}
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            className="flex-1 bg-transparent"
+                            onClick={() => onOpenChange(false)}
+                          >
+                            Continue Shopping
+                          </Button>
+                          <Button
+                            className="flex-1"
+                            onClick={handleProceedToDetails}
+                          >
+                            Continue to{" "}
+                            {orderType === "delivery" ? "Delivery" : "Pickup"}
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </>
