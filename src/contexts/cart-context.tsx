@@ -58,7 +58,9 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     }
 
     case "REMOVE_ITEM": {
-      const newItems = state.items.filter((item) => item.id !== action.payload);
+      const newItems = state.items.filter(
+        (item) => String(item.id) !== action.payload
+      );
       const total = newItems.reduce(
         (sum, item) => sum + Number.parseFloat(item.price) * item.quantity,
         0
@@ -77,7 +79,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       }
 
       const newItems = state.items.map((item) =>
-        item.id === action.payload.id
+        String(item.id) === action.payload.id
           ? { ...item, quantity: action.payload.quantity }
           : item
       );

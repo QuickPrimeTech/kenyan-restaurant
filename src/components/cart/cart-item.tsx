@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useCart } from "@/contexts/cart-context";
 import type { CartItem as CartItemType } from "@/contexts/cart-context";
+import Image from "next/image";
 
 interface CartItemProps {
   item: CartItemType;
@@ -41,10 +42,11 @@ export function CartItem({ item }: CartItemProps) {
     <>
       <div className="w-full flex items-center gap-4 p-4 border rounded-lg bg-white border-gray-200">
         {/* Product Image */}
-        <div className="w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
-          <img
+        <div className="relative w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
+          <Image
             src={item.image || "/placeholder.svg"}
             alt={item.name}
+            fill
             className="w-full h-full object-cover"
           />
         </div>

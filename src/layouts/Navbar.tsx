@@ -49,10 +49,9 @@ export default function Navbar() {
       <div className="flex items-center justify-between h-16">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary">
             <Image
-              width={64}
-              height={64}
+              fill
               src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1750685108/Flux_Dev_A_minimalistic_logo_for_a_coastal_restaurant_featurin_0_yyrx6o.jpg"
               alt="Coastal Breeze Logo"
               className="object-cover w-full h-full"

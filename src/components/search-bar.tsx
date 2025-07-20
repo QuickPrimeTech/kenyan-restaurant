@@ -245,11 +245,12 @@ export function SearchBar({
                     touchAction: isDesktop ? "auto" : "pan-y",
                   }}
                 >
-                  <div className="w-12 h-12 rounded-md overflow-hidden bg-muted flex-shrink-0">
+                  <div className="relative w-12 h-12 rounded-md overflow-hidden bg-muted flex-shrink-0">
                     <Image
                       src={item.image || "/placeholder.svg"}
                       alt={item.name}
                       className="w-full h-full object-cover"
+                      fill
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = `/placeholder.svg?height=48&width=48&text=${encodeURIComponent(

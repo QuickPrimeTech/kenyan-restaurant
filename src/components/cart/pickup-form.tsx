@@ -280,7 +280,7 @@ export function PickupForm({ onContinue }: PickupFormProps) {
                 <p className="text-xs text-red-500">{errors.phone}</p>
               )}
               <p className="text-xs text-muted-foreground">
-                We'll send you a confirmation SMS
+                We&apos;ll send you a confirmation SMS
               </p>
             </div>
 

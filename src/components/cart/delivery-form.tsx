@@ -38,7 +38,7 @@ export function DeliveryForm({ onContinue }: DeliveryFormProps) {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
-  const [locationRetryKey, setLocationRetryKey] = useState(0);
+  const [, setLocationRetryKey] = useState(0);
 
   // Auto-detect location and get address
   const getAddressFromCoordinates = async (lat: number, lng: number) => {
@@ -69,7 +69,7 @@ export function DeliveryForm({ onContinue }: DeliveryFormProps) {
     if (geolocation.latitude && geolocation.longitude && !formData.address) {
       getAddressFromCoordinates(geolocation.latitude, geolocation.longitude);
     }
-  }, [geolocation.latitude, geolocation.longitude]);
+  }, [geolocation.latitude, geolocation.longitude, formData.address]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -150,7 +150,7 @@ export function DeliveryForm({ onContinue }: DeliveryFormProps) {
               Location Access Needed
             </CardTitle>
             <CardDescription>
-              We couldn't access your location to speed up delivery
+              We couldn&apos;t access your location to speed up delivery
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -175,8 +175,8 @@ export function DeliveryForm({ onContinue }: DeliveryFormProps) {
               Try Again to Get Location
             </Button>
             <p className="text-xs text-amber-700">
-              Click "Try Again" and allow location access when prompted by your
-              browser
+              Click &quot;Try Again&quot; and allow location access when
+              prompted by your browser
             </p>
           </CardContent>
         </Card>
@@ -274,7 +274,7 @@ export function DeliveryForm({ onContinue }: DeliveryFormProps) {
                 <p className="text-xs text-red-500">{errors.phone}</p>
               )}
               <p className="text-xs text-muted-foreground">
-                We'll call you when we arrive
+                We&apos;ll call you when we arrive
               </p>
             </div>
 
@@ -307,7 +307,7 @@ export function DeliveryForm({ onContinue }: DeliveryFormProps) {
             <ul className="text-sm text-amber-800 space-y-1">
               <li>• Delivery fee: Ksh 200</li>
               <li>• Estimated time: 30-45 minutes</li>
-              <li>• We'll call you when we're nearby</li>
+              <li>• We&apos;ll call you when we&apos;re nearby</li>
               <li>• Please have exact change ready if paying cash</li>
             </ul>
           </CardContent>

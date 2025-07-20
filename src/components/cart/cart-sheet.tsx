@@ -39,6 +39,7 @@ import { MpesaPaymentForm } from "./mpesa-payment-form";
 import { OrderTypeSelector } from "./order-type-selector";
 import { DeliveryForm } from "./delivery-form";
 import { PickupForm } from "./pickup-form";
+import Image from "next/image";
 
 interface CartSheetProps {
   open: boolean;
@@ -98,8 +99,8 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
             key={item.id}
             className="flex items-center gap-3 p-2 bg-white rounded-md"
           >
-            <div className="w-10 h-10 bg-muted rounded-md overflow-hidden flex-shrink-0">
-              <img
+            <div className="relative w-10 h-10 bg-muted rounded-md overflow-hidden flex-shrink-0">
+              <Image
                 src={item.image || "/placeholder.svg"}
                 alt={item.name}
                 className="w-full h-full object-cover"

@@ -75,7 +75,7 @@ export const useGeolocation = (options: GeolocationOptions = {}) => {
       maximumAge: 60000,
       ...options,
     });
-  }, []);
+  }, [options]);
 
   return state;
 };
