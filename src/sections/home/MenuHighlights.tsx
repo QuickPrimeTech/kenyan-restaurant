@@ -189,10 +189,8 @@ export default function MenuHighlights() {
             ))}
           </CarouselContent>
 
-          <div className="mt-6 flex justify-center gap-6">
-            <CarouselPrevious />
-            <CarouselNext />
-          </div>
+          <CarouselPrevious />
+          <CarouselNext />
         </Carousel>
 
         {/* Footer CTA */}
