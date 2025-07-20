@@ -8,43 +8,44 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { ClampedReview } from "@/components/clamped-review";
+import { H2 } from "@/components/ui/typography";
 
 export default function Testimonials() {
   const testimonials = [
     {
       imgsrc:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750874383/clubhouse-colored-background-profile-picture-maker-full-50a8f7a7_vjmcg7.webp",
-      name: "Marina Rodriguez",
-      text: "The freshest seafood I&apos;ve ever tasted. The ocean views made it even more magical.",
+        "https://lh3.googleusercontent.com/a-/ALV-UjV1vv9evIElYUomNLQlu9m91MG42X6s62EJRoMtlQmEoAdYPZ07=w72-h72-p-rp-mo-ba4-br100",
+      name: "Shahriar Shakil Shuvo",
+      text: "Ziwa Restaurant in Mombasa is an absolute gem! Located near Fort Jesus and overlooking the ocean, the view alone is worth the visit. But the real star is the food—delicious Swahili and seafood dishes that are full of rich, authentic flavors. I tried the grilled lobster and biryani, and both were perfectly cooked and generously portioned. The ambiance is laid-back yet vibrant, with a cool sea breeze and the sound of waves nearby. The staff were friendly, attentive, and made great recommendations from the menu. Prices are reasonable considering the quality and location. If you're in Old Town Mombasa and want a memorable meal with a touch of local culture, Forodhani is the place to be. Highly recommended!",
       rating: 5,
     },
     {
       imgsrc:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750874383/christian-buehner-ditylc26zvi-unsplash_q2hzul.jpg",
-      name: "Captain James Wilson",
-      text: "As a local fisherman, I can say Bahari truly respects the ocean&apos;s bounty.",
-      rating: 5,
+        "https://lh3.googleusercontent.com/a-/ALV-UjWsFI54HN1_h5MbbO1Xai5Xvo_d_GMjaJwESKPn-Mtnhr8QYb88iQ=w36-h36-p-rp-mo-ba3-br100",
+      name: "Michel Libamira",
+      text: "Wonderful. The views are amazing. The food is 10/10. They don't serve alcohol. But you can sneak in ;-)",
+      rating: 4,
     },
     {
       imgsrc:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750874385/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2_s7kg3d.jpg",
-      name: "Isabella Chen",
-      text: "Perfect for our anniversary dinner. The sunset view was absolutely breathtaking.",
-      rating: 5,
+        "https://lh3.googleusercontent.com/a-/ALV-UjVOeut2Xs6yphx8cBquunIC4voAoFMfuHKiQUcLLS2PtZDEnOen6Q=w36-h36-p-rp-mo-ba4-br100",
+      name: "Henry Ochieng",
+      text: "Good ambience for a relaxed meal near the waves. Excellent food with good portions. Good service from well mannered staff.",
+      rating: 4,
     },
     {
-      imgsrc: "",
-      name: "Samuel Green",
-      text: "A truly unforgettable dining experience. Will return again!",
+      imgsrc:
+        "https://lh3.googleusercontent.com/a-/ALV-UjUs0rxk50PSltlmeml5It8GEknB5wnYTRdVZzjQXjP-lK6VvS3lVA=w36-h36-p-rp-mo-ba6-br100",
+      name: "Kit Teguh",
+      text: "I came here on a Friday for lunch not knowing that about this time, it is prayer time and they will not serve you until 1:30PM, so if you come just a heads up. I didn't really mind, as you can still sit down and enjoy the view of the coast which is great on a good day. True to their word the staff will begin their service at the appointed time. I've got a nice mutton biriani with fall off the bone kind of meat. It's a well balanced meal with a nice bit of salsa and kachumbari. Maybe it's not the best biriani in town (checkout Mangaboy for this), but it's pretty solid. I would stay here for hours on end reading, but after 2PM the lunch crowd came and it gets pretty busy. But this place is definitely worth the little walk from Fort Jesus.",
       rating: 5,
     },
   ];
 
   return (
     <section className="section bg-grey-bg py-20 px-4">
-      <h2 className="font-serif text-4xl font-bold text-center mb-12">
-        What Our Guests Say
-      </h2>
+      <H2 className="text-center mb-8">What Our Guests Say</H2>
 
       <div className="relative w-full max-w-6xl mx-auto">
         <Carousel className="w-full">
@@ -52,15 +53,13 @@ export default function Testimonials() {
             {testimonials.map((testimonial, index) => (
               <CarouselItem
                 key={index}
-                className="basis-full md:basis-1/3 lg:basis-1/4"
+                className="basis-full md:basis-1/2 lg:basis-1/3"
               >
                 <Card className="h-full">
-                  <CardHeader className="text-orange-400 pt-4 pb-0 rounded-t-lg flex justify-between items-center">
-                    <Avatar>
+                  <CardHeader className="pt-4 pb-0 rounded-t-lg flex justify-between items-center">
+                    <Avatar className="size-12">
                       <AvatarImage
-                        src={
-                          testimonial.imgsrc || "https://github.com/shadcn.png"
-                        }
+                        src={testimonial.imgsrc}
                         alt={testimonial.name}
                         className="object-cover"
                       />
@@ -69,21 +68,28 @@ export default function Testimonials() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 fill-orange-400" />
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-5 w-5 ${
+                            testimonial.rating > i
+                              ? "fill-current"
+                              : "stroke-current"
+                          } text-yellow-500`}
+                        />
                       ))}
                     </div>
                   </CardHeader>
                   <CardContent className="pb-4 pt-0">
-                    <p className="mb-4 italic">{`"${testimonial.text}"`}</p>
+                    <ClampedReview>{testimonial.text}</ClampedReview>
                     <p className="font-semibold">- {testimonial.name}</p>
                   </CardContent>
                 </Card>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute -left-6 top-1/2 -translate-y-1/2 z-10" />
-          <CarouselNext className="absolute -right-6 top-1/2 -translate-y-1/2 z-10" />
+          <CarouselPrevious />
+          <CarouselNext />
         </Carousel>
       </div>
     </section>
