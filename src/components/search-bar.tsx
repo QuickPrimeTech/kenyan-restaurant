@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import type { MenuItem } from "@/types/menu";
+import Image from "next/image";
 
 interface SearchBarProps {
   menuItems: MenuItem[];
@@ -245,7 +246,7 @@ export function SearchBar({
                   }}
                 >
                   <div className="w-12 h-12 rounded-md overflow-hidden bg-muted flex-shrink-0">
-                    <img
+                    <Image
                       src={item.image || "/placeholder.svg"}
                       alt={item.name}
                       className="w-full h-full object-cover"
