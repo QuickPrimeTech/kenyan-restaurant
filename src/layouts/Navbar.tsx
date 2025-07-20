@@ -57,7 +57,7 @@ export default function Navbar() {
             />
           </div>
           <span className="font-serif text-xl font-bold text-primary">
-            Coastal Breeze
+            Ziwa Restaurant
           </span>
         </Link>
 

@@ -27,7 +27,7 @@ export default function Footer() {
                 />
               </div>
               <span className="font-serif text-xl font-bold">
-                Coastal Breeze
+                Ziwa Restaurant
               </span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
