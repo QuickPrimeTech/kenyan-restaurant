@@ -313,9 +313,11 @@ export function DeliveryForm({ onContinue }: DeliveryFormProps) {
           </CardContent>
         </Card>
 
-        <Button type="submit" className="w-full" size="lg">
-          Continue to Payment
-        </Button>
+        <div className="pb-12 lg:pb-0">
+          <Button type="submit" className="w-full" size="lg">
+            Continue to Payment
+          </Button>
+        </div>
       </form>
     </div>
   );

@@ -308,12 +308,7 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
                         </div>
                       </div>
 
-                      <div
-                        className="sticky bottom-0 left-0 w-full bg-white border-t p-8 z-50"
-                        style={{
-                          paddingBottom: "env(safe-area-inset-bottom)", // supports iOS notch
-                        }}
-                      >
+                      <div className="w-full bg-white border-t pb-12 lg:pb-0 pt-3 z-50">
                         {/* Buttons */}
                         <div className="flex gap-2">
                           <Button

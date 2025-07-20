@@ -200,7 +200,7 @@ export function CardPaymentForm({
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-3 pt-4">
+        <div className="flex gap-3 pt-4 pb-12 lg:pb-0">
           <Button
             type="button"
             variant="outline"
