@@ -1,13 +1,11 @@
 "use client";
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Smartphone, Shield, Loader2, CheckCircle } from "lucide-react";
 import {
   Form,

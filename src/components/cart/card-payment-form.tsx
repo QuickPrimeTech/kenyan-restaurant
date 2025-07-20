@@ -82,7 +82,7 @@ export function CardPaymentForm({
     return "Card";
   };
 
-  const onSubmit = async (data: CardSchemaType) => {
+  const onSubmit = async () => {
     setIsProcessing(true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setIsProcessing(false);
