@@ -7,21 +7,21 @@ export default function TeamSection() {
       name: "Giuseppe Marinelli",
       role: "Founder & Executive Chef",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749719145/chef_3_teamzr.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749719145/chef_3_teamzr.jpg",
       bio: "With over 40 years of culinary experience, Giuseppe brings authentic Italian coastal cuisine to every dish.",
     },
     {
       name: "Maria Marinelli",
       role: "Co-Founder & General Manager",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749719146/chef_1_xtp86u.png",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749719146/chef_1_xtp86u.png",
       bio: "Maria oversees operations and ensures every guest feels like family from the moment they walk in.",
     },
     {
       name: "Diana Marinelli",
       role: "Head Chef",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749719144/chef_1_qivkfm.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749719144/chef_1_qivkfm.jpg",
       bio: "The next generation, Antonio combines traditional techniques with modern innovation and local ingredients.",
     },
   ];

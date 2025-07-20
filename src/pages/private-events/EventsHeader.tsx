@@ -8,7 +8,7 @@ export default function EventsHeader() {
     <section className="relative min-h-screen pt-24 pb-16">
       {/* Background image */}
       <Image
-        src="https://res.cloudinary.com/dhlyei79o/image/upload/v1749718090/images_16_klyzmt.jpg"
+        src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1749718090/images_16_klyzmt.jpg"
         alt="Private event setup"
         fill
         className="object-cover object-center absolute inset-0 z-0"

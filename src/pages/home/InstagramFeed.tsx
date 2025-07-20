@@ -16,42 +16,42 @@ export default function InstagramSection() {
     {
       id: 1,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622768/top-view-of-modern-elegant-black-plate-with-juicy-appetizing-piece-of-cheese-with-sprig-of-rosemary-on-white-background-concept-of-delicious-food-with-good-compos_lirwl7.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622768/top-view-of-modern-elegant-black-plate-with-juicy-appetizing-piece-of-cheese-with-sprig-of-rosemary-on-white-background-concept-of-delicious-food-with-good-compos_lirwl7.jpg",
       caption: "Fresh catch of the day! 🐟 #BahariRestaurant #FreshSeafood",
       likes: 234,
     },
     {
       id: 2,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622769/P1250603ed-1024x683_k1q1yr.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622769/P1250603ed-1024x683_k1q1yr.jpg",
       caption: "Sunset dining at its finest 🌅 #OceanView #BahariExperience",
       likes: 189,
     },
     {
       id: 3,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622770/1000_F_263905408_6UUFBmYozpjnvATkiABaJSOlWf2jcFYY_iboyas.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622770/1000_F_263905408_6UUFBmYozpjnvATkiABaJSOlWf2jcFYY_iboyas.jpg",
       caption: "Our signature seafood platter 🦞 #BahariSpecial #Seafood",
       likes: 312,
     },
     {
       id: 4,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622767/SG231006_STM_GRP_E_B_Food_Photography_Blog_Assets_Oct_2023_1920x500_top_banner1__1_-768x500_khsf9u.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622767/SG231006_STM_GRP_E_B_Food_Photography_Blog_Assets_Oct_2023_1920x500_top_banner1__1_-768x500_khsf9u.jpg",
       caption: "Behind the scenes with our chef 👨‍🍳 #BehindTheScenes #ChefLife",
       likes: 156,
     },
     {
       id: 5,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622777/homemade-cupcakes_mgidyu.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622777/homemade-cupcakes_mgidyu.jpg",
       caption: "Perfect evening for outdoor dining 🌊 #AlFresco #OceanBreeze",
       likes: 278,
     },
     {
       id: 6,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622777/pexels-photo-16936004_li3fa4.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622777/pexels-photo-16936004_li3fa4.jpg",
       caption:
         "Celebrating another successful event! 🎉 #PrivateEvents #Celebration",
       likes: 201,

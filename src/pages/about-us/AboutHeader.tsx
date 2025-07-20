@@ -6,7 +6,7 @@ export default function AboutHeader() {
       {/* Background image */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="https://res.cloudinary.com/dhlyei79o/image/upload/v1749651450/upepo-restaurant_zsqdwt.jpg" // Replace with your actual image
+          src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1749651450/upepo-restaurant_zsqdwt.jpg" // Replace with your actual image
           alt="Restaurant exterior"
           fill
           style={{ objectFit: "cover" }}

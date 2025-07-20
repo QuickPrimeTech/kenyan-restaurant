@@ -4,7 +4,7 @@ export default function ContactHeader() {
   return (
     <section className="relative h-[80vh] w-full">
       <Image
-        src="https://res.cloudinary.com/dhlyei79o/image/upload/v1748901619/samples/imagecon-group.jpg" // Replace with your actual image path in public/
+        src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1748901619/samples/imagecon-group.jpg" // Replace with your actual image path in public/
         alt="Contact background"
         fill
         className="object-cover"

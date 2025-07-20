@@ -4,7 +4,7 @@ export default function GalleryHeader() {
   return (
     <section className="relative pt-24 pb-12 bg-header-foreground/10 text-background">
       <Image
-        src="https://res.cloudinary.com/dhlyei79o/image/upload/v1749844860/PAB8263-HDR-scaled_dkwpxs.jpg"
+        src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1749844860/PAB8263-HDR-scaled_dkwpxs.jpg"
         alt="Gallery background"
         fill
         priority

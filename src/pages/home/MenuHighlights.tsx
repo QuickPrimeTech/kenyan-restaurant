@@ -24,7 +24,7 @@ export default function MenuHighlights() {
         "Fresh Pacific mahi-mahi with coconut rice, grilled pineapple, and cilantro-lime sauce",
       price: 32.0,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1748901618/samples/food/pot-mussels.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1748901618/samples/food/pot-mussels.jpg",
       dietary: ["gluten-free"],
       featured: true,
       rating: 4.9,
@@ -36,7 +36,7 @@ export default function MenuHighlights() {
         "Maine lobster tail with creamy cognac sauce, gruyere cheese, and herb-crusted potatoes",
       price: 48.0,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1748901618/samples/food/fish-vegetables.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1748901618/samples/food/fish-vegetables.jpg",
       dietary: [],
       featured: true,
       rating: 5.0,
@@ -48,7 +48,7 @@ export default function MenuHighlights() {
         "Traditional Spanish paella with prawns, mussels, calamari, and saffron-infused bomba rice",
       price: 36.0,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1748901617/samples/food/dessert.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1748901617/samples/food/dessert.jpg",
       dietary: ["dairy-free"],
       featured: true,
       rating: 4.8,
@@ -60,7 +60,7 @@ export default function MenuHighlights() {
         "Fresh Pacific mahi-mahi with coconut rice, grilled pineapple, and cilantro-lime sauce",
       price: 32.0,
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1748901618/samples/food/pot-mussels.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1748901618/samples/food/pot-mussels.jpg",
       dietary: ["gluten-free"],
       featured: true,
       rating: 4.9,

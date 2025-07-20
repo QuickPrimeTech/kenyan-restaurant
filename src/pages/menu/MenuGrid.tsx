@@ -15,7 +15,7 @@ export default function MenuGridSearch() {
       description:
         "Wild-caught salmon with lemon herb butter, seasonal vegetables, and quinoa pilaf",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749649602/Better-than-Takeout-Butter-Chicken-2_gsc0jl.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649602/Better-than-Takeout-Butter-Chicken-2_gsc0jl.jpg",
       rating: 4.9,
       popular: true,
     },
@@ -27,7 +27,7 @@ export default function MenuGridSearch() {
       description:
         "Fresh Maine lobster in creamy cognac sauce, gratinéed to perfection",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749649054/Indian-Samosas-sq_qbbzse.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649054/Indian-Samosas-sq_qbbzse.jpg",
       rating: 4.8,
       popular: true,
     },
@@ -39,7 +39,7 @@ export default function MenuGridSearch() {
       description:
         "Traditional Spanish rice with mussels, clams, shrimp, and saffron",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749649547/paneer-tikka_od5jp7.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649547/paneer-tikka_od5jp7.jpg",
       rating: 4.7,
       popular: false,
     },
@@ -51,7 +51,7 @@ export default function MenuGridSearch() {
       description:
         "Alaskan halibut with roasted tomato coulis and Mediterranean vegetables",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749649679/slow-cooker-lamb-rogan-josh-featured-c_hqwlcl.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649679/slow-cooker-lamb-rogan-josh-featured-c_hqwlcl.jpg",
       rating: 4.9,
       popular: false,
     },
@@ -63,7 +63,7 @@ export default function MenuGridSearch() {
       description:
         "San Francisco-style seafood stew with dungeness crab, prawns, and fresh fish",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749649844/Vegan-Dal-Makhani-Square-2_cltyup.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649844/Vegan-Dal-Makhani-Square-2_cltyup.jpg",
       rating: 4.8,
       popular: true,
     },
@@ -75,7 +75,7 @@ export default function MenuGridSearch() {
       description:
         "Fresh oysters baked with spinach, herbs, and parmesan cheese",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1749649927/indonesian_biryani_17351_16x9_iwhvdr.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649927/indonesian_biryani_17351_16x9_iwhvdr.jpg",
       rating: 4.6,
       popular: false,
     },

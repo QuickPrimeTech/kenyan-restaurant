@@ -13,21 +13,21 @@ export default function Testimonials() {
   const testimonials = [
     {
       imgsrc:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750874383/clubhouse-colored-background-profile-picture-maker-full-50a8f7a7_vjmcg7.webp",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750874383/clubhouse-colored-background-profile-picture-maker-full-50a8f7a7_vjmcg7.webp",
       name: "Marina Rodriguez",
       text: "The freshest seafood I&apos;ve ever tasted. The ocean views made it even more magical.",
       rating: 5,
     },
     {
       imgsrc:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750874383/christian-buehner-ditylc26zvi-unsplash_q2hzul.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750874383/christian-buehner-ditylc26zvi-unsplash_q2hzul.jpg",
       name: "Captain James Wilson",
       text: "As a local fisherman, I can say Bahari truly respects the ocean&apos;s bounty.",
       rating: 5,
     },
     {
       imgsrc:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750874385/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2_s7kg3d.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750874385/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2_s7kg3d.jpg",
       name: "Isabella Chen",
       text: "Perfect for our anniversary dinner. The sunset view was absolutely breathtaking.",
       rating: 5,

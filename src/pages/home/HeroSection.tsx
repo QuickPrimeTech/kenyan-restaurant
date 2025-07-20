@@ -7,9 +7,9 @@ import Image from "next/image";
 import clsx from "clsx";
 
 const images = [
-  "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622777/pexels-photo-16936004_li3fa4.jpg",
-  "https://res.cloudinary.com/dhlyei79o/image/upload/v1750701595/684176a824d3292883204061_Waterfront_Dining-_Best_Restaurants_with_a_View_in_South_Florida_yzegnw.jpg",
-  "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622770/1000_F_263905408_6UUFBmYozpjnvATkiABaJSOlWf2jcFYY_iboyas.jpg",
+  "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622777/pexels-photo-16936004_li3fa4.jpg",
+  "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750701595/684176a824d3292883204061_Waterfront_Dining-_Best_Restaurants_with_a_View_in_South_Florida_yzegnw.jpg",
+  "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622770/1000_F_263905408_6UUFBmYozpjnvATkiABaJSOlWf2jcFYY_iboyas.jpg",
 ];
 
 export default function HeroSection() {

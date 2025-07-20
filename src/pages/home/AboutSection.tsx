@@ -23,7 +23,7 @@ export default function AboutTeaser() {
         <div className="relative w-full aspect-video">
           <Image
             fill
-            src="https://res.cloudinary.com/dhlyei79o/image/upload/v1750622766/elegant-gourmet-presentation-stockcake_tsixz6.jpg"
+            src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622766/elegant-gourmet-presentation-stockcake_tsixz6.jpg"
             alt="Chef preparing fresh seafood"
             className="rounded-lg shadow-2xl object-cover"
           />

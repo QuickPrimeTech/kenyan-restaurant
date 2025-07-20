@@ -11,42 +11,42 @@ export default function EventGallery() {
       id: 1,
       category: "weddings",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750655735/origin-cruise-galapagos-restaurant_tx8pxx.webp",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750655735/origin-cruise-galapagos-restaurant_tx8pxx.webp",
       title: "Beach Wedding Reception",
     },
     {
       id: 2,
       category: "corporate",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750662294/SEY_885_original_ecrxni.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750662294/SEY_885_original_ecrxni.jpg",
       title: "Corporate Dinner",
     },
     {
       id: 3,
       category: "celebrations",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750673645/cfa9719a_icomfs.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750673645/cfa9719a_icomfs.jpg",
       title: "Anniversary Celebration",
     },
     {
       id: 4,
       category: "weddings",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750662213/blue-hill-seychelles-events-meeting4-682d04b4747125d681cc667bac3d6b92_err67t.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750662213/blue-hill-seychelles-events-meeting4-682d04b4747125d681cc667bac3d6b92_err67t.jpg",
       title: "Intimate Wedding Ceremony",
     },
     {
       id: 5,
       category: "corporate",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750657126/Culinary_20Lifestyle_20Nick_20Punta_20Cana_2012_cvmjo3.webp",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750657126/Culinary_20Lifestyle_20Nick_20Punta_20Cana_2012_cvmjo3.webp",
       title: "Business Lunch",
     },
     {
       id: 6,
       category: "celebrations",
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750622768/Old-Lisbon_ko8yfm.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622768/Old-Lisbon_ko8yfm.jpg",
       title: "Birthday Party",
     },
   ];

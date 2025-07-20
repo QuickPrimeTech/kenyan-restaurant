@@ -14,7 +14,7 @@ export default function EventSpaces() {
         "Climate controlled",
       ],
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750702050/1b-Private-Dining-Carousel_London_vjrhvl.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750702050/1b-Private-Dining-Carousel_London_vjrhvl.jpg",
     },
     {
       name: "Beachside Terrace",
@@ -28,7 +28,7 @@ export default function EventSpaces() {
         "Weather protection",
       ],
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750697881/fb86662148be855d931b37d6c1e5fcbe_txvdo1.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750697881/fb86662148be855d931b37d6c1e5fcbe_txvdo1.jpg",
     },
     {
       name: "Full Restaurant Buyout",
@@ -42,7 +42,7 @@ export default function EventSpaces() {
         "Valet parking",
       ],
       image:
-        "https://res.cloudinary.com/dhlyei79o/image/upload/v1750677860/818f767ca81a8358866ddb108f8808e7_frnmrt.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750677860/818f767ca81a8358866ddb108f8808e7_frnmrt.jpg",
     },
   ];
 

@@ -21,7 +21,7 @@ export default function Footer() {
                 <Image
                   width={120}
                   height={120}
-                  src="https://res.cloudinary.com/dhlyei79o/image/upload/v1750685108/Flux_Dev_A_minimalistic_logo_for_a_coastal_restaurant_featurin_0_yyrx6o.jpg"
+                  src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1750685108/Flux_Dev_A_minimalistic_logo_for_a_coastal_restaurant_featurin_0_yyrx6o.jpg"
                   alt="Coastal Breeze Logo"
                   className="object-cover rounded-full bg-black/60s"
                 />

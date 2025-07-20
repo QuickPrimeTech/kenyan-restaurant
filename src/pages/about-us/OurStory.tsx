@@ -33,7 +33,7 @@ export default function OurStory() {
           </div>
           <div>
             <Image
-              src="https://res.cloudinary.com/dhlyei79o/image/upload/v1749652905/biophilic_yyuc9b.jpg"
+              src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1749652905/biophilic_yyuc9b.jpg"
               alt="Original restaurant"
               width={500}
               height={400}
@@ -45,7 +45,7 @@ export default function OurStory() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">
             <Image
-              src="https://res.cloudinary.com/dhlyei79o/image/upload/v1749651788/Prawn_Biryani_Presentation_bqlpk1.jpg"
+              src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1749651788/Prawn_Biryani_Presentation_bqlpk1.jpg"
               alt="Modern restaurant"
               width={500}
               height={400}
