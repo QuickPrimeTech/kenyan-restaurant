@@ -1,10 +1,16 @@
 "use client";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { H2, Paragraph } from "@/components/ui/typography";
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [showAll, setShowAll] = useState(false);
 
   const faqs = [
@@ -50,77 +56,64 @@ export default function FAQ() {
     },
   ];
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   const displayedFaqs = showAll ? faqs : faqs.slice(0, 4);
 
   return (
-    <section className="section bg-grey-bg">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 text-4xl rounded-full  font-bold mb-4">
-            Frequently Asked Questions
-          </div>
+    <section
+      className="section bg-gray-50"
+      id="faqs"
+      aria-labelledby="faqs-header"
+    >
+      {/* Section Header */}
+      <div className="text-center mb-16">
+        <H2 className="mb-4" id="faqs-header" role="heading" aria-level={2}>
+          Frequently Asked Questions
+        </H2>
+        <Paragraph role="note" aria-label="FAQ introduction">
+          Get quick answers to help plan your perfect dining experience.
+        </Paragraph>
+      </div>
 
-          <p className="text-lg max-w-2xl mx-auto leading-relaxed">
-            Have questions about your visit? We&apos;ve compiled answers to the
-            most common inquiries to help you plan the perfect dining
-            experience.
-          </p>
-        </div>
-
-        {/* FAQ Accordion */}
-        <div className="max-full ">
-          <div className="space-y-4">
-            {displayedFaqs.map((faq, index) => (
-              <div
-                key={index}
-                className="rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-              >
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="w-full px-6 py-6 text-left flex items-center justify-between transition-colors duration-200"
-                >
-                  <h3 className="font-semibold text-lg pr-4">{faq.question}</h3>
-                  <div className="flex-shrink-0">
-                    {openIndex === index ? (
-                      <ChevronUp className="w-6 h-6" />
-                    ) : (
-                      <ChevronDown className="w-6 h-6" />
-                    )}
-                  </div>
-                </button>
-
-                <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    openIndex === index
-                      ? "max-h-96 opacity-100"
-                      : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <div className="px-6 pb-6">
-                    <p className="leading-relaxed">{faq.answer}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* See More / See Less Button */}
-          <div className="text-center mt-6">
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="inline-block px-4 py-2 rounded-full font-medium underline"
+      {/* Accordion */}
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full space-y-3"
+        aria-label="FAQ Accordion"
+      >
+        {displayedFaqs.map((faq, index) => (
+          <AccordionItem
+            key={index}
+            value={`item-${index}`}
+            className="rounded-xl bg-background shadow-sm"
+          >
+            <AccordionTrigger
+              className="px-6"
+              aria-expanded={undefined}
+              aria-controls={`faq-answer-${index}`}
             >
-              {showAll ? "See less" : "See more"}
-            </button>
-          </div>
-        </div>
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent
+              id={`faq-answer-${index}`}
+              className="px-6 pb-6 text-base leading-relaxed text-muted-foreground"
+            >
+              {faq.answer}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
 
-        {/* Contact CTA */}
+      {/* Toggle Button */}
+      <div className="text-center mt-6">
+        <Button
+          variant="outline"
+          onClick={() => setShowAll(!showAll)}
+          aria-pressed={showAll}
+          aria-label={showAll ? "Collapse FAQs" : "Expand all FAQs"}
+        >
+          {showAll ? "See less" : "See more"}
+        </Button>
       </div>
     </section>
   );
