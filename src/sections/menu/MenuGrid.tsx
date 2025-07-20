@@ -49,7 +49,7 @@ export default function MenuPage() {
       </div>
 
       {/* Category Info */}
-      <div className="section mt-6">
+      <div className="section-x mt-10">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-serif font-bold text-gray-900">
             {selectedCategory || "All Items"}
@@ -70,7 +70,7 @@ export default function MenuPage() {
       </div>
 
       {/* Filtered Menu Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 section">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 section-x">
         {filteredMenuItems.length === 0 ? (
           <div className="col-span-full text-center py-12">
             <p className="text-gray-500 text-lg">

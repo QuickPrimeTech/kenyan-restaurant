@@ -40,65 +40,70 @@ export function CartItem({ item }: CartItemProps) {
 
   return (
     <>
-      <div className="w-full flex items-center gap-4 p-4 border rounded-lg bg-white border-gray-200">
+      <div className="w-full flex flex-col gap-5 p-4 border rounded-lg bg-white border-gray-200">
         {/* Product Image */}
-        <div className="relative w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
-          <Image
-            src={item.image || "/placeholder.svg"}
-            alt={item.name}
-            fill
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        {/* Product Details */}
-        <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-gray-900 truncate">{item.name}</h4>
-          <p className="text-sm text-gray-600 truncate mt-1">
-            {item.description}
-          </p>
-          <p className="text-lg font-bold text-primary mt-2">
-            Ksh {item.price}
-          </p>
-        </div>
-
-        {/* Quantity Controls & Actions */}
-        <div className="flex flex-col items-end gap-3 flex-shrink-0">
-          {/* Quantity Controls */}
-          <div className="flex items-center gap-0 bg-gray-100 rounded-lg border">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleQuantityChange(item.quantity - 1)}
-              className="h-10 w-10 p-0 hover:bg-gray-200 rounded-l-lg rounded-r-none"
-              title="Decrease quantity"
-            >
-              <Minus className="h-4 w-4" />
-            </Button>
-
-            <div className="h-10 w-12 flex items-center justify-center bg-white border-x border-gray-200">
-              <span className="text-lg font-semibold text-gray-900">
-                {item.quantity}
-              </span>
-            </div>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleQuantityChange(item.quantity + 1)}
-              className="h-10 w-10 p-0 hover:bg-gray-200 rounded-r-lg rounded-l-none"
-              title="Increase quantity"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
+        <div className="flex items-center gap-4">
+          <div className="relative w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
+            <Image
+              src={item.image || "/placeholder.svg"}
+              alt={item.name}
+              fill
+              className="w-full h-full object-cover"
+            />
           </div>
 
-          {/* Item Total */}
-          <div className="text-right">
-            <p className="text-sm text-gray-500">Total</p>
-            <p className="text-lg font-bold text-gray-900">
-              Ksh {(Number.parseFloat(item.price) * item.quantity).toFixed(2)}
+          {/* Product Details */}
+          <div className="flex-1 min-w-0">
+            <h4 className="font-semibold text-gray-900 truncate">
+              {item.name}
+            </h4>
+            <p className="text-sm text-gray-600 truncate mt-1">
+              {item.description}
             </p>
+            <p className="text-lg font-bold text-primary mt-2">
+              Ksh {item.price}
+            </p>
+          </div>
+        </div>
+        {/* Quantity Controls & Actions */}
+        <div className="flex flex-col gap-4 flex-shrink-0">
+          {/* Quantity Controls */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="flex items-center gap-0 bg-gray-100 rounded-lg border">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleQuantityChange(item.quantity - 1)}
+                className="h-10 w-10 p-0 hover:bg-gray-200 rounded-l-lg rounded-r-none"
+                title="Decrease quantity"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+
+              <div className="h-10 w-12 flex items-center justify-center bg-white border-x border-gray-200">
+                <span className="text-lg font-semibold text-gray-900">
+                  {item.quantity}
+                </span>
+              </div>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleQuantityChange(item.quantity + 1)}
+                className="h-10 w-10 p-0 hover:bg-gray-200 rounded-r-lg rounded-l-none"
+                title="Increase quantity"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Item Total */}
+            <div className="text-right flex gap-2 items-center">
+              <p className="text-sm text-gray-500">Total: </p>
+              <p className="text-lg font-bold text-gray-900">
+                Ksh {(Number.parseFloat(item.price) * item.quantity).toFixed(2)}
+              </p>
+            </div>
           </div>
 
           {/* Delete Button */}

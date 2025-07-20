@@ -266,13 +266,11 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
 
                   {/* Cart Items - Scrollable */}
                   <div className="flex-1 min-h-0">
-                    <ScrollArea className="h-full">
-                      <div className="px-6 pb-4 space-y-4">
-                        {items.map((item) => (
-                          <CartItem key={item.id} item={item} />
-                        ))}
-                      </div>
-                    </ScrollArea>
+                    <div className="h-full overflow-y-auto custom-scroll px-6 pb-4 space-y-4">
+                      {items.map((item) => (
+                        <CartItem key={item.id} item={item} />
+                      ))}
+                    </div>
                   </div>
 
                   {/* Cart Summary - Fixed at bottom */}
