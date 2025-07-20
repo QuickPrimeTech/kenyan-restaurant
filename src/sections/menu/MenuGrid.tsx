@@ -1,113 +1,75 @@
 "use client";
+
 import { useState } from "react";
-import Image from "next/image";
-import { Star } from "lucide-react";
+import { menuItems } from "@/data/menu";
+import { SearchBar } from "@/components/search-bar";
 import { Card, CardContent } from "@/components/ui/card";
-import { Command, CommandInput, CommandEmpty } from "@/components/ui/command";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { ShoppingBag, Star } from "lucide-react";
 
-export default function MenuGridSearch() {
-  const menuItems = [
-    {
-      id: 1,
-      name: "Grilled Pacific Salmon",
-      category: "seafood",
-      price: "$32",
-      description:
-        "Wild-caught salmon with lemon herb butter, seasonal vegetables, and quinoa pilaf",
-      image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649602/Better-than-Takeout-Butter-Chicken-2_gsc0jl.jpg",
-      rating: 4.9,
-      popular: true,
-    },
-    {
-      id: 2,
-      name: "Lobster Thermidor",
-      category: "seafood",
-      price: "$48",
-      description:
-        "Fresh Maine lobster in creamy cognac sauce, gratinéed to perfection",
-      image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649054/Indian-Samosas-sq_qbbzse.jpg",
-      rating: 4.8,
-      popular: true,
-    },
-    {
-      id: 3,
-      name: "Seafood Paella",
-      category: "main",
-      price: "$38",
-      description:
-        "Traditional Spanish rice with mussels, clams, shrimp, and saffron",
-      image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649547/paneer-tikka_od5jp7.jpg",
-      rating: 4.7,
-      popular: false,
-    },
-    {
-      id: 4,
-      name: "Pan-Seared Halibut",
-      category: "seafood",
-      price: "$36",
-      description:
-        "Alaskan halibut with roasted tomato coulis and Mediterranean vegetables",
-      image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649679/slow-cooker-lamb-rogan-josh-featured-c_hqwlcl.jpg",
-      rating: 4.9,
-      popular: false,
-    },
-    {
-      id: 5,
-      name: "Coastal Cioppino",
-      category: "main",
-      price: "$34",
-      description:
-        "San Francisco-style seafood stew with dungeness crab, prawns, and fresh fish",
-      image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649844/Vegan-Dal-Makhani-Square-2_cltyup.jpg",
-      rating: 4.8,
-      popular: true,
-    },
-    {
-      id: 6,
-      name: "Oysters Rockefeller",
-      category: "starters",
-      price: "$18",
-      description:
-        "Fresh oysters baked with spinach, herbs, and parmesan cheese",
-      image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749649927/indonesian_biryani_17351_16x9_iwhvdr.jpg",
-      rating: 4.6,
-      popular: false,
-    },
-  ];
+const categories = [...new Set(menuItems.map((item) => item.category))];
 
-  const [search, setSearch] = useState("");
+export default function MenuPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-  const filteredItems = menuItems.filter((item) =>
-    `${item.name} ${item.description} ${item.category}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
+  // Filter menu items based on selected category
+  const filteredMenuItems = selectedCategory
+    ? menuItems.filter((item) => item.category === selectedCategory)
+    : menuItems;
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+  };
 
   return (
-    <section className="section bg-white">
-      <div className="container">
-        <Command className="mb-4">
-          <CommandInput
-            placeholder="Search menu items..."
-            onValueChange={setSearch}
-            className="border-2 border-black"
-          />
-          {filteredItems.length === 0 && (
-            <CommandEmpty>No menu items found.</CommandEmpty>
-          )}
-        </Command>
+    <section className="mt-10 bg-white">
+      {/* Sticky Search */}
+      <div className="w-full sticky top-16 z-20 bg-white shadow-md py-2 section-x">
+        <SearchBar
+          menuItems={menuItems}
+          categories={categories}
+          onCategorySelect={handleCategorySelect}
+          selectedCategory={selectedCategory}
+        />
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
-          {filteredItems.map((item) => (
+      {/* Category Info */}
+      <div className="section-x mt-12">
+        <div className="flex items-center justify-between">
+          {selectedCategory && (
+            <button
+              onClick={() => setSelectedCategory("")}
+              className="text-sm text-primary hover:underline"
+            >
+              ← Back to all items
+            </button>
+          )}
+          <h2 className="text-lg font-bold text-muted-foreground">
+            {selectedCategory || "All Items"}(
+            <span className="text-sm text-gray-600">
+              {filteredMenuItems.length} item
+              {filteredMenuItems.length !== 1 ? "s" : ""}
+            </span>
+            )
+          </h2>
+        </div>
+      </div>
+
+      {/* Filtered Menu Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 section-x mt-8">
+        {filteredMenuItems.length === 0 ? (
+          <div className="col-span-full text-center py-12">
+            <p className="text-gray-500 text-lg">
+              No items found in this category.
+            </p>
+          </div>
+        ) : (
+          filteredMenuItems.map((item) => (
             <Card
               key={item.id}
-              className="overflow-hidden hover:shadow-xl transition-shadow duration-300 w-full"
+              id={`menu-item-${item.id}`}
+              className="overflow-hidden hover:shadow-xl transition-shadow duration-300 w-full py-0 pb-3"
             >
               <div className="relative">
                 <Image
@@ -130,21 +92,30 @@ export default function MenuGridSearch() {
                 </div>
               </div>
               <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="font-serif text-xl font-bold text-gray-900">
+                <div className="flex justify-between gap-4 items-start mb-3">
+                  <h3 className="font-serif text-xl font-bold text-gray-900 flex-1">
                     {item.name}
                   </h3>
-                  <span className="text-2xl font-bold text-blue-600">
-                    {item.price}
+                  <span className="text-xl font-bold text-primary whitespace-nowrap">
+                    Ksh {item.price}
                   </span>
                 </div>
                 <p className="text-gray-600 leading-relaxed">
                   {item.description}
                 </p>
+                <div className="flex items-center justify-between mt-3">
+                  <span className="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">
+                    {item.category}
+                  </span>
+                </div>
+                <Button className="mt-4 w-full" variant="default" size="lg">
+                  <ShoppingBag />
+                  Add to Cart
+                </Button>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          ))
+        )}
       </div>
     </section>
   );

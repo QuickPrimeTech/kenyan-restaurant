@@ -35,15 +35,17 @@ export default function Navbar() {
     { href: "/contact", label: "Contact" },
   ];
 
+  const isHome = pathname === "/";
+  const navbarClasses = cn(
+    "fixed top-0 w-full section-x z-50 transition-all duration-300",
+    isHome
+      ? isScrolled
+        ? "bg-background/95 backdrop-blur-md shadow-sm border-b border-border text-foreground"
+        : "bg-transparent text-white border-b"
+      : "bg-background/95 backdrop-blur-md shadow-sm border-b border-border text-foreground"
+  );
   return (
-    <nav
-      className={cn(
-        "fixed top-0 w-full section-x z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-sm border-b border-border text-foreground"
-          : "bg-transparent text-white border-b"
-      )}
-    >
+    <nav className={navbarClasses}>
       <div className="flex items-center justify-between h-16">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-3">
@@ -70,12 +72,13 @@ export default function Navbar() {
               className={cn(
                 "hover:text-primary transition-colors font-medium",
                 pathname === link.href && "text-primary",
-                !isScrolled ? "text-white" : "text-muted-foreground"
+                isHome && !isScrolled ? "text-white" : "text-muted-foreground"
               )}
             >
               {link.label}
             </Link>
           ))}
+
           <Link href="/reserve" passHref>
             <Button variant="default" className="text-sm">
               Reserve Table
@@ -91,7 +94,7 @@ export default function Navbar() {
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  isScrolled ? "text-foreground" : "text-white",
+                  isHome && !isScrolled ? "text-white" : "text-foreground",
                   "focus-visible:ring-0"
                 )}
               >
