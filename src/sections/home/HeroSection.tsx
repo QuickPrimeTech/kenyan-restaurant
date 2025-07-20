@@ -27,7 +27,7 @@ export default function HeroSection() {
         </h1>
         <p className="text-lg md:text-2xl mb-8 font-light">
           Dive into the flavours of the coast — fresh catch, bold spices, and
-          oceanfront dining inspired by Kenya's rich maritime heritage.
+          oceanfront dining inspired by Kenya&apos;s rich maritime heritage.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center sm:justify-start">
           <Button asChild size="lg">
