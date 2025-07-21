@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DynamicImage } from "@/components/dynamic-image";
+import { Calendar, ShoppingBag } from "lucide-react";
 
 const images = [
   "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750622777/pexels-photo-16936004_li3fa4.jpg", // seafood dish
@@ -31,10 +32,14 @@ export default function HeroSection() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center sm:justify-start">
           <Button asChild size="lg">
-            <Link href="/menu">Explore Our Seafood Menu</Link>
+            <Link href="/menu">
+              <ShoppingBag /> Order Now
+            </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="/reservations">Book a Seaside Table</Link>
+            <Link href="/reservation">
+              <Calendar /> Book a Table
+            </Link>
           </Button>
         </div>
       </div>

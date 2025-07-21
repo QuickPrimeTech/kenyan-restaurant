@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/contexts/cart-context";
 import { CartButton } from "@/components/cart/cart-button";
 import { OrderProvider } from "@/contexts/order-context";
+import { site } from "@/config/site-config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +21,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Coastal-Cuisine",
-  description:
-    "A coastal restaurant offering a unique dining experience with ocean views and fresh seafood.",
+  title: site.restaurantName,
+  description: site.restaurantDescription,
 };
 
 export default function RootLayout({
