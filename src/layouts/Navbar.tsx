@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { Menu, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -78,11 +78,14 @@ export default function Navbar() {
             </Link>
           ))}
 
-          <Link href="/reserve" passHref>
-            <Button variant="default" className="text-sm">
-              Reserve Table
-            </Button>
-          </Link>
+          <Button className="text-sm" variant="outline" asChild>
+            <Link href="/reservations">Reserve Table</Link>
+          </Button>
+          <Button variant="default" className="text-sm" asChild>
+            <Link href="/menu">
+              <ShoppingBag /> Order Now
+            </Link>
+          </Button>
         </div>
 
         {/* Mobile Menu Sheet */}
@@ -102,14 +105,14 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-3/4 md:w-1/2 lg:1/4 flex flex-col gap-4 pt-10 section-x section-y"
+              className="w-3/4 md:w-1/2 lg:1/4 flex flex-col gap-2 pt-10 section-x section-y rounded-l-2xl"
             >
               {navLinks.map((link) => (
                 <SheetClose asChild key={link.href}>
                   <Link
                     href={link.href}
                     className={cn(
-                      "text-sm font-medium hover:text-primary transition-colors",
+                      "text-sm py-2 px-3 rounded-sm hover:bg-accent font-medium hover:text-primary transition-colors",
                       pathname === link.href && "text-primary"
                     )}
                   >
@@ -118,9 +121,16 @@ export default function Navbar() {
                 </SheetClose>
               ))}
               <SheetClose asChild>
-                <Link href="/reserve">
-                  <Button className="w-full mt-4">Reserve Table</Button>
-                </Link>
+                <Button className="text-sm" variant="outline" asChild>
+                  <Link href="/reservations">Reserve Table</Link>
+                </Button>
+              </SheetClose>
+              <SheetClose asChild>
+                <Button variant="default" className="text-sm" asChild>
+                  <Link href="/menu">
+                    <ShoppingBag /> Order Now
+                  </Link>
+                </Button>
               </SheetClose>
             </SheetContent>
           </Sheet>

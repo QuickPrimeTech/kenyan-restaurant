@@ -2,11 +2,11 @@
 
 "use client";
 import { JSX, useState } from "react";
-import { DateTimeStep } from "./steps/date-time-step";
-import { PartyDetailsStep } from "./steps/party-details-step";
-import { TableSelectionStep } from "./steps/table-selection-step";
-import { ContactInfoStep } from "./steps/contact-info-steps";
-import { ConfirmationStep } from "./steps/confirmation-step";
+import { DateTimeStep } from "../../components/reservations/steps/date-time-step";
+import { PartyDetailsStep } from "../../components/reservations/steps/party-details-step";
+import { TableSelectionStep } from "../../components/reservations/steps/table-selection-step";
+import { ContactInfoStep } from "../../components/reservations/steps/contact-info-steps";
+import { ConfirmationStep } from "../../components/reservations/steps/confirmation-step";
 import type { ReservationData } from "@/types/reservations";
 import { RESERVATION_STEPS } from "@/constants/reservation";
 import {
@@ -14,7 +14,7 @@ import {
   showStepValidationError,
 } from "@/utils/reservation-validation";
 import { MultiStepFormWrapper } from "@/components/ui/multi-step-form-wrapper";
-import { SuccessStep } from "./steps/success-step";
+import { SuccessStep } from "../../components/reservations/steps/success-step";
 
 /**
  * ReservationForm Component

@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { H1, Paragraph } from "@/components/ui/typography";
 
 export default function ReservationHeader() {
@@ -5,9 +6,9 @@ export default function ReservationHeader() {
     <section className="section mt-10 bg-header-foreground/20">
       <div className="container mx-auto px-4">
         <div className="text-center">
-          <div className="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+          <Badge className="px-4 py-2 rounded-full text-sm font-medium mb-4">
             Reservations
-          </div>
+          </Badge>
           <H1 className="mb-6">Reserve Your Table</H1>
           <Paragraph>
             Secure your spot for an unforgettable coastal dining experience. We

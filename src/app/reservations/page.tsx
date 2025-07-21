@@ -1,4 +1,4 @@
-import { ReservationForm } from "@/components/reservations/reservation-form";
+import { ReservationForm } from "@/sections/reservations/reservation-form";
 import ReservationHeader from "@/sections/reservations/ReservationHeader";
 
 export default function ReservePage() {
