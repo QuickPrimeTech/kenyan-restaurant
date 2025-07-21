@@ -3,16 +3,7 @@
  * This file contains all static data and configuration used in the reservation system
  */
 
-import {
-  Trees,
-  Home,
-  Crown,
-  Heart,
-  Gift,
-  Briefcase,
-  Star,
-  Users,
-} from "lucide-react";
+import { Trees, Home, Heart, Gift, Briefcase, Star, Users } from "lucide-react";
 import type {
   DiningArea,
   TablesMap,
@@ -65,6 +56,11 @@ export const RESERVATION_STEPS: ReservationStep[] = [
     title: "Confirm",
     description: "Review your reservation",
   },
+  {
+    id: "Success",
+    title: "Success",
+    description: "Successfuly reserved you a table",
+  },
 ];
 
 /**
@@ -72,17 +68,18 @@ export const RESERVATION_STEPS: ReservationStep[] = [
  * Each area has associated images and descriptions
  */
 
-export const DINING_AREAS: DiningArea[] = [
+export const diningAreas: DiningArea[] = [
   {
     id: "indoor",
     name: "Indoor Dining",
     icon: Home,
     description: "Climate-controlled comfort with elegant ambiance",
-    image: "/placeholder.svg?height=360&width=640&text=Indoor+Dining",
+    image:
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753105596/imgi_200_Bungalo34_delrjt.jpg",
     images: [
-      "/placeholder.svg?height=360&width=640&text=Indoor+Dining+1",
-      "/placeholder.svg?height=360&width=640&text=Indoor+Dining+2",
-      "/placeholder.svg?height=360&width=640&text=Indoor+Dining+3",
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753105644/imgi_156_Tide-Room-Daytime-scaled.jpg_czfg9d.webp",
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753105684/imgi_136_BRGR-Restaurant_TIBR-Tables-scaled_uc8sfa.jpg",
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753105735/imgi_194_IMG_3664_nrsasv.jpg",
     ],
   },
   {
@@ -90,23 +87,12 @@ export const DINING_AREAS: DiningArea[] = [
     name: "Outdoor Terrace",
     icon: Trees,
     description: "Al fresco dining with garden views",
-    image: "/placeholder.svg?height=360&width=640&text=Outdoor+Terrace",
+    image:
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753107080/imgi_173_sjuiv-restaurant-0113-hor-wide_o557zc.jpg",
     images: [
-      "/placeholder.svg?height=360&width=640&text=Outdoor+Terrace+1",
-      "/placeholder.svg?height=360&width=640&text=Outdoor+Terrace+2",
-      "/placeholder.svg?height=360&width=640&text=Outdoor+Terrace+3",
-    ],
-  },
-  {
-    id: "private",
-    name: "Private Dining",
-    icon: Crown,
-    description: "Exclusive rooms for intimate gatherings",
-    image: "/placeholder.svg?height=360&width=640&text=Private+Dining",
-    images: [
-      "/placeholder.svg?height=360&width=640&text=Private+Dining+1",
-      "/placeholder.svg?height=360&width=640&text=Private+Dining+2",
-      "/placeholder.svg?height=360&width=640&text=Private+Dining+3",
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753107122/imgi_149_93b250b9_qpood7.jpg",
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753107141/imgi_199_KHaydenAmritCocktailTerraceDusk-scaled_v4z4py.jpg",
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753107167/imgi_196_Home-Restaurants-Half-Width-1680x0-c-default_kdozfp.jpg",
     ],
   },
 ];
@@ -115,14 +101,15 @@ export const DINING_AREAS: DiningArea[] = [
  * Available tables organized by dining area
  * Each table has capacity, features, and availability status
  */
-export const TABLES: TablesMap = {
+export const tables: TablesMap = {
   indoor: [
     {
       id: "indoor-1",
       name: "Window Table 1",
       capacity: 2,
       features: ["Window view", "Romantic lighting"],
-      image: "/placeholder.svg?height=270&width=480&text=Window+Table+1",
+      image:
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753105644/imgi_156_Tide-Room-Daytime-scaled.jpg_czfg9d.webp",
       available: true,
     },
     {
@@ -130,7 +117,8 @@ export const TABLES: TablesMap = {
       name: "Central Table 5",
       capacity: 4,
       features: ["Central location", "Great for groups"],
-      image: "/placeholder.svg?height=270&width=480&text=Central+Table+5",
+      image:
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753105684/imgi_136_BRGR-Restaurant_TIBR-Tables-scaled_uc8sfa.jpg",
       available: true,
     },
     {
@@ -138,15 +126,8 @@ export const TABLES: TablesMap = {
       name: "Corner Booth 3",
       capacity: 6,
       features: ["Privacy", "Comfortable seating"],
-      image: "/placeholder.svg?height=270&width=480&text=Corner+Booth+3",
-      available: false,
-    },
-    {
-      id: "indoor-4",
-      name: "Bar Counter",
-      capacity: 2,
-      features: ["Chef's view", "Interactive dining"],
-      image: "/placeholder.svg?height=270&width=480&text=Bar+Counter",
+      image:
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753105735/imgi_194_IMG_3664_nrsasv.jpg",
       available: true,
     },
   ],
@@ -156,7 +137,8 @@ export const TABLES: TablesMap = {
       name: "Garden View 1",
       capacity: 2,
       features: ["Garden view", "Fresh air"],
-      image: "/placeholder.svg?height=270&width=480&text=Garden+View+1",
+      image:
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753107080/imgi_173_sjuiv-restaurant-0113-hor-wide_o557zc.jpg",
       available: true,
     },
     {
@@ -164,7 +146,8 @@ export const TABLES: TablesMap = {
       name: "Terrace Table 4",
       capacity: 4,
       features: ["City view", "Sunset dining"],
-      image: "/placeholder.svg?height=270&width=480&text=Terrace+Table+4",
+      image:
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753107122/imgi_149_93b250b9_qpood7.jpg",
       available: true,
     },
     {
@@ -172,25 +155,8 @@ export const TABLES: TablesMap = {
       name: "Pergola Seating",
       capacity: 8,
       features: ["Covered area", "Group dining"],
-      image: "/placeholder.svg?height=270&width=480&text=Pergola+Seating",
-      available: true,
-    },
-  ],
-  private: [
-    {
-      id: "private-1",
-      name: "Executive Room",
-      capacity: 8,
-      features: ["Private room", "Business amenities"],
-      image: "/placeholder.svg?height=270&width=480&text=Executive+Room",
-      available: true,
-    },
-    {
-      id: "private-2",
-      name: "Celebration Suite",
-      capacity: 12,
-      features: ["Private room", "Party setup"],
-      image: "/placeholder.svg?height=270&width=480&text=Celebration+Suite",
+      image:
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753107141/imgi_199_KHaydenAmritCocktailTerraceDusk-scaled_v4z4py.jpg",
       available: true,
     },
   ],

@@ -1,7 +1,5 @@
 "use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Calendar,
   Clock,
@@ -19,7 +17,6 @@ import type { ReservationData } from "@/types/reservations";
 
 interface ConfirmationStepProps {
   data: ReservationData;
-  onConfirm: () => void;
 }
 
 const occasionLabels = {
@@ -30,7 +27,7 @@ const occasionLabels = {
   special: "Special Occasion",
 };
 
-export function ConfirmationStep({ data, onConfirm }: ConfirmationStepProps) {
+export function ConfirmationStep({ data }: ConfirmationStepProps) {
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -233,18 +230,6 @@ export function ConfirmationStep({ data, onConfirm }: ConfirmationStepProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* Confirmation Button */}
-      <div className="flex justify-center pt-6">
-        <Button
-          onClick={onConfirm}
-          size="lg"
-          className="w-full sm:w-auto sm:min-w-[200px] text-lg py-3 px-8"
-        >
-          <CheckCircle className="h-5 w-5 mr-2" />
-          Confirm Reservation
-        </Button>
-      </div>
     </div>
   );
 }

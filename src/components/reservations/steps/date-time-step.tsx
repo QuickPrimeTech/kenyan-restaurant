@@ -23,7 +23,6 @@ import { RESTAURANT_CONFIG } from "@/constants/reservation";
 import { validateReservationDate } from "@/utils/reservation-validation";
 import {
   filterAvailableTimeSlots,
-  getAvailableSlotCount,
   getEarliestBookingTime,
 } from "@/utils/time-slot-generator";
 import { BookingRulesCard } from "@/components/reservations/booking-rules-card";
@@ -85,7 +84,6 @@ export function DateTimeStep({
     // Set the selected date
     setSelectedDate(date);
     onUpdate({ date, time: "" }); // Clear time when date changes
-
   };
 
   /**

@@ -1,9 +1,7 @@
 // components/reservations/steps/reservation-form.tsx
 
 "use client";
-
 import { JSX, useState } from "react";
-import { toast } from "sonner";
 import { DateTimeStep } from "./steps/date-time-step";
 import { PartyDetailsStep } from "./steps/party-details-step";
 import { TableSelectionStep } from "./steps/table-selection-step";
@@ -16,6 +14,7 @@ import {
   showStepValidationError,
 } from "@/utils/reservation-validation";
 import { MultiStepFormWrapper } from "@/components/ui/multi-step-form-wrapper";
+import { SuccessStep } from "./steps/success-step";
 
 /**
  * ReservationForm Component
@@ -127,36 +126,6 @@ export function ReservationForm(): JSX.Element {
   };
 
   /**
-   * Handles final reservation confirmation
-   * This would typically submit the reservation to a backend service
-   */
-  const handleConfirmReservation = (): void => {
-    try {
-      // Here you would typically:
-      // 1. Submit reservation data to your backend API
-      // 2. Handle payment processing if required
-      // 3. Send confirmation emails/SMS
-      // 4. Update availability in your booking system
-
-      // For now, we'll just show a success message
-      toast.success(
-        "Reservation confirmed successfully! You will receive a confirmation email shortly."
-      );
-
-      // Log the reservation data for debugging (remove in production)
-      console.log("Reservation Data:", reservationData);
-
-      // You could redirect to a success page or reset the form here
-      // router.push('/reservation-success')
-    } catch (error) {
-      console.error("Reservation confirmation error:", error);
-      toast.error(
-        "Failed to confirm reservation. Please try again or contact us directly."
-      );
-    }
-  };
-
-  /**
    * Determines if the current step is valid for navigation
    * Used to enable/disable the Next button
    *
@@ -192,10 +161,13 @@ export function ReservationForm(): JSX.Element {
         return <ContactInfoStep {...stepProps} />;
 
       case 4:
+        return <ConfirmationStep data={reservationData} />;
+      case 5:
         return (
-          <ConfirmationStep
-            data={reservationData}
-            onConfirm={handleConfirmReservation}
+          <SuccessStep
+            name={`${reservationData.firstName} ${reservationData.lastName}`}
+            date={reservationData.date}
+            time={reservationData.time}
           />
         );
 
@@ -214,7 +186,11 @@ export function ReservationForm(): JSX.Element {
         onNext={handleNext}
         onPrevious={handlePrevious}
         nextDisabled={!isCurrentStepValid()}
-        nextLabel="Continue"
+        nextLabel={
+          currentStep === RESERVATION_STEPS.length - 2
+            ? "Confirm Reservation"
+            : "Continue"
+        }
         showNavigation={currentStep < RESERVATION_STEPS.length - 1} // Hide navigation on confirmation step
       >
         {renderCurrentStep()}

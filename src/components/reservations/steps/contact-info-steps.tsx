@@ -43,7 +43,7 @@ export function ContactInfoStep({ data, onUpdate }: ContactInfoStepProps) {
             <CardDescription>Your name for the reservation</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 sm:space-y-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="firstName">First Name *</Label>
               <Input
                 id="firstName"
@@ -52,7 +52,7 @@ export function ContactInfoStep({ data, onUpdate }: ContactInfoStepProps) {
                 placeholder="Enter your first name"
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="lastName">Last Name *</Label>
               <Input
                 id="lastName"
@@ -74,7 +74,7 @@ export function ContactInfoStep({ data, onUpdate }: ContactInfoStepProps) {
             <CardDescription>How we can reach you</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 sm:space-y-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="email">Email Address *</Label>
               <Input
                 id="email"
@@ -84,7 +84,7 @@ export function ContactInfoStep({ data, onUpdate }: ContactInfoStepProps) {
                 placeholder="your.email@example.com"
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="phone">Phone Number *</Label>
               <Input
                 id="phone"

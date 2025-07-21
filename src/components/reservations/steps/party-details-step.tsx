@@ -74,13 +74,7 @@ export function PartyDetailsStep({
    * @param occasionValue - The selected occasion type
    */
   const handleOccasionSelect = (occasionValue: OccasionType): void => {
-    const previousOccasion = data.occasion;
     onUpdate({ occasion: occasionValue });
-
-    // Find the occasion label for feedback
-    const selectedOccasion = OCCASIONS.find(
-      (occ) => occ.value === occasionValue
-    );
   };
 
   /**

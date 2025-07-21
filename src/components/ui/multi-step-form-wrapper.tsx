@@ -5,7 +5,8 @@
 import type * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Progress } from "./progress";
 
 interface Step {
   id: string;
@@ -47,26 +48,20 @@ export function MultiStepFormWrapper({
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className={cn("w-full max-w-4xl mx-auto", className)}>
+    <div className={cn("w-full max-w-4xl mx-auto mb-24", className)}>
       {showProgress && (
         <div className="mb-8">
-          {/* Progress Bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
-            <div
-              className="bg-primary h-2 rounded-full transition-all duration-300 ease-in-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+          {/* Progress bar using ShadCN UI */}
+          <Progress value={progress} className="h-2 mb-6" />
 
-          {/* Step Indicators - More mobile friendly */}
-          <div className="flex flex-wrap justify-between items-start">
+          {/* Step indicators (closer together, no wrapping) */}
+          <div className="flex justify-between items-start gap-2 overflow-x-auto no-scrollbar">
             {steps.map((step, index) => (
               <div
                 key={step.id}
                 className={cn(
-                  "flex flex-col items-center cursor-pointer transition-all duration-200 mb-4",
-                  index <= currentStep ? "text-primary" : "text-gray-400",
-                  "w-[calc(20%-4px)] sm:w-auto" // Fixed width on mobile, auto on larger screens
+                  "flex flex-col items-center cursor-pointer transition-all duration-200 min-w-16 sm:min-w-[72px]",
+                  index <= currentStep ? "text-primary" : "text-gray-400"
                 )}
                 onClick={() => onStepChange(index)}
               >
@@ -80,15 +75,18 @@ export function MultiStepFormWrapper({
                       : "border-gray-300 text-gray-400 bg-background"
                   )}
                 >
-                  {index < currentStep ? "✓" : index + 1}
+                  {index < currentStep ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    index + 1
+                  )}
                 </div>
-                <div className="mt-2 text-center">
-                  {/* Hide step names on mobile, show on desktop */}
-                  <p className="text-sm font-medium hidden sm:block">
-                    {step.title}
-                  </p>
+
+                {/* Only show titles/descriptions on desktop */}
+                <div className="mt-2 text-center hidden sm:block">
+                  <p className="text-sm font-medium">{step.title}</p>
                   {step.description && (
-                    <p className="text-xs text-muted-foreground mt-1 hidden sm:block">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {step.description}
                     </p>
                   )}

@@ -26,158 +26,29 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-  Trees,
-  Home,
-  Crown,
-  Users,
-  MapPin,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  X,
-} from "lucide-react";
-import type { ReservationData } from "@/types/reservations";
+import { Users, MapPin, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import type { DiningAreaType, ReservationData } from "@/types/reservations";
+import { diningAreas, tables } from "@/constants/reservation";
 
 interface TableSelectionStepProps {
   data: ReservationData;
   onUpdate: (data: Partial<ReservationData>) => void;
 }
 
-const diningAreas = [
-  {
-    id: "indoor",
-    name: "Indoor Dining",
-    icon: Home,
-    description: "Climate-controlled comfort with elegant ambiance",
-    image: "/placeholder.svg?height=360&width=640&text=Indoor+Dining",
-    images: [
-      "/placeholder.svg?height=360&width=640&text=Indoor+Dining+1",
-      "/placeholder.svg?height=360&width=640&text=Indoor+Dining+2",
-      "/placeholder.svg?height=360&width=640&text=Indoor+Dining+3",
-    ],
-  },
-  {
-    id: "outdoor",
-    name: "Outdoor Terrace",
-    icon: Trees,
-    description: "Al fresco dining with garden views",
-    image: "/placeholder.svg?height=360&width=640&text=Outdoor+Terrace",
-    images: [
-      "/placeholder.svg?height=360&width=640&text=Outdoor+Terrace+1",
-      "/placeholder.svg?height=360&width=640&text=Outdoor+Terrace+2",
-      "/placeholder.svg?height=360&width=640&text=Outdoor+Terrace+3",
-    ],
-  },
-  {
-    id: "private",
-    name: "Private Dining",
-    icon: Crown,
-    description: "Exclusive rooms for intimate gatherings",
-    image: "/placeholder.svg?height=360&width=640&text=Private+Dining",
-    images: [
-      "/placeholder.svg?height=360&width=640&text=Private+Dining+1",
-      "/placeholder.svg?height=360&width=640&text=Private+Dining+2",
-      "/placeholder.svg?height=360&width=640&text=Private+Dining+3",
-    ],
-  },
-];
-
-const tables = {
-  indoor: [
-    {
-      id: "indoor-1",
-      name: "Window Table 1",
-      capacity: 2,
-      features: ["Window view", "Romantic lighting"],
-      image: "/placeholder.svg?height=270&width=480&text=Window+Table+1",
-      available: true,
-    },
-    {
-      id: "indoor-2",
-      name: "Central Table 5",
-      capacity: 4,
-      features: ["Central location", "Great for groups"],
-      image: "/placeholder.svg?height=270&width=480&text=Central+Table+5",
-      available: true,
-    },
-    {
-      id: "indoor-3",
-      name: "Corner Booth 3",
-      capacity: 6,
-      features: ["Privacy", "Comfortable seating"],
-      image: "/placeholder.svg?height=270&width=480&text=Corner+Booth+3",
-      available: false,
-    },
-    {
-      id: "indoor-4",
-      name: "Bar Counter",
-      capacity: 2,
-      features: ["Chef's view", "Interactive dining"],
-      image: "/placeholder.svg?height=270&width=480&text=Bar+Counter",
-      available: true,
-    },
-  ],
-  outdoor: [
-    {
-      id: "outdoor-1",
-      name: "Garden View 1",
-      capacity: 2,
-      features: ["Garden view", "Fresh air"],
-      image: "/placeholder.svg?height=270&width=480&text=Garden+View+1",
-      available: true,
-    },
-    {
-      id: "outdoor-2",
-      name: "Terrace Table 4",
-      capacity: 4,
-      features: ["City view", "Sunset dining"],
-      image: "/placeholder.svg?height=270&width=480&text=Terrace+Table+4",
-      available: true,
-    },
-    {
-      id: "outdoor-3",
-      name: "Pergola Seating",
-      capacity: 8,
-      features: ["Covered area", "Group dining"],
-      image: "/placeholder.svg?height=270&width=480&text=Pergola+Seating",
-      available: true,
-    },
-  ],
-  private: [
-    {
-      id: "private-1",
-      name: "Executive Room",
-      capacity: 8,
-      features: ["Private room", "Business amenities"],
-      image: "/placeholder.svg?height=270&width=480&text=Executive+Room",
-      available: true,
-    },
-    {
-      id: "private-2",
-      name: "Celebration Suite",
-      capacity: 12,
-      features: ["Private room", "Party setup"],
-      image: "/placeholder.svg?height=270&width=480&text=Celebration+Suite",
-      available: true,
-    },
-  ],
-};
-
 export function TableSelectionStep({
   data,
   onUpdate,
 }: TableSelectionStepProps) {
-  const [selectedArea, setSelectedArea] = useState<
-    "indoor" | "outdoor" | "private"
-  >(data.diningArea);
+  const [selectedArea, setSelectedArea] = useState<DiningAreaType>(
+    data.diningArea
+  );
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedAreaForImages, setSelectedAreaForImages] = useState<
     (typeof diningAreas)[0] | null
   >(null);
 
-  const handleAreaSelect = (area: "indoor" | "outdoor" | "private") => {
+  const handleAreaSelect = (area: DiningAreaType) => {
     setSelectedArea(area);
     onUpdate({ diningArea: area, tableId: "", tableName: "" });
   };
@@ -238,13 +109,12 @@ export function TableSelectionStep({
             return (
               <Card
                 key={area.id}
-                className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
-                  selectedArea === area.id
-                    ? "ring-2 ring-primary border-primary"
-                    : ""
+                className={`cursor-pointer px-0 transition-all duration-200 hover:shadow-lg ${
+                  selectedArea === area.id &&
+                  "ring-2 ring-primary border-primary"
                 }`}
               >
-                <CardHeader className="pb-2 sm:pb-3">
+                <CardHeader className="px-0">
                   <div className="relative aspect-video overflow-hidden rounded-md">
                     <Image
                       src={area.image || "/placeholder.svg"}
@@ -263,7 +133,7 @@ export function TableSelectionStep({
                     )}
                   </div>
                 </CardHeader>
-                <CardContent className="p-3 sm:p-4">
+                <CardContent className="px-4">
                   <CardTitle className="flex items-center gap-2 text-sm sm:text-base mb-2">
                     <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                     {area.name}
@@ -275,9 +145,7 @@ export function TableSelectionStep({
                     size="sm"
                     variant={selectedArea === area.id ? "default" : "outline"}
                     onClick={() =>
-                      handleAreaSelect(
-                        area.id as "indoor" | "outdoor" | "private"
-                      )
+                      handleAreaSelect(area.id as "indoor" | "outdoor")
                     }
                     className="w-full"
                   >
@@ -334,9 +202,7 @@ export function TableSelectionStep({
                             selectedArea === area.id ? "default" : "outline"
                           }
                           onClick={() =>
-                            handleAreaSelect(
-                              area.id as "indoor" | "outdoor" | "private"
-                            )
+                            handleAreaSelect(area.id as DiningAreaType)
                           }
                           className="w-full"
                         >
@@ -462,22 +328,15 @@ export function TableSelectionStep({
 
       {/* Image Gallery Dialog */}
       <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
-        <DialogContent className="max-w-4xl w-full h-[80vh] p-0">
+        <DialogContent className="max-w-4xl w-full p-0">
           <DialogHeader className="p-4 pb-0">
             <DialogTitle className="flex items-center justify-between">
               <span>{selectedAreaForImages?.name}</span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setShowImageDialog(false)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
             </DialogTitle>
           </DialogHeader>
 
           {selectedAreaForImages && (
-            <div className="relative flex-1 flex items-center justify-center p-4">
+            <div className="relative flex-1 flex items-center justify-center py-6">
               <div className="relative aspect-video w-full max-w-3xl">
                 <Image
                   src={

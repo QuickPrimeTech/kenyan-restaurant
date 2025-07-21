@@ -7,7 +7,7 @@ import type React from "react";
 /**
  * Represents the dining area options available in the restaurant
  */
-export type DiningAreaType = "indoor" | "outdoor" | "private";
+export type DiningAreaType = "indoor" | "outdoor";
 
 /**
  * Represents the occasion types for special events
