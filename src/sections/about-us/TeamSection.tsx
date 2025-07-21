@@ -43,7 +43,7 @@ export default function TeamSection() {
 
   return (
     <section className="section bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="text-center mb-16">
           <H2 className="mb-2">Meet Our Team</H2>
           <Paragraph>

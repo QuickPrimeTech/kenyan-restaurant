@@ -32,7 +32,7 @@ export default function ValuesSection() {
 
   return (
     <section className="section bg-white">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="text-center mb-16">
           <H2 className="mb-2">Our Values</H2>
           <Paragraph>
