@@ -9,6 +9,7 @@ import { CartProvider } from "@/contexts/cart-context";
 import { CartButton } from "@/components/cart/cart-button";
 import { OrderProvider } from "@/contexts/order-context";
 import { site } from "@/config/site-config";
+import { ContactButton } from "@/components/contact-button";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +46,7 @@ export default function RootLayout({
             <CartProvider>
               <Navbar />
               {children}
+              <ContactButton />
               <Toaster richColors position="top-center" />
               <CartButton />
             </CartProvider>
