@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function OurStory() {
   return (
     <section className="section bg-white" aria-labelledby="our-story-title">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2
             id="our-story-title"

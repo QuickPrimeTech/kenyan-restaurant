@@ -1,13 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import {
-  MapPin,
-  Phone,
-  Clock,
-  Instagram,
-  Facebook,
-  Twitter,
-} from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
+
+import { site } from "@/config/site-config";
 
 export default function Footer() {
   return (
@@ -21,33 +18,29 @@ export default function Footer() {
                 <Image
                   fill
                   src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1750685108/Flux_Dev_A_minimalistic_logo_for_a_coastal_restaurant_featurin_0_yyrx6o.jpg"
-                  alt="Coastal Breeze Logo"
-                  className="object-cover rounded-full bg-black/60s"
+                  alt={`${site.restaurantName} Logo`}
+                  className="object-cover rounded-full"
                 />
               </div>
               <span className="font-serif text-xl font-bold">
-                Ziwa Restaurant
+                {site.restaurantName}
               </span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
-              Experience the finest coastal dining with fresh seafood, ocean
-              views, and unforgettable flavors. Where every meal is a
-              celebration of the sea.
+              {site.restaurantDescription}
             </p>
             <div className="flex space-x-4">
-              <div className="bg-gray-800 hover:bg-gray-700 p-2 rounded-full transition-colors cursor-pointer">
-                <Link href={"https://www.instagram.com/quickprimetech/"}>
-                  <Instagram className="w-5 h-5 text-gray-300 hover:text-white" />
+              {site.socials.map(({ icon: Icon, href }, i) => (
+                <Link
+                  key={i}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gray-800 hover:bg-gray-700 p-2 rounded-full transition-colors"
+                >
+                  <Icon className="w-5 h-5 text-gray-300 hover:text-white" />
                 </Link>
-              </div>
-              <div className="bg-gray-800 hover:bg-gray-700 p-2 rounded-full transition-colors cursor-pointer">
-                <Link href={"https://www.instagram.com/quickprimetech/"}>
-                  <Facebook className="w-5 h-5 text-gray-300 hover:text-white" />
-                </Link>
-              </div>
-              <div className="bg-gray-800 hover:bg-gray-700 p-2 rounded-full transition-colors cursor-pointer">
-                <Twitter className="w-5 h-5 text-gray-300 hover:text-white" />
-              </div>
+              ))}
             </div>
           </div>
 
@@ -57,54 +50,16 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/menu"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Menu
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/private-events"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Private Events
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/gallery"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/reserve"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Reserve Table
-                </Link>
-              </li>
+              {site.footerLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -117,21 +72,21 @@ export default function Footer() {
               <div className="flex items-start space-x-2">
                 <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                 <span className="text-gray-300 text-sm">
-                  123 Ocean Drive
-                  <br />
-                  Seaside Bay, CA 90210
+                  {site.contact.address}
                 </span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="w-5 h-5 text-gray-400" />
-                <span className="text-gray-300 text-sm">(555) 123-4567</span>
+                <span className="text-gray-300 text-sm">
+                  {site.contact.phone}
+                </span>
               </div>
               <div className="flex items-start space-x-2">
                 <Clock className="w-5 h-5 text-gray-400 mt-0.5" />
                 <div className="text-gray-300 text-sm">
-                  <div>Mon-Thu: 11am-10pm</div>
-                  <div>Fri-Sat: 11am-11pm</div>
-                  <div>Sun: 10am-9pm</div>
+                  <div>Weekdays: {site.hours.weekdays}</div>
+                  <div>Weekends: {site.hours.weekends}</div>
+                  <div>Closed: {site.hours.closedOn}</div>
                 </div>
               </div>
             </div>
@@ -140,7 +95,7 @@ export default function Footer() {
 
         <div className="border-t flex flex-col lg:flex-row gap-3 items-center justify-between border-gray-800 mt-8 pt-8">
           <p className="text-gray-400 text-sm text-center">
-            © {new Date().getFullYear()} Ziwa Seafood Restaurant. All rights
+            © {new Date().getFullYear()} {site.restaurantName}. All rights
             reserved.
           </p>
           <p className="text-gray-400 text-sm">

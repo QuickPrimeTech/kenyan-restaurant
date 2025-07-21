@@ -1,8 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
 const images = [
   {
@@ -61,154 +70,108 @@ const images = [
   },
 ];
 
-type GalleryFiltersProps = {
-  activeFilter: string;
-  setActiveFilter: (filter: string) => void;
-};
+const filters = [
+  { id: "all", label: "All" },
+  { id: "food", label: "Food" },
+  { id: "interior", label: "Interior" },
+  { id: "events", label: "Events" },
+  { id: "views", label: "Ocean Views" },
+];
 
-function GalleryFilters({
-  activeFilter,
-  setActiveFilter,
-}: GalleryFiltersProps) {
-  const filters = [
-    { id: "all", name: "All Photos" },
-    { id: "food", name: "Food" },
-    { id: "interior", name: "Interior" },
-    { id: "events", name: "Events" },
-    { id: "views", name: "Ocean Views" },
-  ];
+export default function GalleryPage() {
+  const [filter, setFilter] = useState("all");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  return (
-    <section className="py-8 border-b">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-center gap-4">
-          {filters.map((filter) => (
-            <button
-              key={filter.id}
-              onClick={() => setActiveFilter(filter.id)}
-              className={`px-6 py-3  font-medium transition-all duration-300 ${
-                activeFilter === filter.id
-                  ? "bg-blue-400 text-white shadow-lg"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              {filter.name}
-            </button>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-type GalleryGridProps = {
-  filteredImages: {
-    id: number;
-    category: string;
-    src: string;
-    title: string;
-  }[];
-};
-
-function GalleryGrid({ filteredImages }: GalleryGridProps) {
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [currentImage, setCurrentImage] = useState(0);
-
-  const openLightbox = (index: number) => {
-    setCurrentImage(index);
-    setLightboxOpen(true);
-  };
-
-  const closeLightbox = () => setLightboxOpen(false);
-  const nextImage = () =>
-    setCurrentImage((prev) => (prev + 1) % filteredImages.length);
-  const prevImage = () =>
-    setCurrentImage(
-      (prev) => (prev - 1 + filteredImages.length) % filteredImages.length
-    );
+  const filteredImages =
+    filter === "all" ? images : images.filter((img) => img.category === filter);
 
   return (
     <>
-      <section className="section">
-        <div className="container mx-auto ">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredImages.map((image, index) => (
-              <div
-                key={image.id}
-                className="group relative overflow-hidden rounded-xl aspect-[4/3] cursor-pointer"
-                onClick={() => openLightbox(index)}
-              >
-                <Image
-                  src={image.src}
-                  alt={image.title}
-                  width={600}
-                  height={400}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <h3 className="text-white font-semibold text-lg">
-                    {image.title}
-                  </h3>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Filter Bar */}
+      <section className="py-6 border-b sticky top-16 z-10 bg-background">
+        <div className="container">
+          <ScrollArea className="w-full whitespace-nowrap">
+            <div className="flex gap-3 px-4">
+              {filters.map((f) => (
+                <Button
+                  key={f.id}
+                  variant={filter === f.id ? "default" : "outline"}
+                  onClick={() => setFilter(f.id)}
+                >
+                  {f.label}
+                </Button>
+              ))}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </div>
       </section>
 
-      {lightboxOpen && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-          <button
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
-          >
-            <X size={32} />
-          </button>
-          <button
-            onClick={prevImage}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 z-10"
-          >
-            <ChevronLeft size={48} />
-          </button>
-          <button
-            onClick={nextImage}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 z-10"
-          >
-            <ChevronRight size={48} />
-          </button>
-          <div className="max-w-4xl max-h-[80vh] mx-4">
-            <Image
-              src={filteredImages[currentImage].src}
-              alt={filteredImages[currentImage].title}
-              width={800}
-              height={600}
-              className="max-w-full max-h-full object-contain"
-            />
-            <p className="text-white text-center mt-4 text-lg">
-              {filteredImages[currentImage].title}
-            </p>
-          </div>
+      {/* Image Grid */}
+      <section className="section">
+        <div className="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {filteredImages.map((img, i) => (
+            <Dialog
+              key={img.id}
+              onOpenChange={(open) => !open && setLightboxIndex(null)}
+            >
+              <DialogTrigger asChild>
+                <div
+                  onClick={() => setLightboxIndex(i)}
+                  className="relative group aspect-[4/3] overflow-hidden rounded-lg cursor-pointer"
+                >
+                  <Image
+                    src={img.src || "/placeholder.svg"}
+                    alt={img.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <p className="text-white text-lg font-medium">
+                      {img.title}
+                    </p>
+                  </div>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-6xl w-[95vw] max-h-[80vh] p-0 border-0">
+                <div className="relative w-full h-full overflow-hidden">
+                  <Carousel
+                    opts={{
+                      startIndex: lightboxIndex ?? 0,
+                      loop: true,
+                    }}
+                    className="w-full h-full"
+                  >
+                    <CarouselContent className="h-full">
+                      {filteredImages.map((img) => (
+                        <CarouselItem
+                          key={img.id}
+                          className="w-full flex flex-col justify-center items-center pl-6 pr-2 pt-12 pb-6 h-full"
+                        >
+                          <div className="relative w-full aspect-3/2 max-h-[600px] overflow-hidden rounded-lg flex items-center justify-center">
+                            <Image
+                              src={img.src || "/placeholder.svg"}
+                              alt={img.title}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 95vw, (max-width: 1200px) 80vw, 70vw"
+                            />
+                          </div>
+                          <p className="text-center mt-4 text-base md:text-lg text-muted-foreground px-4">
+                            {img.title}
+                          </p>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10" />
+                    <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10" />
+                  </Carousel>
+                </div>
+              </DialogContent>
+            </Dialog>
+          ))}
         </div>
-      )}
-    </>
-  );
-}
-
-export default function GalleryPage() {
-  const [activeFilter, setActiveFilter] = useState("all");
-
-  const filteredImages =
-    activeFilter === "all"
-      ? images
-      : images.filter((img) => img.category === activeFilter);
-
-  return (
-    <>
-      <GalleryFilters
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
-      />
-      <GalleryGrid filteredImages={filteredImages} />
+      </section>
     </>
   );
 }

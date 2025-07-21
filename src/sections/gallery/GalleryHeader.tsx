@@ -4,14 +4,14 @@ export default function GalleryHeader() {
   return (
     <section className="relative pt-24 pb-12 bg-header-foreground/10 text-background">
       <Image
-        src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1749844860/PAB8263-HDR-scaled_dkwpxs.jpg"
+        src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1753130180/imgi_108_nomad-beach-bar-view_rtynpo.jpg"
         alt="Gallery background"
         fill
         priority
-        className="object-cover object-center z-0"
+        className="object-cover object-center"
       />
 
-      <div className="absolute inset-0 bg-header-foreground/20 z-10" />
+      <div className="absolute inset-0 bg-black/40" />
 
       <div className="relative z-20 py-12">
         <div className="container mx-auto px-4">
