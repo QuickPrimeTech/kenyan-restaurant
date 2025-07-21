@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { H2, Paragraph } from "@/components/ui/typography";
+
 export default function EventGallery() {
   const [filter, setFilter] = useState("all");
 
@@ -67,43 +70,49 @@ export default function EventGallery() {
     <section className="section">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-6">Event Gallery</h2>
-          <p className="text-lg max-w-2xl mx-auto leading-relaxed">
+          <H2 className="mb-2">Event Gallery</H2>
+          <Paragraph>
             See how we&apos;ve brought our clients&apos; visions to life in our
             beautiful coastal setting
-          </p>
+          </Paragraph>
         </div>
 
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {filters.map((filterOption) => (
-            <Button
-              size={"lg"}
-              key={filterOption.id}
-              onClick={() => setFilter(filterOption.id)}
-              className={`px-6 py-3 font-medium transition-all duration-300`}
-            >
-              {filterOption.name}
-            </Button>
-          ))}
-        </div>
+        {/* Scrollable Filter Buttons */}
+        <ScrollArea className="w-full overflow-x-auto mb-12">
+          <div className="flex w-max gap-3 px-1">
+            {filters.map((filterOption) => (
+              <Button
+                key={filterOption.id}
+                size="lg"
+                onClick={() => setFilter(filterOption.id)}
+                variant={filter === filterOption.id ? "default" : "outline"}
+                className="whitespace-nowrap"
+              >
+                {filterOption.name}
+              </Button>
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredImages.map((image) => (
             <div
               key={image.id}
-              className="group relative overflow-hidden aspect-[4/3] cursor-pointer"
+              className="group relative overflow-hidden aspect-[4/3] cursor-pointer rounded-lg"
             >
               <Image
-                src={image.image || "/placeholder.svg"}
+                src={image.image}
                 alt={image.title}
                 width={400}
                 height={300}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
               />
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <h3 className="font-semibold text-lg">{image.title}</h3>
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <h3 className="font-semibold text-lg text-white text-center px-2">
+                  {image.title}
+                </h3>
               </div>
             </div>
           ))}

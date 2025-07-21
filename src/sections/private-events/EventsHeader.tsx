@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function EventsHeader() {
   return (
@@ -26,8 +27,8 @@ export default function EventsHeader() {
           private dining spaces and dedicated events team create unforgettable
           experiences tailored to your vision.
         </p>
-        <Button size="lg" className=" px-8 py-4">
-          Plan Your Event
+        <Button size="lg" asChild>
+          <Link href="#event-contact">Plan Your Event</Link>
         </Button>
       </div>
     </section>

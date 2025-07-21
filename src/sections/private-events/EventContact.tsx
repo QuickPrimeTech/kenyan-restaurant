@@ -1,57 +1,74 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Phone, Mail } from "lucide-react";
+import { site } from "@/config/site-config";
+import Link from "next/link";
+import { H2, Paragraph } from "@/components/ui/typography";
 
 export default function EventContact() {
+  const { contact, links, hours } = site;
+
   return (
-    <section className="section bg-gray-100">
-      <div className="container mx-auto ">
+    <section className="section bg-gray-100" id="event-contact">
+      <div className="container mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-6">Ready to Plan Your Event?</h2>
-          <p className="text-xl max-w-2xl mx-auto leading-relaxed">
+          <H2 className="mb-2">Ready to Plan Your Event?</H2>
+          <Paragraph>
             Our dedicated events team is here to help you create an
             unforgettable experience. Contact us today to start planning your
             special celebration.
-          </p>
+          </Paragraph>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="text-center border-2 border-blue-400 p-6 rounded-lg bg-white shadow-lg">
-            <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Calendar className="w-8 h-8" />
-            </div>
-            <h3 className="font-semibold text-lg mb-2">
-              Schedule Consultation
-            </h3>
-            <p>Meet with our events team to discuss your vision</p>
-          </div>
+          <Card className="text-center shadow-lg">
+            <CardHeader>
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Calendar className="w-8 h-8 text-primary" />
+              </div>
+              <CardTitle className="text-lg">Schedule Consultation</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Meet with our events team to discuss your vision</p>
+            </CardContent>
+          </Card>
 
-          <div className="text-center border-2 border-blue-400 p-6 rounded-lg bg-white shadow-lg">
-            <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Phone className="w-8 h-8" />
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Call Direct</h3>
-            <p>Speak with our events coordinator immediately</p>
-          </div>
+          <Card className="text-center shadow-lg">
+            <CardHeader>
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Phone className="w-8 h-8 text-primary" />
+              </div>
+              <CardTitle className="text-lg">Call Direct</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Speak with our events coordinator immediately</p>
+            </CardContent>
+          </Card>
 
-          <div className="text-center border-2 border-blue-400 p-6 rounded-lg bg-white shadow-lg">
-            <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Mail className="w-8 h-8" />
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Email Inquiry</h3>
-            <p>Send us details about your upcoming event</p>
-          </div>
+          <Card className="text-center shadow-lg">
+            <CardHeader>
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Mail className="w-8 h-8 text-primary" />
+              </div>
+              <CardTitle className="text-lg">Email Inquiry</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Send us details about your upcoming event</p>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="px-8 py-4">
-              Schedule Consultation
-            </Button>
-            <Button size="lg" variant="outline" className="px-8 py-4">
-              Call (555) 123-4567
+            <Button size="lg" className="px-8 py-4" asChild>
+              <Link href={links.callUrl}>Call {contact.phone}</Link>
             </Button>
           </div>
-          <p className="mt-4">Events Team Available: Monday-Friday 9AM-6PM</p>
+          <p className="mt-4">
+            Events Team Available: Monday&ndash;Friday {hours.weekdays}
+          </p>
         </div>
       </div>
     </section>
