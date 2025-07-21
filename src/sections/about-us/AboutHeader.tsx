@@ -2,18 +2,18 @@ import Image from "next/image";
 
 export default function AboutHeader() {
   return (
-    <section className="relative pt-24 pb-16 overflow-hidden">
+    <section className="relative section mt-16 overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1749651450/upepo-restaurant_zsqdwt.jpg" // Replace with your actual image
+          src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1753126670/imgi_198_PMM_4187_pl5v8b.jpg"
           alt="Restaurant exterior"
           fill
           style={{ objectFit: "cover" }}
           priority
         />
         {/* Optional overlay for readability */}
-        <div className="absolute inset-0 bg-header-foreground/20"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
       <div className="container mx-auto px-4 text-center text-background">

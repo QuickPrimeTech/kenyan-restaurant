@@ -28,14 +28,6 @@ export default function PromotionalBanner() {
 
       <Card className="relative bg-transparent border-0 shadow-xl">
         <div className="relative z-10 p-6 sm:p-8 text-center text-primary-foreground">
-          <button
-            aria-label="Close banner"
-            // NOTE: move this to client-side if you want it interactive
-            className="absolute top-2 right-2 text-white/70 hover:text-white"
-          >
-            <X />
-          </button>
-
           <Badge
             variant="secondary"
             className="font-bold text-sm px-3 py-1 mb-2 animate-pulse"

@@ -1,28 +1,43 @@
-import Image from "next/image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
+import { H2, Paragraph } from "@/components/ui/typography";
 
 export default function TeamSection() {
   const team = [
     {
-      name: "Giuseppe Marinelli",
+      name: "Wambui Mwangi",
       role: "Founder & Executive Chef",
       image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749719145/chef_3_teamzr.jpg",
-      bio: "With over 40 years of culinary experience, Giuseppe brings authentic Italian coastal cuisine to every dish.",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753128200/image_mm485m.jpg",
+      bio: "With over 30 years of culinary experience, Wambui blends traditional Swahili flavors with modern Kenyan cuisine, crafting every dish with heritage and heart.",
     },
     {
-      name: "Maria Marinelli",
+      name: "James Otieno",
       role: "Co-Founder & General Manager",
       image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749719146/chef_1_xtp86u.png",
-      bio: "Maria oversees operations and ensures every guest feels like family from the moment they walk in.",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753127972/a2526bbc-98b1-42ac-ac99-a8f30058c564_xhsycg.jpg",
+      bio: "James ensures smooth day-to-day operations and brings a warm, welcoming spirit to every guest experience, just like a true Kenyan host.",
     },
     {
-      name: "Diana Marinelli",
+      name: "Vivian Njeri",
       role: "Head Chef",
       image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1749719144/chef_1_qivkfm.jpg",
-      bio: "The next generation, Antonio combines traditional techniques with modern innovation and local ingredients.",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753128233/762f6e1d-96c4-43c5-918a-65663b716339_decnfl.jpg",
+      bio: "Achieng is the creative force in the kitchen, known for fusing coastal traditions with fresh, locally sourced ingredients to elevate everyday meals.",
+    },
+    {
+      name: "Brian Kiptoo",
+      role: "Sous Chef & Grill Master",
+      image:
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753128008/827628f6-6d71-48a0-9aab-e6936a4f2bc7_zqlwzi.jpg",
+      bio: "Brian brings fire to the grill and precision to the plate. Raised in Eldoret, his smoky nyama choma and sukuma twists are guest favorites.",
     },
   ];
 
@@ -30,40 +45,53 @@ export default function TeamSection() {
     <section className="section bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="font-serif text-4xl font-bold text-gray-900 mb-6">
-            Meet Our Team
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <H2 className="mb-2">Meet Our Team</H2>
+          <Paragraph>
             The passionate individuals who bring our coastal dining vision to
             life every day
-          </p>
+          </Paragraph>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {team.map((member, index) => (
-            <Card
-              key={index}
-              className="overflow-hidden hover:shadow-xl transition-shadow duration-300"
-            >
-              <Image
-                src={member.image || "/placeholder.svg"}
-                alt={member.name}
-                width={300}
-                height={300}
-                className="w-full h-64 object-cover"
-              />
-              <CardContent className="p-6">
-                <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">
-                  {member.name}
-                </h3>
-                <p className="text-blue-600 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {member.bio}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-4">
+            {team.map((member, index) => (
+              <CarouselItem
+                key={index}
+                className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+              >
+                <Card className="overflow-hidden hover:shadow-xl py-0 pb-3 transition-shadow duration-300 h-full">
+                  <div className="relative aspect-square">
+                    <Image
+                      src={member.image || "/placeholder.svg"}
+                      alt={member.name}
+                      fill
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">
+                      {member.name}
+                    </h3>
+                    <p className="text-primary font-medium mb-3">
+                      {member.role}
+                    </p>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {member.bio}
+                    </p>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
     </section>
   );
