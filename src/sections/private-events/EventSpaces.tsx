@@ -1,3 +1,4 @@
+import { H2, H3, Paragraph } from "@/components/ui/typography";
 import Image from "next/image";
 
 export default function EventSpaces() {
@@ -14,7 +15,7 @@ export default function EventSpaces() {
         "Climate controlled",
       ],
       image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750702050/1b-Private-Dining-Carousel_London_vjrhvl.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753001420/imgi_92_Restaurant-18-scaled_aes5ba.jpg",
     },
     {
       name: "Beachside Terrace",
@@ -28,7 +29,7 @@ export default function EventSpaces() {
         "Weather protection",
       ],
       image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750697881/fb86662148be855d931b37d6c1e5fcbe_txvdo1.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753126670/imgi_198_PMM_4187_pl5v8b.jpg",
     },
     {
       name: "Full Restaurant Buyout",
@@ -42,19 +43,19 @@ export default function EventSpaces() {
         "Valet parking",
       ],
       image:
-        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750677860/818f767ca81a8358866ddb108f8808e7_frnmrt.jpg",
+        "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753126994/imgi_179_onda-restaurant_siqodo.jpg",
     },
   ];
 
   return (
     <section className="section bg-gray-100">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="font-serif text-4xl font-bold mb-6">Event Spaces</h2>
-          <p className="text-lg max-w-2xl mx-auto leading-relaxed">
+          <H2 className="mb-2">Event Spaces</H2>
+          <Paragraph>
             Discover our versatile event spaces, each offering unique ambiance
             and stunning coastal views
-          </p>
+          </Paragraph>
         </div>
 
         <div className="space-y-16">
@@ -75,9 +76,9 @@ export default function EventSpaces() {
                 />
               </div>
               <div className={index % 2 === 1 ? "lg:col-start-1" : ""}>
-                <h3 className="font-serif text-3xl font-bold mb-3">
+                <H3 className="font-serif text-3xl font-bold mb-3">
                   {space.name}
-                </h3>
+                </H3>
                 <p className="font-medium mb-4">{space.capacity}</p>
                 <p className="leading-relaxed mb-6">{space.description}</p>
                 <div className="grid grid-cols-2 gap-4">
@@ -86,7 +87,7 @@ export default function EventSpaces() {
                       key={featureIndex}
                       className="flex items-center space-x-2"
                     >
-                      <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
                       <span>{feature}</span>
                     </div>
                   ))}
