@@ -71,6 +71,7 @@ export const RESERVATION_STEPS: ReservationStep[] = [
  * Available dining areas with their properties
  * Each area has associated images and descriptions
  */
+
 export const DINING_AREAS: DiningArea[] = [
   {
     id: "indoor",

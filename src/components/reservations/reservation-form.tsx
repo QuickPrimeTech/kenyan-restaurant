@@ -91,7 +91,6 @@ export function ReservationForm(): JSX.Element {
     // Navigate to next step if not at the end
     if (currentStep < RESERVATION_STEPS.length - 1) {
       setCurrentStep(currentStep + 1);
-      toast.success("Step completed successfully!");
     }
   };
 

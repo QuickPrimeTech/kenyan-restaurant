@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Users } from "lucide-react";
+import { Minus, Plus, Users } from "lucide-react";
 import { toast } from "sonner";
 import type { JSX } from "react";
 
@@ -65,20 +65,6 @@ export function PartyDetailsStep({
 
     // Update party size and show feedback
     onUpdate({ partySize: newSize });
-
-    if (increment > 0) {
-      toast.success(
-        `Party size increased to ${newSize} ${
-          newSize === 1 ? "guest" : "guests"
-        }.`
-      );
-    } else {
-      toast.success(
-        `Party size decreased to ${newSize} ${
-          newSize === 1 ? "guest" : "guests"
-        }.`
-      );
-    }
   };
 
   /**
@@ -95,12 +81,6 @@ export function PartyDetailsStep({
     const selectedOccasion = OCCASIONS.find(
       (occ) => occ.value === occasionValue
     );
-
-    if (previousOccasion !== occasionValue) {
-      toast.success(
-        `Occasion selected: ${selectedOccasion?.label || occasionValue}`
-      );
-    }
   };
 
   /**
@@ -149,12 +129,12 @@ export function PartyDetailsStep({
                 disabled={data.partySize <= 1}
                 aria-label="Decrease party size"
               >
-                -
+                <Minus />
               </Button>
 
               {/* Party Size Display */}
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-primary">
+                <div className="text-2xl sm:text-3xl font-bold text-foreground">
                   {data.partySize}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-500">
@@ -169,7 +149,7 @@ export function PartyDetailsStep({
                 disabled={data.partySize >= RESTAURANT_CONFIG.MAX_PARTY_SIZE}
                 aria-label="Increase party size"
               >
-                +
+                <Plus />
               </Button>
             </div>
 
