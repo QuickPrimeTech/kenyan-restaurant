@@ -2,7 +2,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Gift, Sparkles, Zap, X } from "lucide-react";
+import { Gift, Sparkles, Zap } from "lucide-react";
 import Link from "next/link";
 import { PromoCountdown } from "@/components/promo-countdown";
 

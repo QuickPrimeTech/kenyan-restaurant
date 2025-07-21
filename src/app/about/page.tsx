@@ -1,3 +1,4 @@
+import CTA from "@/components/cta";
 import AboutHeader from "@/sections/about-us/AboutHeader";
 import OurStory from "@/sections/about-us/OurStory";
 import TeamSection from "@/sections/about-us/TeamSection";
@@ -10,6 +11,7 @@ export default function AboutPage() {
       <OurStory />
       <TeamSection />
       <ValuesSection />
+      <CTA className="mb-16" />
     </>
   );
 }
