@@ -37,7 +37,7 @@ export default function HeroSection() {
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="/reservation">
+            <Link href="/reservations">
               <Calendar /> Book a Table
             </Link>
           </Button>
