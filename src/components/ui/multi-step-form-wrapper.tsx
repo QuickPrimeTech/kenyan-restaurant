@@ -1,8 +1,6 @@
-// components/ui/multi-step-form-wrapper.tsx
-
 "use client";
 
-import type * as React from "react";
+import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
@@ -47,8 +45,19 @@ export function MultiStepFormWrapper({
 }: MultiStepFormWrapperProps) {
   const progress = ((currentStep + 1) / steps.length) * 100;
 
+  // Ref for auto-scroll
+  const formRef = React.useRef<HTMLDivElement>(null);
+
+  // Scroll to top of the form on step change
+  React.useEffect(() => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [currentStep]);
+
   return (
-    <div className={cn("w-full max-w-4xl mx-auto mb-24", className)}>
+    <div
+      ref={formRef}
+      className={cn("w-full max-w-4xl mx-auto mb-24", className)}
+    >
       {showProgress && (
         <div className="mb-8">
           {/* Progress bar using ShadCN UI */}
