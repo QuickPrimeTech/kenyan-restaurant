@@ -67,7 +67,7 @@ export function ContactForm() {
   };
 
   return (
-    <Card className="shadow-lg py-4">
+    <Card className="shadow-lg py-4 h-fit">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Send Us a Message</CardTitle>
       </CardHeader>

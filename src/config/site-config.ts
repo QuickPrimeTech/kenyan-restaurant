@@ -1,6 +1,6 @@
 const contact = {
-  phone: "+254712345678", // for tel:
-  whatsapp: "+254712345678", // for wa.me
+  phone: "+254717448835", // for tel:
+  whatsapp: "+254717448835", // for wa.me
   email: "orders@ziwa.co.ke",
   address: "Ngong Road, Nairobi, Kenya",
 };
