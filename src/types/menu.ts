@@ -1,10 +1,11 @@
 export type MenuItem = {
   id: number;
   name: string;
-  description: string;
-  price: string;
   category: string;
+  price: string;
+  description: string;
   image: string;
-  rating?: number;
+  rating: number;
   popular?: boolean;
+  dietary: string[] | [];
 };

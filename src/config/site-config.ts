@@ -6,7 +6,7 @@ const contact = {
   phone: "+254717448835",
   whatsapp: "+254717448835",
   email: "orders@ziwa.co.ke",
-  address: "Ngong Road, Nairobi, Kenya",
+  address: "Makadara Road, Old Town, Mombasa 80100, Kenya",
 };
 
 export const site = {
