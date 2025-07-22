@@ -36,22 +36,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <OrderProvider>
-            <CartProvider>
-              <Navbar />
-              {children}
-              <ContactButton />
-              <Toaster richColors position="top-center" />
-              <CartButton />
-            </CartProvider>
-          </OrderProvider>
-        </ThemeProvider>
+        <OrderProvider>
+          <CartProvider>
+            <Navbar />
+            {children}
+            <ContactButton />
+            <Toaster richColors position="top-center" />
+            <CartButton />
+          </CartProvider>
+        </OrderProvider>
         <Footer />
       </body>
     </html>
