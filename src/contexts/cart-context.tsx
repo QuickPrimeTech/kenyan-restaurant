@@ -48,8 +48,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         newItems = [...state.items, { ...action.payload, quantity: 1 }];
       }
 
+      // This function calculates the total price of the items one has in the cart.
       const total = newItems.reduce(
-        (sum, item) => sum + Number.parseFloat(item.price) * item.quantity,
+        (sum, item) =>
+          //Removing extra commas before calculating the total for numbers like 1,800 which would otherwise result to 1 instead of 1800
+          sum + parseFloat(item.price.replace(/,/g, "")) * item.quantity,
         0
       );
       const itemCount = newItems.reduce((sum, item) => sum + item.quantity, 0);

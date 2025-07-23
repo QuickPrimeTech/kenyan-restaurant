@@ -100,7 +100,7 @@ export const menuItems: MenuItem[] = [
   {
     id: 8,
     name: "Grilled Tilapia",
-    category: "seafood",
+    category: "Seafood",
     price: "900",
     description:
       "Whole tilapia seasoned and grilled, served with kachumbari & lemon.",
@@ -113,7 +113,7 @@ export const menuItems: MenuItem[] = [
   {
     id: 9,
     name: "Coconut prawn curry",
-    category: "seafood",
+    category: "Seafood",
     price: "1400",
     description:
       "Tiger prawns simmered in creamy coconut curry, served with rice.",
@@ -126,7 +126,7 @@ export const menuItems: MenuItem[] = [
   {
     id: 10,
     name: "Fried Calamari",
-    category: "seafood",
+    category: "Seafood",
     price: "1200",
     description: "Crispy golden squid rings, served with tartar sauce.",
     image:
@@ -138,7 +138,7 @@ export const menuItems: MenuItem[] = [
   {
     id: 11,
     name: "Seafood Platter",
-    category: "seafood",
+    category: "Seafood",
     price: "2000",
     description:
       "Grilled mix of fish, prawns, calamari & octopus – served with fries.",
@@ -151,7 +151,7 @@ export const menuItems: MenuItem[] = [
   {
     id: 12,
     name: "Octopus Stew",
-    category: "seafood",
+    category: "Seafood",
     price: "1500",
     description:
       "Tender octopus cooked in rich tomato sauce with onions and herbs.",
@@ -164,7 +164,7 @@ export const menuItems: MenuItem[] = [
   {
     id: 13,
     name: "Garlic Butter Shrimp",
-    category: "seafood",
+    category: "Seafood",
     price: "1300",
     description:
       "Succulent shrimp sautéed in garlic butter sauce – perfect with rice.",

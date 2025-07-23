@@ -4,12 +4,12 @@ import "./globals.css";
 import Navbar from "@/layouts/Navbar";
 import Footer from "@/layouts/Footer";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/contexts/cart-context";
 import { CartButton } from "@/components/cart/cart-button";
 import { OrderProvider } from "@/contexts/order-context";
 import { site } from "@/config/site-config";
 import { ContactButton } from "@/components/contact-button";
+import { WhatsAppCampaignPopup } from "@/components/whatsapp-campaign-popup";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +41,7 @@ export default function RootLayout({
             <Navbar />
             {children}
             <ContactButton />
+            <WhatsAppCampaignPopup />
             <Toaster richColors position="top-center" />
             <CartButton />
           </CartProvider>
