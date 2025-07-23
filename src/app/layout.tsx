@@ -24,6 +24,29 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: site.restaurantName,
   description: site.restaurantDescription,
+  openGraph: {
+    title: site.restaurantName,
+    description: site.restaurantDescription,
+    images: [
+      {
+        url: "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753297391/ZiwaRestaurantOpenGraph_z2r7ly.png",
+        width: 1200,
+        height: 630,
+        alt: `${site.restaurantName} Open Graph Image`,
+      },
+    ],
+    type: "website",
+    locale: "en_US",
+    siteName: site.restaurantName,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.restaurantName,
+    description: site.restaurantDescription,
+    images: [
+      "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753297391/ZiwaRestaurantOpenGraph_z2r7ly.png",
+    ],
+  },
 };
 
 export default function RootLayout({
