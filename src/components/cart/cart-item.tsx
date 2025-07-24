@@ -101,7 +101,11 @@ export function CartItem({ item }: CartItemProps) {
             <div className="text-right flex gap-2 items-center">
               <p className="text-sm text-gray-500">Total: </p>
               <p className="text-lg font-bold text-gray-900">
-                Ksh {(Number.parseFloat(item.price) * item.quantity).toFixed(2)}
+                Ksh{" "}
+                {(
+                  Number.parseFloat(item.price.replace(/,/g, "")) *
+                  item.quantity
+                ).toFixed(2)}
               </p>
             </div>
           </div>

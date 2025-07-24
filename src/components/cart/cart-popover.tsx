@@ -59,7 +59,10 @@ export function CartPopover({
                 </div>
                 <p className="text-sm font-medium">
                   Ksh{" "}
-                  {(Number.parseFloat(item.price) * item.quantity).toFixed(2)}
+                  {(
+                    Number.parseFloat(item.price.replace(/,/g, "")) *
+                    item.quantity
+                  ).toFixed(2)}
                 </p>
               </div>
             ))}

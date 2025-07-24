@@ -122,7 +122,10 @@ export default function MenuPage() {
                       {item.name}
                     </h3>
                     <span className="text-xl font-bold text-primary whitespace-nowrap">
-                      Ksh {item.price}
+                      Ksh{" "}
+                      {parseFloat(item.price.replace(/,/g, "")).toLocaleString(
+                        "en-US"
+                      )}
                     </span>
                   </div>
                   <p className="text-gray-600 leading-relaxed mb-4">
