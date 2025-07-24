@@ -27,7 +27,6 @@ export default function MenuPage() {
   const handleAddToCart = (item: (typeof menuItems)[0]) => {
     addItem(item);
     // You could add a toast notification here
-    console.log(`Added ${item.name} to cart!`);
   };
 
   // Get quantity of item in cart

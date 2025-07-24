@@ -20,7 +20,7 @@ export const highlightedDishes: MenuItem[] = [
     category: "Seafood",
     description:
       "Pan-fried tilapia fillet served alongside creamy plantain stew with fresh coriander and garlic.",
-    price: "1,600",
+    price: "450",
     image:
       "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753000027/imgi_119_img_2708_uwhwot.webp",
     dietary: ["dairy-free"],
@@ -33,7 +33,7 @@ export const highlightedDishes: MenuItem[] = [
     category: "Vegetarian",
     description:
       "A refined take on the classic Kikuyu dish—slow-simmered maize and beans with caramelized onions, bell peppers, and coconut cream.",
-    price: "1,200",
+    price: "200",
     image:
       "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753000019/imgi_153_potageconti_4eb416b1-978x705_ldrcpa.jpg",
     dietary: ["vegan", "gluten-free"],
@@ -46,7 +46,7 @@ export const highlightedDishes: MenuItem[] = [
     category: "Street Food",
     description:
       "Golden flaky chapatis rolled with spicy minced beef, served with tangy tomato chutney.",
-    price: "1,500",
+    price: "250",
     image:
       "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753000359/imgi_167_14KOMOLAFE-rex2-rolex-zkfc-mediumSquareAt3X_mijmie.jpg",
     dietary: [],
@@ -59,7 +59,7 @@ export const highlightedDishes: MenuItem[] = [
     category: "Local",
     description:
       "Garlic sautéed sukumawiki paired with turmeric-spiced roast chicken and a side of ugali fingers.",
-    price: "1,700",
+    price: "700",
     image:
       "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753000504/Sukumawiki_Spiced_Chicken_slzfas.jpg",
     dietary: ["gluten-free"],
@@ -72,7 +72,7 @@ export const highlightedDishes: MenuItem[] = [
     category: "Vegetarian",
     description:
       "Green grams slow-cooked in spiced coconut milk with ginger, served over soft brown rice.",
-    price: "1,300",
+    price: "500",
     image:
       "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753000608/imgi_135_maxresdefault_yg2d8m.webp",
     dietary: ["vegan"],
@@ -85,7 +85,7 @@ export const highlightedDishes: MenuItem[] = [
     category: "Local",
     description:
       "Quality ugali flour cooked and mixed together with spiced meat and sukumawiki.",
-    price: "1,400",
+    price: "250",
     image:
       "https://res.cloudinary.com/quick-prime-tech/image/upload/v1753000086/imgi_113_30-foods-you-should-eat-in-kenya_yvt5zq.jpg",
     dietary: ["gluten-free"],
@@ -101,7 +101,7 @@ export const menuItems: MenuItem[] = [
     id: 8,
     name: "Grilled Tilapia",
     category: "Seafood",
-    price: "900",
+    price: "350",
     description:
       "Whole tilapia seasoned and grilled, served with kachumbari & lemon.",
     image:
@@ -114,7 +114,7 @@ export const menuItems: MenuItem[] = [
     id: 9,
     name: "Coconut prawn curry",
     category: "Seafood",
-    price: "1400",
+    price: "960",
     description:
       "Tiger prawns simmered in creamy coconut curry, served with rice.",
     image:

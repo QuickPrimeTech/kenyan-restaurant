@@ -65,7 +65,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         (item) => String(item.id) !== action.payload
       );
       const total = newItems.reduce(
-        (sum, item) => sum + Number.parseFloat(item.price) * item.quantity,
+        (sum, item) =>
+          sum + Number.parseFloat(item.price.replace(/,/g, "")) * item.quantity,
         0
       );
       const itemCount = newItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -88,7 +89,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       );
 
       const total = newItems.reduce(
-        (sum, item) => sum + Number.parseFloat(item.price) * item.quantity,
+        (sum, item) =>
+          sum + Number.parseFloat(item.price.replace(/,/g, "")) * item.quantity,
         0
       );
       const itemCount = newItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -101,7 +103,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
     case "LOAD_CART": {
       const total = action.payload.reduce(
-        (sum, item) => sum + Number.parseFloat(item.price) * item.quantity,
+        (sum, item) =>
+          sum + Number.parseFloat(item.price.replace(/,/g, "")) * item.quantity,
         0
       );
       const itemCount = action.payload.reduce(

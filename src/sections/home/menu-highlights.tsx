@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Leaf, GlassWater } from "lucide-react";
+import { Star, Leaf, GlassWater, Utensils, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -111,16 +111,17 @@ export default function MenuHighlights() {
             Explore our complete selection of ocean-inspired dishes
           </Paragraph>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="px-6 py-3 rounded-lg" asChild>
-              <Link href="/reservations">Make Reservation</Link>
+            <Button size="lg" asChild>
+              <Link href="/menu">
+                <Utensils />
+                View Full Menu
+              </Link>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="px-6 py-3 rounded-lg"
-              asChild
-            >
-              <Link href="/menu">View Full Menu</Link>
+            <Button size="lg" variant={"outline"} asChild>
+              <Link href="/reservations">
+                <Calendar />
+                Make Reservation
+              </Link>
             </Button>
           </div>
         </div>
