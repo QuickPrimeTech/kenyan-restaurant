@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,7 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Gift, Check, Smartphone, X } from "lucide-react";
+import { Gift, Check, Smartphone, X, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -47,14 +52,6 @@ const benefits = [
   "Birthday treats",
 ];
 
-const moreBenefits = [
-  "Weekly menu updates and specials",
-  "Flash sales and limited-time offers",
-  "Order status updates via WhatsApp",
-  "Customer loyalty rewards program",
-  "Easy reordering of favorite meals",
-];
-
 const offerCard = {
   title: "Welcome Offer!",
   highlight: "10% OFF",
@@ -65,6 +62,17 @@ export function WhatsAppCampaignPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText("WHATSAPP10");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch {
+      toast.error("Failed to copy code. Please try again.");
+    }
+  };
 
   const form = useForm({
     resolver: zodResolver(phoneSchema),
@@ -74,25 +82,18 @@ export function WhatsAppCampaignPopup() {
   });
 
   useEffect(() => {
-    const hasRegistered = localStorage.getItem("whatsapp-campaign-registered");
-    if (hasRegistered) return;
+    const alreadyRegistered = localStorage.getItem(
+      "whatsapp-campaign-registered"
+    );
+    const alreadyDismissed = sessionStorage.getItem("whatsapp-popup-dismissed");
+    if (alreadyRegistered || alreadyDismissed) return;
 
     const timer = setTimeout(() => {
       setIsOpen(true);
     }, 10000);
 
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setIsOpen(true);
-        window.removeEventListener("scroll", handleScroll);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
     return () => {
       clearTimeout(timer);
-      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -106,7 +107,6 @@ export function WhatsAppCampaignPopup() {
       toast.success(
         "Successfully registered! Check your WhatsApp for your discount code."
       );
-      setTimeout(() => setIsOpen(false), 3000);
     } catch {
       toast.error("Registration failed. Please try again.");
     } finally {
@@ -136,14 +136,34 @@ export function WhatsAppCampaignPopup() {
               </p>
               <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
                 <div className="flex items-center gap-2 text-green-800 mb-2">
-                  <Gift className="h-4 w-4" />
+                  <Gift className="size-4" />
                   <span className="text-sm font-semibold">
                     Your Discount Code
                   </span>
                 </div>
-                <div className="text-xl font-mono font-bold text-green-700 bg-white px-2 py-1 rounded border">
-                  WHATSAPP10
+                <div className="w-full flex items-center gap-2">
+                  <p className="text-xl text-start flex-1 font-mono font-bold text-green-700 bg-white px-4 py-1 rounded border">
+                    WHATSAPP10
+                  </p>
+                  <Button
+                    onClick={handleCopy}
+                    className="p-1 text-white bg-green-500 hover:bg-green-600 rounded"
+                    aria-label="Copy discount code"
+                  >
+                    {copied ? (
+                      <>
+                        Copied!
+                        <Check />
+                      </>
+                    ) : (
+                      <>
+                        Copy code
+                        <Copy />
+                      </>
+                    )}
+                  </Button>
                 </div>
+
                 <p className="text-xs text-green-600 mt-1">
                   10% off your next order!
                 </p>
@@ -161,29 +181,35 @@ export function WhatsAppCampaignPopup() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent
-        className="w-[95vw] max-w-sm mx-auto max-h-[95vh] p-0 overflow-hidden"
+        className="w-[95vw] max-w-sm mx-auto max-h-[95vh] gap-0 p-0 overflow-hidden"
         showCloseButton={false}
       >
-        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-3 relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleClose}
-            className="absolute top-1 right-1 size-8 z-50 hover:text-white hover:bg-green-700 text-white"
-          >
-            <X />
-          </Button>
-          <div className="text-center">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
-              <FaWhatsapp className="size-5" />
+        <DialogHeader className="relative z-10 shadow-sm">
+          <DialogTitle className="sr-only">
+            Signup to our whatsapp campaign
+          </DialogTitle>
+          <div className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleClose}
+              className="absolute top-1 right-1 size-8 z-50 hover:text-white hover:bg-green-700 text-white"
+            >
+              <X />
+            </Button>
+            <div className="text-center">
+              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                <FaWhatsapp className="size-5" />
+              </div>
+              <h2 className="text-base font-bold mb-1">Join Our WhatsApp!</h2>
+              <p className="text-xs text-green-100">
+                Get exclusive deals on your phone
+              </p>
             </div>
-            <h2 className="text-base font-bold mb-1">Join Our WhatsApp!</h2>
-            <p className="text-xs text-green-100">
-              Get exclusive deals on your phone
-            </p>
           </div>
-        </div>
-        <ScrollArea className="h-[calc(95vh-100px)]">
+        </DialogHeader>
+
+        <ScrollArea className="h-[calc(75vh-100px)]">
           <div className="p-4 space-y-4">
             <div className="bg-green-50 border border-green-200 rounded-2xl p-4 text-center shadow-sm">
               <Gift className="h-7 w-7 text-green-600 mx-auto mb-2" />
@@ -200,7 +226,7 @@ export function WhatsAppCampaignPopup() {
               <h4 className="text-sm font-semibold text-gray-900 mb-2">
                 What you&apos;ll get:
               </h4>
-              <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+              <div className="flex flex-wrap gap-2 text-xs text-gray-600">
                 {benefits.map((benefit) => (
                   <div key={benefit} className="flex items-center gap-1">
                     <Check className="h-3 w-3 text-green-500" />
@@ -208,20 +234,6 @@ export function WhatsAppCampaignPopup() {
                   </div>
                 ))}
               </div>
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-2">
-                More Benefits:
-              </h4>
-              {moreBenefits.map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-1 text-xs text-gray-600"
-                >
-                  <Check className="h-3 w-3 text-green-500" />
-                  <span>{item}</span>
-                </div>
-              ))}
             </div>
             <Form {...form}>
               <form
