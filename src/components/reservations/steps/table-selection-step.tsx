@@ -109,7 +109,7 @@ export function TableSelectionStep({
             return (
               <Card
                 key={area.id}
-                className={`cursor-pointer px-0 transition-all duration-200 hover:shadow-lg ${
+                className={`cursor-pointer py-0 pb-6 px-0 transition-all duration-200 hover:shadow-lg ${
                   selectedArea === area.id &&
                   "ring-2 ring-primary border-primary"
                 }`}
@@ -228,67 +228,79 @@ export function TableSelectionStep({
           Available Tables
         </h3>
         {availableTables.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {availableTables.map((table) => (
-              <Card
-                key={table.id}
-                className={`transition-all duration-200 hover:shadow-lg ${
-                  data.tableId === table.id
-                    ? "ring-2 ring-primary border-primary"
-                    : ""
-                }`}
-              >
-                <CardHeader className="pb-2 sm:pb-3">
-                  <div className="relative aspect-video overflow-hidden rounded-md">
-                    <Image
-                      src={table.image || "/placeholder.svg"}
-                      alt={table.name}
-                      fill
-                      className="object-cover"
-                    />
-                    {data.tableId === table.id && (
-                      <div className="absolute top-2 right-2 bg-primary text-primary-foreground rounded-full p-1">
-                        <Check className="h-4 w-4" />
-                      </div>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-center justify-between mb-1 sm:mb-2">
-                    <CardTitle className="text-sm sm:text-base">
-                      {table.name}
-                    </CardTitle>
-                    <Badge
-                      variant="secondary"
-                      className="flex items-center gap-1 text-xs"
-                    >
-                      <Users className="h-3 w-3" />
-                      {table.capacity}
-                    </Badge>
-                  </div>
-                  <div className="space-y-1 mb-3">
-                    {table.features.map((feature, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600"
-                      >
-                        <MapPin className="h-3 w-3" />
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-                  <Button
-                    size="sm"
-                    variant={data.tableId === table.id ? "default" : "outline"}
-                    onClick={() => handleTableSelect(table.id, table.name)}
-                    className="w-full"
+          <Carousel>
+            <CarouselContent>
+              {availableTables.map((table) => (
+                <CarouselItem
+                  key={table.id}
+                  className="md:basis-1/2 lg:basis-1/3"
+                >
+                  <Card
+                    className={`transition-all py-0 px-0 pb-6 duration-200 hover:shadow-lg ${
+                      data.tableId === table.id
+                        ? "ring-2 ring-primary border-primary"
+                        : ""
+                    }`}
                   >
-                    {data.tableId === table.id ? "Selected" : "Select Table"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    <CardHeader className="px-0">
+                      <div className="relative aspect-video overflow-hidden rounded-md">
+                        <Image
+                          src={table.image || "/placeholder.svg"}
+                          alt={table.name}
+                          fill
+                          className="object-cover"
+                        />
+                        {data.tableId === table.id && (
+                          <div className="absolute top-2 right-2 bg-primary text-primary-foreground rounded-full p-1">
+                            <Check className="h-4 w-4" />
+                          </div>
+                        )}
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4">
+                      <div className="flex items-center justify-between mb-1 sm:mb-2">
+                        <CardTitle className="text-sm sm:text-base">
+                          {table.name}
+                        </CardTitle>
+                        <Badge
+                          variant="secondary"
+                          className="flex items-center gap-1 text-xs"
+                        >
+                          <Users className="h-3 w-3" />
+                          {table.capacity}
+                        </Badge>
+                      </div>
+                      <div className="space-y-1 mb-3">
+                        {table.features.map((feature, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600"
+                          >
+                            <MapPin className="h-3 w-3" />
+                            {feature}
+                          </div>
+                        ))}
+                      </div>
+                      <Button
+                        size="sm"
+                        variant={
+                          data.tableId === table.id ? "default" : "outline"
+                        }
+                        onClick={() => handleTableSelect(table.id, table.name)}
+                        className="w-full"
+                      >
+                        {data.tableId === table.id
+                          ? "Selected"
+                          : "Select Table"}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         ) : (
           <Card className="text-center py-6 sm:py-8">
             <CardContent>
