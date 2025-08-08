@@ -104,28 +104,6 @@ export function ReservationForm(): JSX.Element {
   };
 
   /**
-   * Handles direct step navigation from progress indicators
-   * Validates all previous steps before allowing jump navigation
-   *
-   * @param targetStep - The step index to navigate to
-   */
-  const handleStepChange = (targetStep: number): void => {
-    // Don't allow navigation to future steps without validation
-    if (targetStep > currentStep) {
-      // Validate all steps up to the target step
-      for (let i = 0; i <= targetStep - 1; i++) {
-        if (!validateReservationStep(i, reservationData)) {
-          showStepValidationError(i, reservationData);
-          return;
-        }
-      }
-    }
-
-    // Allow navigation to the target step
-    setCurrentStep(targetStep);
-  };
-
-  /**
    * Determines if the current step is valid for navigation
    * Used to enable/disable the Next button
    *
@@ -182,7 +160,6 @@ export function ReservationForm(): JSX.Element {
       <MultiStepFormWrapper
         steps={RESERVATION_STEPS}
         currentStep={currentStep}
-        onStepChange={handleStepChange}
         onNext={handleNext}
         onPrevious={handlePrevious}
         nextDisabled={!isCurrentStepValid()}

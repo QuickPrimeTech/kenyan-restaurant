@@ -15,7 +15,6 @@ interface Step {
 interface MultiStepFormWrapperProps {
   steps: Step[];
   currentStep: number;
-  onStepChange: (step: number) => void;
   children: React.ReactNode;
   className?: string;
   showProgress?: boolean;
@@ -31,7 +30,6 @@ interface MultiStepFormWrapperProps {
 export function MultiStepFormWrapper({
   steps,
   currentStep,
-  onStepChange,
   children,
   className,
   showProgress = true,
@@ -72,7 +70,6 @@ export function MultiStepFormWrapper({
                   "flex flex-col items-center cursor-pointer transition-all duration-200 flex-1 min-w-[48px] max-w-[72px]",
                   index <= currentStep ? "text-primary" : "text-gray-400"
                 )}
-                onClick={() => onStepChange(index)}
               >
                 <div
                   className={cn(
