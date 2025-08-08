@@ -64,12 +64,12 @@ export function MultiStepFormWrapper({
           <Progress value={progress} className="h-2 mb-6" />
 
           {/* Step indicators (closer together, no wrapping) */}
-          <div className="flex justify-between items-start gap-2 overflow-x-auto no-scrollbar">
+          <div className="flex flex-wrap justify-between items-start gap-2">
             {steps.map((step, index) => (
               <div
                 key={step.id}
                 className={cn(
-                  "flex flex-col items-center cursor-pointer transition-all duration-200 min-w-16 sm:min-w-[72px]",
+                  "flex flex-col items-center cursor-pointer transition-all duration-200 flex-1 min-w-[48px] max-w-[72px]",
                   index <= currentStep ? "text-primary" : "text-gray-400"
                 )}
                 onClick={() => onStepChange(index)}
@@ -85,7 +85,7 @@ export function MultiStepFormWrapper({
                   )}
                 >
                   {index < currentStep ? (
-                    <Check className="w-4 h-4" />
+                    <Check className="size-4" />
                   ) : (
                     index + 1
                   )}

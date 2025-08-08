@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, CalendarIcon } from "lucide-react";
+import { Clock, CalendarIcon, Check } from "lucide-react";
 import { format, addDays, isAfter, isBefore, isSameDay } from "date-fns";
 import { toast } from "sonner";
 import type { JSX } from "react/jsx-runtime";
@@ -261,9 +261,14 @@ export function DateTimeStep({
         <Card className="bg-green-50 border-green-200">
           <CardContent className="pt-4 sm:pt-6 p-3 sm:p-4">
             <div className="text-center">
-              <h3 className="font-semibold text-green-900 mb-2">
-                ✅ Reservation Time Selected
-              </h3>
+              <div className="flex gap-1 justify-center items-center mb-2">
+                <div className="bg-green-200 p-2 rounded-full">
+                  <Check className="text-green-900 size-5" />
+                </div>
+                <h3 className="font-semibold text-green-900">
+                  Reservation Time Selected
+                </h3>
+              </div>
               <p className="text-green-800 text-sm sm:text-base">
                 <span className="font-medium">
                   {format(selectedDate, "EEEE, MMMM do, yyyy")}
