@@ -1,5 +1,5 @@
 // 1. Updated Interface matching public.offers schema
-type Offer = {
+export type Offer = {
   id: string;
   title: string;
   description: string;
