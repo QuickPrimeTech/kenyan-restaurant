@@ -1,33 +1,11 @@
 "use client";
-
 import Image from "next/image";
 import { Clock, Calendar, MapPin, Share2, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-interface Offer {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string;
-  start_time: string;
-  end_time: string;
-  is_recurring: boolean;
-  start_date?: string;
-  end_date?: string;
-  days_of_week?: string[];
-  branch_id: string;
-  public_id: string;
-}
-
-function formatTime(time: string) {
-  const [hours, minutes] = time.split(":");
-  const hour = Number.parseInt(hours);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const hour12 = hour % 12 || 12;
-  return `${hour12}:${minutes} ${ampm}`;
-}
+import { Offer } from "@/types/offers";
+import { formatDate, formatTime, getDayNames } from "@/utils/time-formatters";
 
 export function OfferDetail({ offer }: { offer: Offer }) {
   async function handleShare() {
@@ -62,31 +40,31 @@ export function OfferDetail({ offer }: { offer: Offer }) {
   }
 
   return (
-    <div className="mb-16">
+    <section>
       {/* Back Navigation */}
-      <Link
-        href="/offers"
-        className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to all offers
-      </Link>
+      <Button asChild variant="link" className="mb-8">
+        <Link href="/offers">
+          <ArrowLeft className="h-4 w-4" />
+          Back to all offers
+        </Link>
+      </Button>
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         {/* Image Section */}
         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
           <Image
-            src={offer.image_url || "/placeholder.svg"}
+            src={offer.image_url}
+            placeholder={offer.lqip ? "blur" : "empty"}
+            blurDataURL={offer.lqip || undefined}
             alt={offer.title}
             fill
             className="object-cover"
             priority
           />
-          {offer.is_recurring && (
-            <Badge className="absolute left-4 top-4 bg-primary text-primary-foreground">
-              Recurring Offer
-            </Badge>
-          )}
+
+          <Badge className="absolute left-4 top-4">
+            {offer.is_recurring ? "Recurring Offer" : "Limited Time Offer"}
+          </Badge>
         </div>
 
         {/* Details Section */}
@@ -114,13 +92,15 @@ export function OfferDetail({ offer }: { offer: Offer }) {
                 </div>
               </div>
 
-              {offer.is_recurring && offer.days_of_week && (
-                <div className="flex items-start gap-3">
-                  <Calendar className="mt-0.5 h-5 w-5 text-primary" />
-                  <div>
-                    <p className="font-medium text-foreground">
-                      Available Days
-                    </p>
+              <div className="flex items-start gap-3">
+                <Calendar className="mt-0.5 h-5 w-5 text-primary" />
+                <div>
+                  <p className="font-medium text-foreground">
+                    {offer.is_recurring
+                      ? "Available Days"
+                      : "Only Available From"}
+                  </p>
+                  {offer.is_recurring && offer.days_of_week ? (
                     <div className="mt-2 flex flex-wrap gap-2">
                       {offer.days_of_week.map((day) => (
                         <Badge
@@ -128,13 +108,20 @@ export function OfferDetail({ offer }: { offer: Offer }) {
                           variant="secondary"
                           className="text-xs"
                         >
-                          {day}
+                          {getDayNames([day])}
                         </Badge>
                       ))}
                     </div>
-                  </div>
+                  ) : (
+                    <div className="mt-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {formatDate(offer.start_date ?? "")} –{" "}
+                        {formatDate(offer.end_date ?? "")}
+                      </Badge>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
 
               <div className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-5 w-5 text-primary" />
@@ -146,18 +133,13 @@ export function OfferDetail({ offer }: { offer: Offer }) {
             </div>
 
             {/* Action Buttons */}
-            <Button
-              size="lg"
-              variant="outline"
-              className="gap-2 bg-transparent"
-              onClick={handleShare}
-            >
-              <Share2 className="h-4 w-4" />
+            <Button size="lg" className="w-full" onClick={handleShare}>
+              <Share2 />
               Share
             </Button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

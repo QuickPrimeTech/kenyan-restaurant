@@ -15,9 +15,10 @@ import Link from "next/link";
 
 type OfferCardProps = {
   offer: Offer;
+  noButton?: boolean;
 };
 
-export function OfferCard({ offer }: OfferCardProps) {
+export function OfferCard({ offer, noButton = false }: OfferCardProps) {
   return (
     <Card key={offer.id} className="py-0 group overflow-hidden">
       <CardHeader className="px-0">
@@ -64,13 +65,14 @@ export function OfferCard({ offer }: OfferCardProps) {
             {formatDate(offer.end_date ?? "")}
           </p>
         )}
-
-        <Button size="sm" variant="outline" asChild>
-          <Link href={`/offers/${offer.slug}`}>
-            View Details
-            <ArrowRight />
-          </Link>
-        </Button>
+        {!noButton && (
+          <Button size="sm" variant="outline" asChild>
+            <Link href={`/offers/${offer.slug}`}>
+              View Details
+              <ArrowRight />
+            </Link>
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
