@@ -11,6 +11,7 @@ import { ArrowRight, Clock } from "lucide-react";
 import { formatDate, formatTime, getDayNames } from "@/utils/time-formatters";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import Link from "next/link";
 
 type OfferCardProps = {
   offer: Offer;
@@ -64,9 +65,11 @@ export function OfferCard({ offer }: OfferCardProps) {
           </p>
         )}
 
-        <Button size="sm" variant="outline">
-          View Details
-          <ArrowRight />
+        <Button size="sm" variant="outline" asChild>
+          <Link href={`/offers/${offer.slug}`}>
+            View Details
+            <ArrowRight />
+          </Link>
         </Button>
       </CardContent>
     </Card>

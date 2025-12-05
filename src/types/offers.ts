@@ -11,4 +11,5 @@ export type Offer = {
   end_date?: string | null;
   days_of_week?: string[] | null;
   lqip?: string | null; // Blur hash support
+  slug: string;
 };

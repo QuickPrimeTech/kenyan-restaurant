@@ -1,3 +1,4 @@
+import api from "@/lib/api-client";
 import { OfferDetail } from "@/sections/offers/offer-detail";
 import { SuggestedOffers } from "@/sections/offers/suggested-offers";
 
@@ -69,7 +70,8 @@ export default async function OfferPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
+  const { data: offer } = await api.get(`/offers/slug/${slug}`);
+  console.log("offer ============>", offer);
   // In real app, fetch offer by id
   console.log("Fetching offer:", slug);
 
