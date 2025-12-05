@@ -24,25 +24,6 @@ const formatTime = (timeStr: string) => {
   return `${hour}:${minute.toString().padStart(2, "0")} ${ampm}`;
 };
 
-// Helper to check if offer is currently active
-const isCurrentlyActive = (offer: Offer) => {
-  const now = new Date();
-  const currentDay = now.getDay();
-  const currentTime = now.getHours() * 60 + now.getMinutes();
-
-  const [startHour, startMin] = offer.start_time.split(":").map(Number);
-  const [endHour, endMin] = offer.end_time.split(":").map(Number);
-
-  const startTimeMin = startHour * 60 + startMin;
-  const endTimeMin = endHour * 60 + endMin;
-
-  const isDayActive =
-    offer.days_of_week && offer.days_of_week.includes(String(currentDay));
-  const isTimeActive = currentTime >= startTimeMin && currentTime <= endTimeMin;
-
-  return isDayActive && isTimeActive;
-};
-
 // Helper to convert day numbers to day names
 const getDayNames = (day: string[]) => {
   const dayMap = {
@@ -84,8 +65,6 @@ export const OffersSection = ({ offers }: { offers: Offer[] }) => {
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {offers.map((offer, index) => {
-            const isActive = isCurrentlyActive(offer);
-
             return (
               <Card
                 key={offer.id}
@@ -107,23 +86,6 @@ export const OffersSection = ({ offers }: { offers: Offer[] }) => {
 
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-
-                    {/* Top Right: Active Status Badge */}
-                    <Badge
-                      variant={"secondary"}
-                      className={`absolute top-4 right-4 backdrop-blur-sm flex items-center gap-1.5 font-semibold ${
-                        isActive && "bg-green-500 hover:bg-green-600 text-white"
-                      }`}
-                    >
-                      <span
-                        className={`inline-block w-2 h-2 rounded-full ${
-                          isActive
-                            ? "bg-white animate-pulse"
-                            : "bg-secondary-foreground"
-                        }`}
-                      />
-                      {isActive ? "Active Now" : "Inactive"}
-                    </Badge>
 
                     {/* Top Left: Time Window */}
                     <Badge className="absolute top-4 left-4 backdrop-blur-sm flex items-center gap-2">
