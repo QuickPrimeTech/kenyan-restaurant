@@ -15,10 +15,10 @@ import Link from "next/link";
 
 type OfferCardProps = {
   offer: Offer;
-  noButton?: boolean;
+  minimalist?: boolean;
 };
 
-export function OfferCard({ offer, noButton = false }: OfferCardProps) {
+export function OfferCard({ offer, minimalist = false }: OfferCardProps) {
   return (
     <Card key={offer.id} className="py-0 group overflow-hidden">
       <CardHeader className="px-0">
@@ -36,42 +36,44 @@ export function OfferCard({ offer, noButton = false }: OfferCardProps) {
 
           {/* Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-
-          {/* Top Left: Time Window */}
-          <Badge className="absolute top-4 left-4 backdrop-blur-sm flex items-center gap-2">
-            <Clock className="w-4 h-4" />
-            From {formatTime(offer.start_time)} - {formatTime(offer.end_time)}
-          </Badge>
+          {!minimalist && (
+            <Badge className="absolute top-4 left-4 backdrop-blur-sm flex items-center gap-2">
+              <Clock className="w-4 h-4" />
+              From {formatTime(offer.start_time)} - {formatTime(offer.end_time)}
+            </Badge>
+          )}
         </div>
       </CardHeader>
 
       <CardContent className="pb-6">
-        <CardTitle className="text-2xl font-bold transition-transform mb-2 group-hover:-translate-y-1">
+        <CardTitle className="text-xl md:text-2xl font-bold transition-transform mb-2 group-hover:-translate-y-1">
           {offer.title}
         </CardTitle>
+        {!minimalist && (
+          <>
+            <CardDescription className="line-clamp-2 mb-4">
+              {offer.description}
+            </CardDescription>
+            {/* Bottom Left: Days of Week */}
+            {offer.is_recurring && (
+              <p className="text-muted-foreground text-sm font-medium mb-6">
+                Offer available on {getDayNames(offer.days_of_week ?? [])}
+              </p>
+            )}
+            {!offer.is_recurring && (
+              <p className="text-muted-foreground text-sm font-medium mb-6">
+                Offer active from {formatDate(offer.start_date ?? "")} to{" "}
+                {formatDate(offer.end_date ?? "")}
+              </p>
+            )}
 
-        <CardDescription className="line-clamp-2 mb-4">
-          {offer.description}
-        </CardDescription>
-        {/* Bottom Left: Days of Week */}
-        {offer.is_recurring && (
-          <p className="text-muted-foreground text-sm font-medium mb-6">
-            Offer available on {getDayNames(offer.days_of_week ?? [])}
-          </p>
-        )}
-        {!offer.is_recurring && (
-          <p className="text-muted-foreground text-sm font-medium mb-6">
-            Offer active from {formatDate(offer.start_date ?? "")} to{" "}
-            {formatDate(offer.end_date ?? "")}
-          </p>
-        )}
-        {!noButton && (
-          <Button size="sm" variant="outline" asChild>
-            <Link href={`/offers/${offer.slug}`}>
-              View Details
-              <ArrowRight />
-            </Link>
-          </Button>
+            <Button size="sm" variant="outline" asChild>
+              <Link href={`/offers/${offer.slug}`}>
+                View Details
+                <ArrowRight />
+              </Link>
+            </Button>
+          </>
         )}
       </CardContent>
     </Card>

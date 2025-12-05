@@ -71,7 +71,7 @@ export function OfferDetail({ offer }: { offer: Offer }) {
         <div className="flex flex-col justify-center">
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
+              <h1 className="text-2xl font-bold tracking-tight text-foreground lg:text-4xl text-balance">
                 {offer.title}
               </h1>
               <p className="mt-4 text-lg leading-relaxed text-muted-foreground">

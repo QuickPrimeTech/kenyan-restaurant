@@ -57,7 +57,7 @@ export function SuggestedOffers({
               className="pl-4 sm:basis-1/2 lg:basis-1/4"
             >
               <Link href={`/offers/${offer.slug}`}>
-                <OfferCard offer={offer} noButton />
+                <OfferCard offer={offer} minimalist />
               </Link>
             </CarouselItem>
           ))}
