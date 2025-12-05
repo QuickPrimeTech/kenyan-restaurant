@@ -11,11 +11,11 @@ export const OffersSection = ({ offers }: { offers: Offer[] }) => {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Today's Special Offers
+            Today&apos;s Special Offers
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Discover our exclusive time-limited deals and recurring weekly
-            specials that you don't want to miss out.
+            specials that you don&apos;t want to miss out.
           </p>
         </div>
 

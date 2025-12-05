@@ -8,13 +8,15 @@ import ContactSummary from "@/sections/home/contact-summary";
 import InstagramFeed from "@/sections/home/instagram-feed";
 import api from "@/lib/api-client";
 import { OffersSection } from "@/sections/home/offers";
+import { ApiResponse } from "@/types/api";
+import { Offer } from "@/types/offers";
 
 // force static, no auto revalidation (only on-demand ISR)
 export const dynamic = "force-static";
 export const revalidate = false;
 
 export default async function HomePage() {
-  const { data: offers } = await api.get("/offers");
+  const { data: offers } = await api.get<ApiResponse<Offer[]>>("/offers");
   return (
     <>
       <HeroSection />

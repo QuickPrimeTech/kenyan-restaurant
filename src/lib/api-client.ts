@@ -3,7 +3,10 @@ const BASE_URL = process.env.API_URL || "https://api.quickprimetech.com/v1";
 const BRANCH_ID = process.env.BRANCH_ID!;
 const API_SECRET_KEY = process.env.API_SECRET_KEY!;
 
-async function request(path: string, options: RequestInit = {}) {
+async function request<T = unknown>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T> {
   const url = `${BASE_URL}/${BRANCH_ID}${path}`;
 
   const headers = {
@@ -23,21 +26,21 @@ async function request(path: string, options: RequestInit = {}) {
 }
 
 const api = {
-  get: (path: string) => request(path, { method: "GET" }),
+  get: <T = unknown>(path: string) => request<T>(path, { method: "GET" }),
 
-  post: (path: string, body: any) =>
-    request(path, {
+  post: <Req = unknown, Res = unknown>(path: string, body: Req) =>
+    request<Res>(path, {
       method: "POST",
       body: JSON.stringify(body),
     }),
 
-  put: (path: string, body: any) =>
-    request(path, {
+  put: <Req = unknown, Res = unknown>(path: string, body: Req) =>
+    request<Res>(path, {
       method: "PUT",
       body: JSON.stringify(body),
     }),
 
-  delete: (path: string) => request(path, { method: "DELETE" }),
+  delete: <T = unknown>(path: string) => request<T>(path, { method: "DELETE" }),
 };
 
 export default api;

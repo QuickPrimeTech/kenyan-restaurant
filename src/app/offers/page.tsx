@@ -1,5 +1,7 @@
 import api from "@/lib/api-client";
 import { OffersGrid } from "@/sections/offers/offers-grid";
+import { ApiResponse } from "@/types/api";
+import { Offer } from "@/types/offers";
 
 // force static, no auto revalidation (only on-demand ISR)
 export const dynamic = "force-static";
@@ -12,7 +14,7 @@ export const metadata = {
 };
 
 export default async function OffersPage() {
-  const { data: offers } = await api.get("/offers");
+  const { data: offers } = await api.get<ApiResponse<Offer[]>>("/offers");
   return (
     <div className="section mt-16">
       <header className="mb-8">
