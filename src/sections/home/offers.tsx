@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Offer } from "@/types/offers";
 import { OfferCard } from "@/sections/offers/offer-card";
+import { H2, Paragraph } from "@/components/ui/typography";
 
 export const OffersSection = ({ offers }: { offers: Offer[] }) => {
   return (
@@ -10,13 +11,11 @@ export const OffersSection = ({ offers }: { offers: Offer[] }) => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Today&apos;s Special Offers
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <H2 className="mb-4">Today&apos;s Special Offers</H2>
+          <Paragraph className="text-muted-foreground max-w-2xl mx-auto font-medium">
             Discover our exclusive time-limited deals and recurring weekly
             specials that you don&apos;t want to miss out.
-          </p>
+          </Paragraph>
         </div>
 
         {/* Grid */}
