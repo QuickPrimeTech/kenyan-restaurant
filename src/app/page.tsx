@@ -6,14 +6,20 @@ import CallToAction from "@/components/cta";
 import FAQ from "@/sections/home/faqs";
 import ContactSummary from "@/sections/home/contact-summary";
 import InstagramFeed from "@/sections/home/instagram-feed";
-import PromotionalBanner from "@/sections/home/promotional-banner";
+import api from "@/lib/api-client";
+import { OffersSection } from "@/sections/home/offers";
 
-export default function HomePage() {
+// force static, no auto revalidation (only on-demand ISR)
+export const dynamic = "force-static";
+export const revalidate = false;
+
+export default async function HomePage() {
+  const { data: offers } = await api.get("/offers");
   return (
     <>
       <HeroSection />
       <MenuHighlights />
-      <PromotionalBanner />
+      <OffersSection offers={offers} />
       <AboutSection />
       <ReviewsSection />
       <CallToAction />
