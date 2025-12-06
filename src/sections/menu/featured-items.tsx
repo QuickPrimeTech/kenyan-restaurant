@@ -66,6 +66,7 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
         </h2>
         <div className="flex items-center gap-2">
           <Button
+            variant={"outline"}
             onClick={() => scroll("left")}
             size={"icon-sm"}
             className="rounded-full"
@@ -74,6 +75,7 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
             <ArrowLeft />
           </Button>
           <Button
+            variant={"outline"}
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
             size={"icon-sm"}

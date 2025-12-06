@@ -7,9 +7,10 @@ import { useCart } from "@/hooks/use-cart";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Minus, Plus } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
-import Image from "next/image";
-import { DialogTitle } from "@radix-ui/react-dialog";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { ImageWithFallback } from "@/components/ui/image";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -54,9 +55,9 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         Ksh {item.price.toFixed(2)}
       </span>
 
-      <p className="text-[15px] text-muted-foreground leading-relaxed mb-6">
+      <DialogDescription className="text-[15px] leading-relaxed mb-6">
         {item.description}
-      </p>
+      </DialogDescription>
 
       <div className="mb-6">
         <h3 className="text-[16px] font-medium text-foreground mb-3">
@@ -105,11 +106,10 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         <h3 className="text-[16px] font-medium text-foreground mb-2">
           Special instructions
         </h3>
-        <textarea
+        <Textarea
           value={specialInstructions}
           onChange={(e) => setSpecialInstructions(e.target.value)}
           placeholder="Add a note (extra sauce, no onions, etc.)"
-          className="w-full h-20 p-3 bg-secondary rounded-xl text-[15px] resize-none focus:outline-none focus:ring-2 focus:ring-foreground placeholder:text-muted-foreground"
         />
       </div>
     </div>
@@ -140,12 +140,10 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         </div>
 
         {/* Add to order button */}
-        <button
-          onClick={handleAddToCart}
-          className="flex-1 h-12 bg-foreground text-background rounded-full font-medium text-[16px] hover:bg-foreground/90 transition-colors"
-        >
-          Add to order • ${(item.price * quantity).toFixed(2)}
-        </button>
+        <Button onClick={handleAddToCart} size={"xl"} className="flex-1">
+          <Plus strokeWidth={3} />
+          Add to order • Ksh {(item.price * quantity).toFixed(2)}
+        </Button>
       </div>
     </div>
   );
@@ -157,20 +155,14 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         <DialogContent className="max-w-[480px] p-0 gap-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
           <ScrollArea className="flex-1 h-60 overflow-y-scroll">
             <div className="relative h-[280px] bg-muted shrink-0">
-              {item.image_url ? (
-                <Image
-                  fill
-                  src={item.image_url}
-                  placeholder={item.lqip ? "blur" : "empty"}
-                  blurDataURL={item.lqip || undefined}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-muted flex items-center justify-center text-sm text-muted-foreground">
-                  No Image
-                </div>
-              )}
+              <ImageWithFallback
+                fill
+                src={item.image_url}
+                placeholder={item.lqip ? "blur" : "empty"}
+                blurDataURL={item.lqip || undefined}
+                alt={item.name}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             {scrollableContent}
@@ -190,10 +182,7 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         {/* Drawer handle */}
         <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted my-3" />
 
-        <ScrollArea
-          className="flex-1 overflow-hidden"
-          style={{ maxHeight: "calc(95vh - 200px - 82px - 30px)" }}
-        >
+        <ScrollArea className="flex-1 overflow-hidden">
           {/* Image - Fixed height */}
           <div className="relative h-[280px] bg-muted shrink-0">
             <ImageWithFallback
