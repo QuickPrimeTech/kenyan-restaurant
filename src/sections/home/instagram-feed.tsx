@@ -72,10 +72,7 @@ export default function InstagramSection() {
       aria-labelledby="follow-us-header"
     >
       <div className="text-center mb-12">
-        <H2
-          className="font-serif text-4xl font-bold mb-4"
-          id="follow-us-header"
-        >
+        <H2 className="mb-4" id="follow-us-header">
           Follow Us on Instagram
         </H2>
         <Paragraph>

@@ -81,7 +81,7 @@ export default function MenuContent() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Header
         orderMode={orderMode}
         onOrderModeChange={setOrderMode}
@@ -99,7 +99,7 @@ export default function MenuContent() {
 
         <div className="flex">
           {/* Menu Content */}
-          <div className="flex-1 px-4 pb-32 lg:pb-8 overflow-hidden">
+          <div className="flex-1 section-x overflow-hidden">
             {/* Featured Items Carousel - only show when not searching */}
             {!searchQuery && (
               <div

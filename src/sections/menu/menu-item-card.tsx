@@ -37,7 +37,7 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
         <h3 className="text-[16px] font-medium text-foreground leading-snug mb-1">
           {item.name}
         </h3>
-        <p className="text-[14px] text-muted-foreground leading-snug line-clamp-2 mb-2">
+        <p className="text-sm text-muted-foreground leading-snug line-clamp-2 mb-2">
           {item.description}
         </p>
 
@@ -64,7 +64,7 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
             src={item.image}
             alt={item.name}
             className="object-cover rounded-xl"
-            onError={() => setImgError(true)} // 👈 fallback triggered
+            onError={() => setImgError(true)} // fallback triggered
           />
         ) : (
           <div className="w-full h-full bg-muted flex items-center justify-center text-sm text-muted-foreground">
