@@ -30,7 +30,7 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
   return (
     <div
       onClick={onClick}
-      className="flex gap-4 shadow-sm cursor-pointer rounded-xl hover:bg-secondary/30 transition-colors"
+      className="flex gap-4 shadow-sm cursor-pointer rounded-sm overflow-hidden"
     >
       {/* Content */}
       <div className="flex-1 min-w-0 py-4 flex flex-col justify-center pl-4">
@@ -67,7 +67,7 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
             onError={() => setImgError(true)} // 👈 fallback triggered
           />
         ) : (
-          <div className="w-full h-full bg-muted flex items-center justify-center rounded-r-xl text-sm text-muted-foreground">
+          <div className="w-full h-full bg-muted flex items-center justify-center text-sm text-muted-foreground">
             No Image
           </div>
         )}

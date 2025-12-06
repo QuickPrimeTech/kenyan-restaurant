@@ -1,13 +1,14 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useCart } from "@/hooks/use-cart";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { Minus, Plus, X } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
+import Image from "next/image";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -44,23 +45,13 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
 
   const scrollableContent = (
     <div className="p-5">
-      <h2 className="text-[22px] md:text-[24px] font-bold text-foreground mb-2">
+      <DialogTitle className="text-2xl md:text-[24px] font-bold text-foreground mb-2">
         {item.name}
-      </h2>
+      </DialogTitle>
 
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-[16px] text-foreground">
-          ${item.price.toFixed(2)}
-        </span>
-        {item.calories && (
-          <>
-            <span className="text-muted-foreground">•</span>
-            <span className="text-[15px] text-muted-foreground">
-              {item.calories} Cal.
-            </span>
-          </>
-        )}
-      </div>
+      <span className="text-[16px] text-foreground">
+        Ksh {item.price.toFixed(2)}
+      </span>
 
       <p className="text-[15px] text-muted-foreground leading-relaxed mb-6">
         {item.description}
@@ -166,28 +157,18 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-[480px] p-0 gap-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
-          {/* Close Button */}
-          <button
-            onClick={() => onOpenChange(false)}
-            className="absolute left-4 top-4 z-10 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
-          >
-            <X className="w-5 h-5 text-black" />
-          </button>
+          <ScrollArea className="flex-1 h-60 overflow-y-scroll">
+            <div className="relative h-[280px] bg-muted shrink-0">
+              <Image
+                fill
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-          {/* Image - Fixed height */}
-          <div className="relative h-[280px] bg-muted shrink-0">
-            <img
-              src={item.image || "/placeholder.svg"}
-              alt={item.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <ScrollArea
-            className="flex-1 overflow-hidden"
-            style={{ maxHeight: "calc(90vh - 280px - 82px)" }}
-          >
             {scrollableContent}
+            <ScrollBar orientation="vertical" />
           </ScrollArea>
 
           {bottomBar}
@@ -209,8 +190,9 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         >
           {/* Image - Fixed height */}
           <div className="relative h-[200px] bg-muted shrink-0">
-            <img
-              src={item.image || "/placeholder.svg"}
+            <Image
+              fill
+              src={item.image}
               alt={item.name}
               className="w-full h-full object-cover"
             />

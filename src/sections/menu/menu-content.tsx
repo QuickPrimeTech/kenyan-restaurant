@@ -88,7 +88,7 @@ export default function MenuContent() {
         onCheckout={() => setCheckoutOpen(true)}
       />
 
-      <main className="max-w-[1400px] mx-auto">
+      <main className="container mx-auto">
         <CategoryTabs
           categories={categories}
           activeCategory={activeCategory}

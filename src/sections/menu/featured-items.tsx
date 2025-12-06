@@ -5,6 +5,7 @@ import type { MenuItem } from "@/types/menu";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface FeaturedItemsProps {
   items: MenuItem[];
@@ -13,6 +14,7 @@ interface FeaturedItemsProps {
 
 export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [imageError, setImageError] = useState(false);
   const { addItem } = useCart();
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -58,7 +60,7 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
   return (
     <div className="py-4">
       {/* Header with arrows */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-4">
         <h2 className="text-[22px] font-bold text-foreground">
           Featured Items
         </h2>
@@ -95,25 +97,35 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
           >
             {/* Square image container */}
             <div className="relative w-[150px] h-[150px] mb-2">
-              <img
-                src={item.image || "/placeholder.svg"}
-                alt={item.name}
-                className="w-full h-full object-cover rounded-xl"
-              />
+              {!imageError ? (
+                <Image
+                  fill
+                  src={item.image || "/placeholder.svg"}
+                  alt={item.name}
+                  className="w-full h-full object-cover rounded-xl"
+                  onError={() => setImageError(() => true)}
+                />
+              ) : (
+                <div className="w-full h-full bg-muted flex items-center justify-center text-sm text-muted-foreground rounded-xl">
+                  No Image
+                </div>
+              )}
               {/* Plus button - Uber Eats style */}
-              <button
+              <Button
                 onClick={(e) => handleQuickAdd(e, item)}
-                className="absolute bottom-2 right-2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+                size="icon"
+                variant="outline"
+                className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform border border-border"
               >
-                <Plus className="size-5 text-black" strokeWidth={2.5} />
-              </button>
+                <Plus className="text-black" strokeWidth={2.5} />
+              </Button>
             </div>
             {/* Item info */}
             <h3 className="text-[15px] font-medium text-foreground leading-tight line-clamp-2 mb-0.5">
               {item.name}
             </h3>
             <p className="text-[15px] text-foreground">
-              ${item.price.toFixed(2)}
+              Ksh {item.price.toFixed(2)}
             </p>
           </div>
         ))}
