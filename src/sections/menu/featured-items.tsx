@@ -53,7 +53,7 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
       name: item.name,
       price: item.price,
       quantity: 1,
-      image: item.image,
+      image: item.image_url,
     });
   };
 
@@ -97,10 +97,12 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
           >
             {/* Square image container */}
             <div className="relative w-[150px] h-[150px] mb-2">
-              {!imageError ? (
+              {!imageError && item.image_url ? (
                 <Image
                   fill
-                  src={item.image || "/placeholder.svg"}
+                  src={item.image_url}
+                  placeholder={item.lqip ? "blur" : "empty"}
+                  blurDataURL={item.lqip || undefined}
                   alt={item.name}
                   className="w-full h-full object-cover rounded-xl"
                   onError={() => setImageError(() => true)}

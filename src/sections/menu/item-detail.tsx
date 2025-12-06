@@ -9,6 +9,7 @@ import { Minus, Plus } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 import Image from "next/image";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { ImageWithFallback } from "@/components/ui/image";
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -37,7 +38,7 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
       name: item.name,
       price: item.price,
       quantity,
-      image: item.image,
+      image: item.image_url,
       special: specialInstructions,
     });
     onOpenChange(false);
@@ -64,9 +65,6 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-secondary rounded-xl p-3">
             <p className="text-[13px] text-muted-foreground">Calories</p>
-            <p className="text-[15px] font-medium">
-              {item.calories || 450} Cal
-            </p>
           </div>
           <div className="bg-secondary rounded-xl p-3">
             <p className="text-[13px] text-muted-foreground">Protein</p>
@@ -159,12 +157,20 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         <DialogContent className="max-w-[480px] p-0 gap-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
           <ScrollArea className="flex-1 h-60 overflow-y-scroll">
             <div className="relative h-[280px] bg-muted shrink-0">
-              <Image
-                fill
-                src={item.image}
-                alt={item.name}
-                className="w-full h-full object-cover"
-              />
+              {item.image_url ? (
+                <Image
+                  fill
+                  src={item.image_url}
+                  placeholder={item.lqip ? "blur" : "empty"}
+                  blurDataURL={item.lqip || undefined}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-muted flex items-center justify-center text-sm text-muted-foreground">
+                  No Image
+                </div>
+              )}
             </div>
 
             {scrollableContent}
@@ -189,14 +195,17 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
           style={{ maxHeight: "calc(95vh - 200px - 82px - 30px)" }}
         >
           {/* Image - Fixed height */}
-          <div className="relative h-[200px] bg-muted shrink-0">
-            <Image
+          <div className="relative h-[280px] bg-muted shrink-0">
+            <ImageWithFallback
               fill
-              src={item.image}
+              src={item.image_url}
+              placeholder={item.lqip ? "blur" : "empty"}
+              blurDataURL={item.lqip || undefined}
               alt={item.name}
               className="w-full h-full object-cover"
             />
           </div>
+
           {scrollableContent}
         </ScrollArea>
 

@@ -8,20 +8,10 @@ import { CartSidebar } from "@/sections/menu/cart-sidebar";
 import { ItemDetail } from "@/sections/menu/item-detail";
 import { MobileCartButton } from "@/sections/menu/mobile-cart-button";
 import { CheckoutModal } from "@/sections/menu/checkout-modal";
-import { menuData } from "@/lib/menu-data";
 import { Header } from "./header";
+import { MenuItem } from "@/types/menu";
 
-export type MenuItem = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  calories?: number;
-  popular?: boolean;
-};
-
-export default function MenuContent() {
+export default function MenuContent({ menuItems }: { menuItems: MenuItem[] }) {
   const [activeCategory, setActiveCategory] = useState("Featured Items");
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,40 +21,62 @@ export default function MenuContent() {
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const { items } = useCart();
 
-  const categories = Object.keys(menuData);
-
-  const featuredItems = useMemo(() => {
-    const allItems: MenuItem[] = [];
-    Object.values(menuData).forEach((items) => {
-      items.forEach((item) => {
-        if (item.popular) {
-          allItems.push(item);
-        }
-      });
-    });
-    return allItems;
-  }, []);
-
-  const filteredMenuData = useMemo(() => {
-    if (!searchQuery.trim()) return menuData;
-    const query = searchQuery.toLowerCase();
-    const filtered: typeof menuData = {};
-    Object.entries(menuData).forEach(([category, items]) => {
-      const matchingItems = items.filter(
-        (item) =>
-          item.name.toLowerCase().includes(query) ||
-          item.description.toLowerCase().includes(query)
-      );
-      if (matchingItems.length > 0) {
-        filtered[category] = matchingItems;
+  // Get unique categories from menu items
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+    menuItems.forEach((item) => {
+      if (item.category) {
+        cats.add(item.category);
       }
     });
-    return filtered;
-  }, [searchQuery]);
+    return ["Featured Items", ...Array.from(cats).sort()];
+  }, [menuItems]);
+
+  // Get featured/popular items
+  const featuredItems = useMemo(() => {
+    return menuItems.filter((item) => item.is_popular && item.is_available);
+  }, [menuItems]);
+
+  // Filter items by search query
+  const filteredItems = useMemo(() => {
+    if (!searchQuery.trim()) return menuItems;
+
+    const query = searchQuery.toLowerCase();
+    return menuItems.filter(
+      (item) =>
+        item.is_available &&
+        (item.name.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query) ||
+          item.category.toLowerCase().includes(query))
+    );
+  }, [searchQuery, menuItems]);
+
+  // Group filtered items by category
+  const groupedMenuItems = useMemo(() => {
+    const grouped: Record<string, MenuItem[]> = {};
+
+    filteredItems.forEach((item) => {
+      if (item.is_available) {
+        const category = item.category || "Other";
+        if (!grouped[category]) {
+          grouped[category] = [];
+        }
+        grouped[category].push(item);
+      }
+    });
+
+    // Sort items within each category by name
+    Object.keys(grouped).forEach((category) => {
+      grouped[category].sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    return grouped;
+  }, [filteredItems]);
 
   const handleCategoryClick = (category: string) => {
     setActiveCategory(category);
     setSearchQuery(""); // Clear search when clicking category
+
     const section = sectionRefs.current[category];
     if (section) {
       const headerOffset = 140;
@@ -81,7 +93,7 @@ export default function MenuContent() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen mb-16">
       <Header
         orderMode={orderMode}
         onOrderModeChange={setOrderMode}
@@ -101,7 +113,7 @@ export default function MenuContent() {
           {/* Menu Content */}
           <div className="flex-1 section-x overflow-hidden">
             {/* Featured Items Carousel - only show when not searching */}
-            {!searchQuery && (
+            {!searchQuery && featuredItems.length > 0 && (
               <div
                 ref={(el) => {
                   sectionRefs.current["Featured Items"] = el;
@@ -115,26 +127,38 @@ export default function MenuContent() {
             )}
 
             {/* Menu Sections */}
-            {Object.keys(filteredMenuData).map((category) => (
+            {Object.entries(groupedMenuItems).map(([category, items]) => (
               <MenuSection
                 key={category}
                 ref={(el) => {
                   sectionRefs.current[category] = el;
                 }}
                 title={category}
-                items={filteredMenuData[category]}
+                items={items}
                 onItemClick={handleItemClick}
               />
             ))}
 
             {/* No results message */}
-            {searchQuery && Object.keys(filteredMenuData).length === 0 && (
+            {searchQuery && Object.keys(groupedMenuItems).length === 0 && (
               <div className="text-center py-12">
                 <p className="text-lg font-medium text-foreground">
                   No items found
                 </p>
                 <p className="text-muted-foreground mt-1">
-                  Try a different search term
+                  Try searching for "{searchQuery}" with a different term
+                </p>
+              </div>
+            )}
+
+            {/* No items at all */}
+            {!searchQuery && Object.keys(groupedMenuItems).length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-lg font-medium text-foreground">
+                  No menu items available
+                </p>
+                <p className="text-muted-foreground mt-1">
+                  Check back soon for our delicious offerings
                 </p>
               </div>
             )}

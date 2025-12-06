@@ -1,4 +1,7 @@
+import api from "@/lib/api-client";
 import MenuContent from "@/sections/menu/menu-content";
+import { ApiResponse } from "@/types/api";
+import { MenuItem } from "@/types/menu";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,7 +16,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://yourdomain.com/og/menu-banner.jpg", // optional — replace with your real menu OG image
+        url: "https://res.cloudinary.com/quick-prime-tech/image/upload/v1764935940/ziwa-restaurant/eldoret/offers/axjmqjxgo4aebbylsbn1.jpg", // optional — replace with your real menu OG image
         width: 1200,
         height: 630,
         alt: "Restaurant Menu Preview",
@@ -31,6 +34,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MenuPage() {
-  return <MenuContent />;
+export default async function MenuPage() {
+  const { data: menuItems } = await api.get<ApiResponse<MenuItem[]>>(
+    "/menu-items"
+  );
+  console.log("Menu Items:", menuItems);
+  return <MenuContent menuItems={menuItems} />;
 }

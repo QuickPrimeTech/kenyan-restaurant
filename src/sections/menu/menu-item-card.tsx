@@ -23,7 +23,7 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
       name: item.name,
       price: item.price,
       quantity: 1,
-      image: item.image,
+      image: item.image_url,
     });
   };
 
@@ -45,23 +45,17 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
           <span className="text-[15px] text-foreground">
             Ksh {item.price.toFixed(2)}
           </span>
-          {item.calories && (
-            <>
-              <span className="text-muted-foreground">•</span>
-              <span className="text-[14px] text-muted-foreground">
-                {item.calories} Cal.
-              </span>
-            </>
-          )}
         </div>
       </div>
 
       {/* Image + button */}
       <div className="relative aspect-square w-40 shrink-0">
-        {!imgError ? (
+        {!imgError && item.image_url ? (
           <Image
             fill
-            src={item.image}
+            src={item.image_url}
+            placeholder={item.lqip ? "blur" : "empty"}
+            blurDataURL={item.lqip || undefined}
             alt={item.name}
             className="object-cover rounded-xl"
             onError={() => setImgError(true)} // fallback triggered
