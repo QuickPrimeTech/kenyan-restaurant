@@ -1,11 +1,9 @@
 export type MenuItem = {
-  id: number;
+  id: string;
   name: string;
-  category: string;
-  price: string;
   description: string;
+  price: number;
   image: string;
-  rating: number;
+  calories?: number;
   popular?: boolean;
-  dietary: string[] | [];
 };
