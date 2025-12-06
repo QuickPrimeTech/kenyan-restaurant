@@ -23,7 +23,7 @@ export default function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl sm:mx-auto md:mx-0 px-4 text-white text-center sm:text-left">
-        <h1 className="font-serif text-4xl md:text-6xl font-bold mb-6">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6">
           Bahari &ndash; A Taste of the Ocean
         </h1>
         <p className="text-lg md:text-2xl mb-8 font-light">

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Quicksand, Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/layouts/Navbar";
 import Footer from "@/layouts/Footer";
@@ -9,14 +9,18 @@ import { ContactButton } from "@/components/contact-button";
 import { WhatsAppCampaignPopup } from "@/components/whatsapp-campaign-popup";
 import { CartProvider } from "@/hooks/use-cart";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Headings
+const quicksand = Quicksand({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-quicksand",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Body text
+const nunito = Nunito({
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-nunito",
 });
 
 export const metadata: Metadata = {
@@ -55,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${quicksand.variable} ${nunito.variable} antialiased font-mono`}
       >
         <CartProvider>
           <Navbar />

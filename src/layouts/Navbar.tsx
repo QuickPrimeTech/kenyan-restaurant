@@ -71,7 +71,7 @@ export default function Navbar() {
               className={cn(
                 "hover:text-primary transition-colors font-medium",
                 pathname === link.href && "text-primary",
-                isHome && !isScrolled ? "text-white" : "text-muted-foreground"
+                isHome && !isScrolled && "text-white"
               )}
             >
               {link.label}
