@@ -10,9 +10,10 @@ const contact = {
 };
 
 export const site = {
+  logo: "https://res.cloudinary.com/quick-prime-tech/image/upload/v1750685108/Flux_Dev_A_minimalistic_logo_for_a_coastal_restaurant_featurin_0_yyrx6o.jpg",
   restaurantName: "Ziwa Restaurant",
   restaurantDescription:
-    "Karibu Ziwa – where great Kenyan flavors meet warm hospitality. Whether you're craving a hearty meal, a quick bite, or a cozy spot to unwind, we’ve got something delicious waiting for you.",
+    "Karibu Ziwa - whether you're craving a hearty meal, a quick bite, or a cozy spot to unwind, we’ve got something delicious waiting for you.",
   contact,
   links: {
     whatsappUrl: `https://wa.me/${contact.whatsapp.replace("+", "")}`,

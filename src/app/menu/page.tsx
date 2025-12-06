@@ -2,7 +2,7 @@ import MenuContent from "@/sections/menu/menu-content";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Restaurant Menu | Delicious Meals, Drinks & Specials",
+  title: "Our Menu | Delicious Meals, Drinks & Specials",
   description:
     "Explore our full restaurant menu. Discover delicious meals, drinks, desserts, and chef specials made fresh every day.",
   openGraph: {
