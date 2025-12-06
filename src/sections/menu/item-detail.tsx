@@ -203,19 +203,18 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         {/* Drawer handle */}
         <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted my-3" />
 
-        {/* Image - Fixed height */}
-        <div className="relative h-[200px] bg-muted shrink-0">
-          <img
-            src={item.image || "/placeholder.svg"}
-            alt={item.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
-
         <ScrollArea
           className="flex-1 overflow-hidden"
           style={{ maxHeight: "calc(95vh - 200px - 82px - 30px)" }}
         >
+          {/* Image - Fixed height */}
+          <div className="relative h-[200px] bg-muted shrink-0">
+            <img
+              src={item.image || "/placeholder.svg"}
+              alt={item.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
           {scrollableContent}
         </ScrollArea>
 

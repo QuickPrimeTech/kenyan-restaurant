@@ -1,8 +1,6 @@
 "use client";
-
 import { useState, useRef, useMemo } from "react";
 import { useCart } from "@/hooks/use-cart";
-import { Header } from "@/sections/menu/header";
 import { CategoryTabs } from "@/sections/menu/category-tabs";
 import { MenuSection } from "@/sections/menu/menu-section";
 import { FeaturedItems } from "@/sections/menu/featured-items";
@@ -11,6 +9,7 @@ import { ItemDetail } from "@/sections/menu/item-detail";
 import { MobileCartButton } from "@/sections/menu/mobile-cart-button";
 import { CheckoutModal } from "@/sections/menu/checkout-modal";
 import { menuData } from "@/lib/menu-data";
+import { Header } from "./header";
 
 export type MenuItem = {
   id: string;

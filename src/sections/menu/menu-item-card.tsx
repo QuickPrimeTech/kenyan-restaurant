@@ -1,10 +1,11 @@
 "use client";
 
-import type React from "react";
+import * as React from "react";
 import type { MenuItem } from "@/types/menu";
 import { Plus } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface MenuItemCardProps {
   item: MenuItem;
@@ -13,6 +14,7 @@ interface MenuItemCardProps {
 
 export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
   const { addItem } = useCart();
+  const [imgError, setImgError] = React.useState(false);
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -28,16 +30,17 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
   return (
     <div
       onClick={onClick}
-      className="flex gap-4 py-4 shadow-sm cursor-pointer rounded-xl hover:bg-secondary/30  px-4 transition-colors"
+      className="flex gap-4 shadow-sm cursor-pointer rounded-xl hover:bg-secondary/30 transition-colors"
     >
-      {/* Content - left side */}
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
+      {/* Content */}
+      <div className="flex-1 min-w-0 py-4 flex flex-col justify-center pl-4">
         <h3 className="text-[16px] font-medium text-foreground leading-snug mb-1">
           {item.name}
         </h3>
         <p className="text-[14px] text-muted-foreground leading-snug line-clamp-2 mb-2">
           {item.description}
         </p>
+
         <div className="flex items-center gap-2">
           <span className="text-[15px] text-foreground">
             Ksh {item.price.toFixed(2)}
@@ -53,19 +56,27 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
         </div>
       </div>
 
-      {/* Image - right side with + button */}
-      <div className="relative w-[140px] h-[140px] sm:w-[156px] sm:h-[156px] shrink-0">
-        <img
-          src={item.image || "/placeholder.svg"}
-          alt={item.name}
-          className="w-full h-full object-cover rounded-xl"
-        />
-        {/* Uber Eats plus button - bottom right corner outside image */}
+      {/* Image + button */}
+      <div className="relative aspect-square w-40 shrink-0">
+        {!imgError ? (
+          <Image
+            fill
+            src={item.image}
+            alt={item.name}
+            className="object-cover rounded-xl"
+            onError={() => setImgError(true)} // 👈 fallback triggered
+          />
+        ) : (
+          <div className="w-full h-full bg-muted flex items-center justify-center rounded-r-xl text-sm text-muted-foreground">
+            No Image
+          </div>
+        )}
+
         <Button
           onClick={handleQuickAdd}
-          size={"icon-lg"}
-          variant={"outline"}
-          className="absolute -bottom-2 -right-2 rounded-full shadow-lghover:scale-105 transition-transform border border-border"
+          size="icon-lg"
+          variant="outline"
+          className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform border border-border"
         >
           <Plus className="text-black" strokeWidth={2.5} />
         </Button>
