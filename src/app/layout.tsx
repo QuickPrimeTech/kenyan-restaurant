@@ -8,6 +8,7 @@ import { site } from "@/config/site-config";
 import { ContactButton } from "@/components/contact-button";
 import { WhatsAppCampaignPopup } from "@/components/whatsapp-campaign-popup";
 import { CartProvider } from "@/hooks/use-cart";
+import { ThemeProvider } from "@/components/theme-provider";
 
 // Headings
 const montserrat = Montserrat({
@@ -61,14 +62,21 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${openSans.variable} antialiased font-mono`}
       >
-        <CartProvider>
-          <Navbar />
-          {children}
-          <ContactButton />
-          <WhatsAppCampaignPopup />
-          <Toaster richColors position="top-center" />
-        </CartProvider>
-        <Footer />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <CartProvider>
+            <Navbar />
+            {children}
+            <ContactButton />
+            <WhatsAppCampaignPopup />
+            <Toaster richColors position="top-center" />
+          </CartProvider>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

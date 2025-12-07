@@ -13,7 +13,7 @@ export function MenuItemCard({ item, onAdd }: MenuItemCardProps) {
   return (
     <div
       onClick={onAdd}
-      className="flex gap-4 shadow-sm cursor-pointer rounded-sm overflow-hidden"
+      className="bg-card flex gap-4 shadow-sm cursor-pointer rounded-sm overflow-hidden"
     >
       {/* Content */}
       <div className="flex-1 min-w-0 py-4 flex flex-col justify-center pl-4">
@@ -47,9 +47,9 @@ export function MenuItemCard({ item, onAdd }: MenuItemCardProps) {
           size="icon-lg"
           variant="outline"
           title={`Add ${item.name} to cart`}
-          className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform border border-border"
+          className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform"
         >
-          <Plus className="text-black" strokeWidth={3.5} />
+          <Plus className="text-foreground" strokeWidth={3.5} />
         </Button>
       </div>
     </div>

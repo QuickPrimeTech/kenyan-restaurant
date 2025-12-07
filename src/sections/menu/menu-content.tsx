@@ -7,7 +7,6 @@ import { CartSidebar } from "@/sections/menu/cart-sidebar";
 import { ItemDetail } from "@/sections/menu/item-detail";
 import { MobileCartButton } from "@/sections/menu/mobile-cart-button";
 import { CheckoutModal } from "@/sections/menu/checkout-modal";
-import { Header } from "./header";
 import { MenuItem } from "@/types/menu";
 import { MenuSection } from "./menu-section";
 
@@ -106,12 +105,6 @@ export default function MenuContent({
 
   return (
     <div className="min-h-screen mb-16">
-      <Header
-        orderMode={orderMode}
-        onOrderModeChange={setOrderMode}
-        onCheckout={() => setCheckoutOpen(true)}
-      />
-
       <main className="container mx-auto">
         <CategoryTabs
           categories={categories}

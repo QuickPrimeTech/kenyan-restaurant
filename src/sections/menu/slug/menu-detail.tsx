@@ -5,7 +5,7 @@ import { ImageWithFallback } from "@/components/ui/image";
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   return (
     <section>
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
           <ImageWithFallback
             src={menuItem.image_url}

@@ -57,7 +57,7 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
   };
 
   return (
-    <div className="py-4">
+    <div className="mt-20 py-4">
       {/* Header with arrows */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-[22px] font-bold text-foreground">
@@ -111,9 +111,9 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
                 onClick={(e) => handleQuickAdd(e, item)}
                 size="icon"
                 variant="outline"
-                className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform border border-border"
+                className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform"
               >
-                <Plus className="text-black" strokeWidth={3.5} />
+                <Plus className="text-foreground" strokeWidth={3.5} />
               </Button>
             </div>
             {/* Item info */}

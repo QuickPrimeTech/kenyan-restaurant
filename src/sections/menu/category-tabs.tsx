@@ -86,7 +86,7 @@ export function CategoryTabs({
   };
 
   return (
-    <div className="sticky top-16 z-40 py-3 bg-background/80 backdrop-blur-lg border-b border-border">
+    <div className="sticky top-16 lg:top-20 z-40 py-3 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="relative section-x flex items-center gap-2">
         {/* Left Arrow */}
         {canScrollLeft && !searchExpanded && (
@@ -168,10 +168,10 @@ export function CategoryTabs({
               ))}
             </div>
             {canScrollRight && (
-              <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-white via-white/80 to-transparent" />
+              <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-background via-background/80 to-transparent" />
             )}
             {canScrollLeft && (
-              <div className="pointer-events-none absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-white via-white/80 to-transparent" />
+              <div className="pointer-events-none absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-background via-background/80 to-transparent" />
             )}
           </div>
         )}
