@@ -413,9 +413,9 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
               form.setValue("quantity", newQty);
             }}
             disabled={quantity <= 1}
-            className="h-10 w-10 rounded-l-lg"
+            aria-label={`Decrease quantity of ${item.name}`}
           >
-            <Minus className="h-4 w-4" />
+            <Minus />
           </Button>
           <span className="w-12 text-center font-semibold text-base">
             {quantity}
@@ -429,7 +429,7 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
               setQuantity(newQty);
               form.setValue("quantity", newQty);
             }}
-            // className="h-10 w-10 rounded-r-lg"
+            aria-label={`Increase quantity of ${item.name}`}
           >
             <Plus />
           </Button>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Quicksand, Nunito } from "next/font/google";
+import { Open_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/layouts/Navbar";
 import Footer from "@/layouts/Footer";
@@ -10,17 +10,17 @@ import { WhatsAppCampaignPopup } from "@/components/whatsapp-campaign-popup";
 import { CartProvider } from "@/hooks/use-cart";
 
 // Headings
-const quicksand = Quicksand({
+const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-quicksand",
+  variable: "--font-montserrat",
 });
 
 // Body text
-const nunito = Nunito({
+const openSans = Open_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-nunito",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-open-sans",
 });
 
 export const metadata: Metadata = {
@@ -59,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${quicksand.variable} ${nunito.variable} antialiased font-mono`}
+        className={`${montserrat.variable} ${openSans.variable} antialiased font-mono`}
       >
         <CartProvider>
           <Navbar />

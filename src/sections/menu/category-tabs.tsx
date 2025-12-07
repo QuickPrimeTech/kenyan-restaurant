@@ -3,6 +3,12 @@ import { useRef, useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, Search, X } from "lucide-react";
 import { Button } from "@ui/button";
 import { cn } from "@/lib/utils";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 
 interface CategoryTabsProps {
   categories: string[];
@@ -61,8 +67,8 @@ export function CategoryTabs({
   };
 
   return (
-    <div className="sticky top-[60px] z-40 bg-background border-b border-border">
-      <div className="relative px-4 flex items-center gap-2">
+    <div className="sticky top-16 z-40 py-3 bg-background/80 backdrop-blur-lg border-b border-border">
+      <div className="relative section-x flex items-center gap-2">
         {/* Left Arrow */}
         {canScrollLeft && !searchExpanded && (
           <Button
@@ -83,29 +89,38 @@ export function CategoryTabs({
           )}
         >
           {searchExpanded ? (
-            <div className="relative flex-1 flex items-center">
-              <Search className="absolute left-3 w-4 h-4 text-muted-foreground" />
-              <input
+            <InputGroup>
+              <InputGroupInput
                 ref={inputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder="Search menu items..."
-                className="w-full h-10 pl-10 pr-10 bg-secondary rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-foreground"
               />
-              <button
-                onClick={handleSearchClose}
-                className="absolute right-3 p-1 hover:bg-background rounded-full"
-              >
-                <X className="w-4 h-4 text-muted-foreground" />
-              </button>
-            </div>
+              <InputGroupAddon>
+                <Search />
+              </InputGroupAddon>
+              <InputGroupAddon align={"inline-end"}>
+                <InputGroupButton asChild>
+                  <Button
+                    variant={"ghost"}
+                    size={"icon-sm"}
+                    className="absolute right-3 p-1 hover:bg-background rounded-full"
+                    onClick={handleSearchClose}
+                    aria-label="Close search"
+                  >
+                    <X className="w-4 h-4 text-muted-foreground" />
+                  </Button>
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
           ) : (
             <Button
               variant="ghost"
               size="icon"
               className="h-10 w-10 rounded-full bg-secondary hover:bg-secondary/80"
               onClick={() => setSearchExpanded(true)}
+              title="Search menu items"
             >
               <Search className="w-4 h-4" />
             </Button>
@@ -116,7 +131,7 @@ export function CategoryTabs({
         {!searchExpanded && (
           <div
             ref={scrollRef}
-            className="flex gap-1 overflow-x-auto scrollbar-hide py-3 flex-1"
+            className="flex gap-1 overflow-x-auto scrollbar-hide flex-1"
             onScroll={checkScroll}
           >
             {categories.map((category) => (
