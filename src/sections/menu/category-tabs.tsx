@@ -84,7 +84,7 @@ export function CategoryTabs({
         {/* Search Icon Button / Expanded Search */}
         <div
           className={cn(
-            "flex items-center transition-all duration-300 ease-out",
+            "flex items-center transition-all duration-300 ease-out max-w-lg",
             searchExpanded ? "flex-1" : "flex-none"
           )}
         >
@@ -116,34 +116,44 @@ export function CategoryTabs({
             </InputGroup>
           ) : (
             <Button
-              variant="ghost"
-              size="icon"
-              className="h-10 w-10 rounded-full bg-secondary hover:bg-secondary/80"
+              variant="secondary"
+              size="icon-lg"
               onClick={() => setSearchExpanded(true)}
               title="Search menu items"
             >
-              <Search className="w-4 h-4" />
+              <Search />
             </Button>
           )}
         </div>
 
         {/* Tabs - hide when search is expanded */}
         {!searchExpanded && (
-          <div
-            ref={scrollRef}
-            className="flex gap-1 overflow-x-auto scrollbar-hide flex-1"
-            onScroll={checkScroll}
-          >
-            {categories.map((category) => (
-              <Button
-                key={category}
-                onClick={() => onCategoryClick(category)}
-                variant={activeCategory === category ? "default" : "secondary"}
-                className="rounded-full"
-              >
-                {category}
-              </Button>
-            ))}
+          <div className="relative flex flex-1">
+            {/* Scrollable categories */}
+            <div
+              ref={scrollRef}
+              className="flex w-0 flex-1 gap-1 overflow-x-auto scrollbar-hide"
+              onScroll={checkScroll}
+            >
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  onClick={() => onCategoryClick(category)}
+                  variant={
+                    activeCategory === category ? "default" : "secondary"
+                  }
+                  className="rounded-full whitespace-nowrap"
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
+            {canScrollRight && (
+              <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-white via-white/80 to-transparent" />
+            )}
+            {canScrollLeft && (
+              <div className="pointer-events-none absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-white via-white/80 to-transparent" />
+            )}
           </div>
         )}
 
