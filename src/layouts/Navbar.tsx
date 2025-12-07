@@ -2,20 +2,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Menu,
-  ShoppingBag,
-  X,
-  Sun,
-  Moon,
-  ChevronDown,
-  User,
-} from "lucide-react";
+import { Menu, ShoppingBag, Sun, Moon, ChevronDown, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -30,10 +23,10 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import { useCart } from "@/hooks/use-cart";
+import { site } from "@/config/site-config";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
@@ -287,7 +280,7 @@ export default function Navbar() {
             </Button>
 
             {/* Mobile Menu Sheet */}
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <Sheet>
               <SheetTrigger asChild>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -302,11 +295,7 @@ export default function Navbar() {
                     )}
                     aria-label="Open menu"
                   >
-                    {isOpen ? (
-                      <X className="h-6 w-6" />
-                    ) : (
-                      <Menu className="h-6 w-6" />
-                    )}
+                    <Menu className="size-6" />
                   </Button>
                 </motion.div>
               </SheetTrigger>
@@ -314,7 +303,6 @@ export default function Navbar() {
                 <SheetContent
                   side="right"
                   className="w-[85vw] sm:w-[400px] p-0 flex flex-col overflow-hidden"
-                  onInteractOutside={(e) => e.preventDefault()}
                 >
                   <motion.div
                     className="h-full flex flex-col"
@@ -325,19 +313,9 @@ export default function Navbar() {
                   >
                     {/* Sheet Header */}
                     <SheetHeader className="px-6 py-4 border-b">
-                      <div className="flex items-center justify-between">
-                        <SheetTitle className="text-lg font-semibold">
-                          Menu
-                        </SheetTitle>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setIsOpen(false)}
-                          aria-label="Close menu"
-                        >
-                          <X className="h-5 w-5" />
-                        </Button>
-                      </div>
+                      <SheetTitle className="text-lg font-bold">
+                        {site.restaurantName}
+                      </SheetTitle>
                     </SheetHeader>
 
                     {/* Scrollable Content */}
@@ -353,18 +331,19 @@ export default function Navbar() {
                               key={link.href}
                               whileTap={{ scale: 0.98 }}
                             >
-                              <Link
-                                href={link.href}
-                                onClick={() => setIsOpen(false)}
-                                className={cn(
-                                  "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                                  pathname === link.href
-                                    ? "bg-primary/10 text-primary"
-                                    : "text-foreground hover:bg-accent"
-                                )}
-                              >
-                                {link.label}
-                              </Link>
+                              <SheetClose asChild>
+                                <Link
+                                  href={link.href}
+                                  className={cn(
+                                    "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                                    pathname === link.href
+                                      ? "bg-primary/10 text-primary"
+                                      : "text-foreground hover:bg-accent"
+                                  )}
+                                >
+                                  {link.label}
+                                </Link>
+                              </SheetClose>
                             </motion.div>
                           ))}
                         </div>
@@ -379,18 +358,19 @@ export default function Navbar() {
                               key={link.href}
                               whileTap={{ scale: 0.98 }}
                             >
-                              <Link
-                                href={link.href}
-                                onClick={() => setIsOpen(false)}
-                                className={cn(
-                                  "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                                  pathname === link.href
-                                    ? "bg-primary/10 text-primary"
-                                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                                )}
-                              >
-                                {link.label}
-                              </Link>
+                              <SheetClose asChild>
+                                <Link
+                                  href={link.href}
+                                  className={cn(
+                                    "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                                    pathname === link.href
+                                      ? "bg-primary/10 text-primary"
+                                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                                  )}
+                                >
+                                  {link.label}
+                                </Link>
+                              </SheetClose>
                             </motion.div>
                           ))}
                         </div>
