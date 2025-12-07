@@ -24,7 +24,9 @@ export function ImageWithFallback({
   return showFallback ? (
     <div className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground">
       <ImageOff className="w-8 h-8 mb-2 opacity-50" />
-      <span className="text-sm font-medium">No Image</span>
+      <span className="text-sm font-medium">
+        {!src ? "No Image" : "Failed to load"}
+      </span>
     </div>
   ) : (
     <Image

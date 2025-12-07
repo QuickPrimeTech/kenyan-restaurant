@@ -97,14 +97,14 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
             className="flex-shrink-0 w-40 md:w-50 cursor-pointer group"
           >
             {/* Square image container */}
-            <div className="relative w-full aspect-square mb-2">
+            <div className="relative w-full aspect-square mb-2  rounded-xl overflow-hidden">
               <ImageWithFallback
                 fill
                 src={item.image_url}
                 placeholder={item.lqip ? "blur" : "empty"}
                 blurDataURL={item.lqip || undefined}
                 alt={item.name}
-                className="w-full h-full object-cover rounded-xl"
+                className="object-cover"
               />
               {/* Plus button - Uber Eats style */}
               <Button
