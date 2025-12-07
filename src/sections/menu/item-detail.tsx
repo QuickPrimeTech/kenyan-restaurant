@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -10,6 +10,9 @@ import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { ImageWithFallback } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import { ChoicesForm } from "./choices-form";
+import Link from "next/link";
+import { ShareButton } from "@/components/ui/share-button";
+import { toast } from "sonner";
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -21,26 +24,6 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
   const [quantity, setQuantity] = useState(1);
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
-
-  // Reset form when item changes
-  useEffect(() => {
-    if (open && item) {
-      const defaultValues: any = {
-        quantity: 1,
-        specialInstructions: "",
-      };
-
-      // Set default values for choices
-      if (item.choices) {
-        item.choices.forEach((choice) => {
-          const choiceId = choice.id || choice.title;
-          defaultValues[choiceId] = choice.maxSelectable === 1 ? "" : [];
-        });
-      }
-
-      setQuantity(1);
-    }
-  }, [open, item]);
 
   if (!item) return null;
 
@@ -89,6 +72,31 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
           Ksh {item.price.toFixed(2)}
         </div>
         <ChoicesForm choices={item.choices} />
+        <div className="flex gap-2">
+          <ShareButton
+            variant={"outline"}
+            shareData={{
+              title: item.name,
+              text: `Check out this dish: ${item.name} - ${item.description}`,
+              url: `https://ziwa-nu.vercel.app/menu/${item.slug}`,
+            }}
+            onShareSuccess={() => {
+              toast.success("Menu item shared successfully!");
+            }}
+            onShareError={(error) => {
+              // Only show error if it's not a user cancellation
+              if (error.name !== "AbortError") {
+                toast.error("Failed to share menu item");
+              }
+            }}
+            onCopyFallback={() => {
+              toast.success("Menu item link copied to clipboard!");
+            }}
+          />
+          <Button variant={"secondary"} asChild>
+            <Link href={`/menu/${item.slug}`}>See Details</Link>
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -145,7 +153,7 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-[540px] p-0 gap-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
-          <ScrollArea className="flex-1">
+          <ScrollArea className="flex-1 scroll-p-0">
             {/* Image */}
             <div className="relative h-[320px] bg-muted shrink-0">
               <ImageWithFallback

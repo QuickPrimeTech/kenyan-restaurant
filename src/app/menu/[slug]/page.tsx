@@ -1,4 +1,5 @@
 import api from "@/lib/api-client";
+import { Header } from "@/sections/menu/slug/header";
 import { MenuDetail } from "@/sections/menu/slug/menu-detail";
 import { ApiResponse } from "@/types/api";
 import { MenuItem } from "@/types/menu";
@@ -80,6 +81,7 @@ export default async function OfferPage({
 
   return (
     <div className="container mx-auto section mt-8">
+      <Header />
       <MenuDetail menuItem={menuItem} />
     </div>
   );

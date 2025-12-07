@@ -110,7 +110,7 @@ export function OfferDetail({ offer }: { offer: Offer }) {
                 title: offer.title,
                 text: `Check out this offer: ${offer.title} - ${offer.description}`,
               }}
-              copyMessage={(url) => "Offer link copied to clipboard!"}
+              copyMessage={() => "Offer link copied to clipboard!"}
               onShareSuccess={() => {
                 toast.success("Offer shared successfully!");
               }}
@@ -120,7 +120,7 @@ export function OfferDetail({ offer }: { offer: Offer }) {
                   toast.error("Failed to share offer");
                 }
               }}
-              onCopyFallback={(url) => {
+              onCopyFallback={() => {
                 toast.success("Offer link copied to clipboard!");
               }}
             />
