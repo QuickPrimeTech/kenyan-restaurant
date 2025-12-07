@@ -25,4 +25,5 @@ export type MenuItem = {
   start_time: string;
   end_time: string;
   is_popular: false;
+  slug: string;
 };

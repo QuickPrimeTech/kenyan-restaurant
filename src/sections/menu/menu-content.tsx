@@ -2,7 +2,6 @@
 import { useState, useRef, useMemo } from "react";
 import { useCart } from "@/hooks/use-cart";
 import { CategoryTabs } from "@/sections/menu/category-tabs";
-import { MenuSection } from "@/sections/menu/menu-section";
 import { FeaturedItems } from "@/sections/menu/featured-items";
 import { CartSidebar } from "@/sections/menu/cart-sidebar";
 import { ItemDetail } from "@/sections/menu/item-detail";
@@ -10,11 +9,24 @@ import { MobileCartButton } from "@/sections/menu/mobile-cart-button";
 import { CheckoutModal } from "@/sections/menu/checkout-modal";
 import { Header } from "./header";
 import { MenuItem } from "@/types/menu";
+import { MenuSection } from "./menu-section";
 
-export default function MenuContent({ menuItems }: { menuItems: MenuItem[] }) {
+type MenuContentProps = {
+  menuItems: MenuItem[];
+  selectedItem?: string;
+};
+
+export default function MenuContent({
+  menuItems,
+  selectedItem,
+}: MenuContentProps) {
   const [activeCategory, setActiveCategory] = useState("Featured Items");
-  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState<MenuItem | null>(
+    selectedItem
+      ? menuItems.find((item) => item.slug === selectedItem) || null
+      : null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(selectedItem ? true : false);
   const [orderMode, setOrderMode] = useState<"delivery" | "pickup">("delivery");
   const [searchQuery, setSearchQuery] = useState("");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -88,7 +100,7 @@ export default function MenuContent({ menuItems }: { menuItems: MenuItem[] }) {
   };
 
   const handleItemClick = (item: MenuItem) => {
-    setSelectedItem(item);
+    setActiveItem(item);
     setIsModalOpen(true);
   };
 
@@ -179,7 +191,7 @@ export default function MenuContent({ menuItems }: { menuItems: MenuItem[] }) {
       <MobileCartButton onCheckout={() => setCheckoutOpen(true)} />
 
       <ItemDetail
-        item={selectedItem}
+        item={activeItem}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
       />

@@ -34,10 +34,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function MenuPage() {
+export default async function MenuPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ "selected-item"?: string }>;
+}) {
+  const selectedItem = (await searchParams)["selected-item"];
+  console.log("Selected Item:", selectedItem);
+
   const { data: menuItems } = await api.get<ApiResponse<MenuItem[]>>(
     "/menu-items"
   );
 
-  return <MenuContent menuItems={menuItems} />;
+  return <MenuContent menuItems={menuItems} selectedItem={selectedItem} />;
 }
