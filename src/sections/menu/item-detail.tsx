@@ -483,8 +483,6 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="h-[95vh] flex flex-col overflow-hidden">
-        <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted my-3" />
-
         {/* Image */}
         <ScrollArea className="h-0 flex-1 max-h-[calc(95vh-66px-54px)]">
           <div className="relative h-[280px] bg-muted shrink-0">

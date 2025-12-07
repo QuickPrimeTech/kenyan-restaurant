@@ -51,6 +51,25 @@ export function CategoryTabs({
     }
   }, [searchExpanded]);
 
+  useEffect(() => {
+    if (!scrollRef.current) return;
+
+    const container = scrollRef.current;
+    const buttons = Array.from(container.querySelectorAll("button"));
+
+    const activeBtn = buttons.find(
+      (btn) => btn.textContent?.trim() === activeCategory
+    );
+
+    if (activeBtn) {
+      activeBtn.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }, [activeCategory]);
+
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
       const scrollAmount = 200;

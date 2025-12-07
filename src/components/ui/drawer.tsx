@@ -66,9 +66,12 @@ function DrawerContent({
         )}
         {...props}
       >
-        <div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+        <div className="pb-3 border-b border-border pt-2 space-y-3 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),_0_4px_6px_-2px_rgba(0,0,0,0.05)]">
+          <div className="bg-muted mx-auto hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+          <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted" />
+        </div>
         {children}
-        <DrawerClose className="absolute top-2 right-2 rounded-full bg-background border p-2 hover:bg-secondary/80">
+        <DrawerClose className="absolute top-1 right-2 rounded-full bg-background border p-2 hover:bg-secondary/80">
           <span className="sr-only">Close</span>
           <X className="size-5 text-foreground hover:text-foreground/70" />
         </DrawerClose>
