@@ -1,44 +1,15 @@
 "use client";
 import Image from "next/image";
-import { Clock, Calendar, MapPin, Share2, ArrowLeft } from "lucide-react";
+import { Clock, Calendar, MapPin, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Offer } from "@/types/offers";
 import { formatDate, formatTime, getDayNames } from "@/utils/time-formatters";
+import { ShareButton } from "@/components/ui/share-button";
+import { toast } from "sonner";
 
 export function OfferDetail({ offer }: { offer: Offer }) {
-  async function handleShare() {
-    const shareData = {
-      title: offer.title,
-      text: `Check out this offer: ${offer.title} - ${offer.description}`,
-      url: window.location.href,
-    };
-
-    if (navigator.share && navigator.canShare(shareData)) {
-      try {
-        await navigator.share(shareData);
-      } catch (error) {
-        // User cancelled or share failed - fallback to clipboard
-        if ((error as Error).name !== "AbortError") {
-          await copyToClipboard();
-        }
-      }
-    } else {
-      // Fallback for browsers that don't support Web Share API
-      await copyToClipboard();
-    }
-  }
-
-  async function copyToClipboard() {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
-    } catch {
-      alert("Failed to copy link");
-    }
-  }
-
   return (
     <section>
       {/* Back Navigation */}
@@ -132,11 +103,27 @@ export function OfferDetail({ offer }: { offer: Offer }) {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <Button size="lg" className="w-full" onClick={handleShare}>
-              <Share2 />
-              Share
-            </Button>
+            <ShareButton
+              size="lg"
+              className="w-full"
+              shareData={{
+                title: offer.title,
+                text: `Check out this offer: ${offer.title} - ${offer.description}`,
+              }}
+              copyMessage={(url) => "Offer link copied to clipboard!"}
+              onShareSuccess={() => {
+                toast.success("Offer shared successfully!");
+              }}
+              onShareError={(error) => {
+                // Only show error if it's not a user cancellation
+                if (error.name !== "AbortError") {
+                  toast.error("Failed to share offer");
+                }
+              }}
+              onCopyFallback={(url) => {
+                toast.success("Offer link copied to clipboard!");
+              }}
+            />
           </div>
         </div>
       </div>
