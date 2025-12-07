@@ -1,35 +1,18 @@
 "use client";
-
-import * as React from "react";
 import type { MenuItem } from "@/types/menu";
 import { Plus } from "lucide-react";
-import { useCart } from "@/hooks/use-cart";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { ImageWithFallback } from "@/components/ui/image";
 
 interface MenuItemCardProps {
   item: MenuItem;
-  onClick: () => void;
+  onAdd: () => void;
 }
 
-export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
-  const { addItem } = useCart();
-  const [imgError, setImgError] = React.useState(false);
-
-  const handleQuickAdd = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    addItem({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: 1,
-      image: item.image_url,
-    });
-  };
-
+export function MenuItemCard({ item, onAdd }: MenuItemCardProps) {
   return (
     <div
-      onClick={onClick}
+      onClick={onAdd}
       className="flex gap-4 shadow-sm cursor-pointer rounded-sm overflow-hidden"
     >
       {/* Content */}
@@ -50,29 +33,23 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
 
       {/* Image + button */}
       <div className="relative aspect-square w-40 shrink-0">
-        {!imgError && item.image_url ? (
-          <Image
-            fill
-            src={item.image_url}
-            placeholder={item.lqip ? "blur" : "empty"}
-            blurDataURL={item.lqip || undefined}
-            alt={item.name}
-            className="object-cover rounded-xl"
-            onError={() => setImgError(true)} // fallback triggered
-          />
-        ) : (
-          <div className="w-full h-full bg-muted flex items-center justify-center text-sm text-muted-foreground">
-            No Image
-          </div>
-        )}
+        <ImageWithFallback
+          fill
+          src={item.image_url}
+          placeholder={item.lqip ? "blur" : "empty"}
+          blurDataURL={item.lqip || undefined}
+          alt={item.name}
+          className="object-cover"
+        />
 
         <Button
-          onClick={handleQuickAdd}
+          onClick={onAdd}
           size="icon-lg"
           variant="outline"
+          title={`Add ${item.name} to cart`}
           className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform border border-border"
         >
-          <Plus className="text-black" strokeWidth={2.5} />
+          <Plus className="text-black" strokeWidth={3.5} />
         </Button>
       </div>
     </div>

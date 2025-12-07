@@ -1,5 +1,4 @@
 "use client";
-
 import {
   createContext,
   useContext,
@@ -15,6 +14,7 @@ interface CartItem {
   quantity: number;
   image: string | null;
   special?: string;
+  choices?: Record<string, string | string[]>;
 }
 
 interface CartContextType {

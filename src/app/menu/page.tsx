@@ -38,6 +38,6 @@ export default async function MenuPage() {
   const { data: menuItems } = await api.get<ApiResponse<MenuItem[]>>(
     "/menu-items"
   );
-  console.log("Menu Items:", menuItems);
+
   return <MenuContent menuItems={menuItems} />;
 }

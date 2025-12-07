@@ -20,7 +20,7 @@ export const MenuSection = forwardRef<HTMLDivElement, MenuSectionProps>(
             <MenuItemCard
               key={item.id}
               item={item}
-              onClick={() => onItemClick(item)}
+              onAdd={() => onItemClick(item)}
             />
           ))}
         </div>

@@ -5,7 +5,7 @@ import type { MenuItem } from "@/types/menu";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { ImageWithFallback } from "@/components/ui/image";
 
 interface FeaturedItemsProps {
   items: MenuItem[];
@@ -14,7 +14,6 @@ interface FeaturedItemsProps {
 
 export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [imageError, setImageError] = useState(false);
   const { addItem } = useCart();
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -95,25 +94,18 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
           <div
             key={item.id}
             onClick={() => onItemClick(item)}
-            className="flex-shrink-0 w-[150px] cursor-pointer group"
+            className="flex-shrink-0 w-40 md:w-50 cursor-pointer group"
           >
             {/* Square image container */}
-            <div className="relative w-[150px] h-[150px] mb-2">
-              {!imageError && item.image_url ? (
-                <Image
-                  fill
-                  src={item.image_url}
-                  placeholder={item.lqip ? "blur" : "empty"}
-                  blurDataURL={item.lqip || undefined}
-                  alt={item.name}
-                  className="w-full h-full object-cover rounded-xl"
-                  onError={() => setImageError(() => true)}
-                />
-              ) : (
-                <div className="w-full h-full bg-muted flex items-center justify-center text-sm text-muted-foreground rounded-xl">
-                  No Image
-                </div>
-              )}
+            <div className="relative w-full aspect-square mb-2">
+              <ImageWithFallback
+                fill
+                src={item.image_url}
+                placeholder={item.lqip ? "blur" : "empty"}
+                blurDataURL={item.lqip || undefined}
+                alt={item.name}
+                className="w-full h-full object-cover rounded-xl"
+              />
               {/* Plus button - Uber Eats style */}
               <Button
                 onClick={(e) => handleQuickAdd(e, item)}
@@ -121,14 +113,14 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
                 variant="outline"
                 className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform border border-border"
               >
-                <Plus className="text-black" strokeWidth={2.5} />
+                <Plus className="text-black" strokeWidth={3.5} />
               </Button>
             </div>
             {/* Item info */}
-            <h3 className="text-[15px] font-medium text-foreground leading-tight line-clamp-2 mb-0.5">
+            <h3 className="md:text-lg font-medium text-foreground leading-tight line-clamp-2 mb-0.5">
               {item.name}
             </h3>
-            <p className="text-[15px] text-foreground">
+            <p className="text-sm md:text-base text-muted-foreground">
               Ksh {item.price.toFixed(2)}
             </p>
           </div>
