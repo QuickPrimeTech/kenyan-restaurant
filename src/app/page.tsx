@@ -10,6 +10,7 @@ import api from "@/lib/api-client";
 import { OffersSection } from "@/sections/home/offers";
 import { ApiResponse } from "@/types/api";
 import { Offer } from "@/types/offers";
+import { MenuItem } from "@/types/menu";
 
 // force static, no auto revalidation (only on-demand ISR)
 export const dynamic = "force-static";
@@ -17,10 +18,15 @@ export const revalidate = false;
 
 export default async function HomePage() {
   const { data: offers } = await api.get<ApiResponse<Offer[]>>("/offers");
+
+  const { data: menuItems } = await api.get<ApiResponse<MenuItem[]>>(
+    "/menu-items"
+  );
+
   return (
     <>
       <HeroSection />
-      <MenuHighlights />
+      <MenuHighlights menuItems={menuItems} />
       <OffersSection offers={offers} />
       <AboutSection />
       <ReviewsSection />

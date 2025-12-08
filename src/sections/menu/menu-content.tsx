@@ -133,20 +133,8 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
 
         <div className="flex">
           {/* Menu Content */}
-          <div className="flex-1 section-x overflow-hidden">
-            {/* Featured Items Carousel - only show when not searching */}
-            {!searchQuery && featuredItems.length > 0 && (
-              <div
-                ref={(el) => {
-                  sectionRefs.current["Featured Items"] = el;
-                }}
-              >
-                <PopularItems
-                  items={featuredItems}
-                  onItemClick={handleItemClick}
-                />
-              </div>
-            )}
+          <div className="flex-1 section-x mt-25 overflow-hidden">
+            {!searchQuery && <PopularItems items={featuredItems} />}
 
             {/* Menu Sections */}
             {Object.entries(groupedMenuItems).map(([category, items]) => (
@@ -157,7 +145,6 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
                 }}
                 title={category}
                 items={items}
-                onItemClick={handleItemClick}
               />
             ))}
 

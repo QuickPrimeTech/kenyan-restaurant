@@ -32,12 +32,10 @@ const cardVariants = cva("relative cursor-pointer overflow-hidden", {
 
 type MenuItemCardProps = {
   item: MenuItem;
-  onAdd?: () => void;
 };
 
 export function MenuItemCard({
   item,
-  onAdd,
   orientation,
   variant,
   size,
@@ -50,7 +48,7 @@ export function MenuItemCard({
       {/* Image */}
       <div
         className={cn(
-          "relative w-40 aspect-square",
+          "relative w-40 aspect-square border border-border",
           orientation === "square" &&
             "lg:w-50 shrink-0 rounded-md overflow-hidden"
         )}
@@ -64,20 +62,14 @@ export function MenuItemCard({
           className="object-cover"
         />
 
-        {onAdd && (
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAdd();
-            }}
-            size="icon-lg"
-            variant="outline"
-            title={`Add ${item.name} to cart`}
-            className="absolute bottom-2 right-2 shadow-lg hover:scale-105 transition-transform"
-          >
-            <Plus className="text-foreground" strokeWidth={3.5} />
-          </Button>
-        )}
+        <Button
+          size="icon-lg"
+          variant="outline"
+          title={`Add ${item.name} to cart`}
+          className="absolute bottom-2 right-2 shadow-lg hover:scale-105 transition-transform"
+        >
+          <Plus className="text-foreground" strokeWidth={3.5} />
+        </Button>
       </div>
 
       <div

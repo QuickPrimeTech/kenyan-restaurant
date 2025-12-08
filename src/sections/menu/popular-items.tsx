@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { MenuItemCard } from "./menu-item-card";
+import { cn } from "@/lib/utils";
 
 interface FeaturedItemsProps {
   items: MenuItem[];
-  onItemClick: (item: MenuItem) => void;
+  showTitle?: boolean;
 }
 
-export function PopularItems({ items, onItemClick }: FeaturedItemsProps) {
+export function PopularItems({ items, showTitle = true }: FeaturedItemsProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement | null>(null);
 
@@ -59,12 +60,19 @@ export function PopularItems({ items, onItemClick }: FeaturedItemsProps) {
   };
 
   return (
-    <div className="mt-20 py-4">
+    <section id="popular-items">
       {/* Header with arrows */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-[22px] font-bold text-foreground">
-          Popular Dishes
-        </h2>
+      <div
+        className={cn(
+          "flex items-center justify-between mb-4",
+          !showTitle && "justify-end"
+        )}
+      >
+        {showTitle && (
+          <h2 className="text-[22px] font-bold text-foreground">
+            Popular Dishes
+          </h2>
+        )}
 
         <div className="flex items-center gap-2">
           <Button
@@ -90,8 +98,8 @@ export function PopularItems({ items, onItemClick }: FeaturedItemsProps) {
       </div>
 
       {/* Scroll Area */}
-      <ScrollArea ref={rootRef} className="-mx-4 px-4">
-        <div className="flex gap-4 pb-4 w-max">
+      <ScrollArea ref={rootRef} className="-mx-4">
+        <div className="flex gap-4 pb-4 pl-4">
           {items.map((item) => (
             <Link href={`/menu?selected-item=${item.slug}`} key={item.id}>
               <MenuItemCard
@@ -99,10 +107,6 @@ export function PopularItems({ items, onItemClick }: FeaturedItemsProps) {
                 item={item}
                 orientation="square"
                 variant="popular"
-                onClick={() => onItemClick(item)}
-                onAdd={() =>
-                  console.log("about to add popular item --->", item)
-                }
               />
             </Link>
           ))}
@@ -110,6 +114,6 @@ export function PopularItems({ items, onItemClick }: FeaturedItemsProps) {
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-    </div>
+    </section>
   );
 }
