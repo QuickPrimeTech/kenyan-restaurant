@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Button } from "@ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -9,6 +9,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface CategoryTabsProps {
   categories: string[];
@@ -25,24 +26,42 @@ export function CategoryTabs({
   searchQuery,
   onSearchChange,
 }: CategoryTabsProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
 
-  const checkScroll = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+  // Find the Radix viewport and set up scroll listener
+  useEffect(() => {
+    if (!rootRef.current) return;
+
+    const viewport = rootRef.current.querySelector(
+      "[data-slot='scroll-area-viewport']"
+    ) as HTMLDivElement | null;
+
+    if (!viewport) return;
+
+    viewportRef.current = viewport;
+
+    const update = () => {
+      const el = viewportRef.current;
+      if (!el) return;
+
+      const { scrollLeft, scrollWidth, clientWidth } = el;
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-    }
-  };
+    };
 
-  useEffect(() => {
-    checkScroll();
-    window.addEventListener("resize", checkScroll);
-    return () => window.removeEventListener("resize", checkScroll);
+    update();
+    viewport.addEventListener("scroll", update);
+    window.addEventListener("resize", update);
+
+    return () => {
+      viewport.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   useEffect(() => {
@@ -52,10 +71,10 @@ export function CategoryTabs({
   }, [searchExpanded]);
 
   useEffect(() => {
-    if (!scrollRef.current) return;
+    if (!viewportRef.current) return;
 
-    const container = scrollRef.current;
-    const buttons = Array.from(container.querySelectorAll("button"));
+    const viewport = viewportRef.current;
+    const buttons = Array.from(viewport.querySelectorAll("button"));
 
     const activeBtn = buttons.find(
       (btn) => btn.textContent?.trim() === activeCategory
@@ -71,13 +90,15 @@ export function CategoryTabs({
   }, [activeCategory]);
 
   const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 200;
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
+    const el = viewportRef.current;
+    if (!el) return;
+
+    const scrollAmount = 200;
+
+    el.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
   };
 
   const handleSearchClose = () => {
@@ -88,18 +109,6 @@ export function CategoryTabs({
   return (
     <div className="sticky top-16 lg:top-20 z-40 py-3 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="relative section-x flex items-center gap-2">
-        {/* Left Arrow */}
-        {canScrollLeft && !searchExpanded && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background shadow-md rounded-full h-8 w-8"
-            onClick={() => scroll("left")}
-          >
-            <ArrowLeft />
-          </Button>
-        )}
-
         {/* Search Icon Button / Expanded Search */}
         <div
           className={cn(
@@ -148,25 +157,25 @@ export function CategoryTabs({
         {/* Tabs - hide when search is expanded */}
         {!searchExpanded && (
           <div className="relative flex flex-1">
-            {/* Scrollable categories */}
-            <div
-              ref={scrollRef}
-              className="flex w-0 flex-1 gap-1 overflow-x-auto scrollbar-hide"
-              onScroll={checkScroll}
-            >
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  onClick={() => onCategoryClick(category)}
-                  variant={
-                    activeCategory === category ? "default" : "secondary"
-                  }
-                  className="rounded-full whitespace-nowrap"
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
+            <ScrollArea ref={rootRef} className="w-0 flex-1">
+              <div className="flex gap-1 pb-1">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    onClick={() => onCategoryClick(category)}
+                    variant={
+                      activeCategory === category ? "default" : "secondary"
+                    }
+                    className="rounded-full whitespace-nowrap"
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+
+            {/* Gradient overlays */}
             {canScrollRight && (
               <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-background via-background/80 to-transparent" />
             )}
@@ -174,18 +183,6 @@ export function CategoryTabs({
               <div className="pointer-events-none absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-background via-background/80 to-transparent" />
             )}
           </div>
-        )}
-
-        {/* Right Arrow */}
-        {canScrollRight && !searchExpanded && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background shadow-md rounded-full h-8 w-8"
-            onClick={() => scroll("right")}
-          >
-            <ArrowRight />
-          </Button>
         )}
       </div>
     </div>
