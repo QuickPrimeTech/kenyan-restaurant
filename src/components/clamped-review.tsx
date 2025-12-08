@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 export function ClampedReview({ children }: { children: string }) {
   const [expanded, setExpanded] = useState(false);
@@ -14,12 +15,13 @@ export function ClampedReview({ children }: { children: string }) {
         &quot;{children}&quot;
       </p>
       {children.split(" ").length > 20 && (
-        <button
-          className="text-sm text-primary hover:underline"
+        <Button
+          variant="link"
+          size={"sm"}
           onClick={() => setExpanded(!expanded)}
         >
           {expanded ? "See less" : "See more"}
-        </button>
+        </Button>
       )}
     </>
   );
