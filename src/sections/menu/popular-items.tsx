@@ -1,19 +1,18 @@
 "use client";
-
 import { useRef, useState, useEffect } from "react";
 import type { MenuItem } from "@/types/menu";
-import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ImageWithFallback } from "@/components/ui/image";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Link from "next/link";
+import { MenuItemCard } from "./menu-item-card";
 
 interface FeaturedItemsProps {
   items: MenuItem[];
   onItemClick: (item: MenuItem) => void;
 }
 
-export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
+export function PopularItems({ items, onItemClick }: FeaturedItemsProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement | null>(null);
 
@@ -64,7 +63,7 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
       {/* Header with arrows */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-[22px] font-bold text-foreground">
-          Featured Items
+          Popular Dishes
         </h2>
 
         <div className="flex items-center gap-2">
@@ -95,38 +94,16 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
         <div className="flex gap-4 pb-4 w-max">
           {items.map((item) => (
             <Link href={`/menu?selected-item=${item.slug}`} key={item.id}>
-              <div className="flex-shrink-0 w-40 md:w-50 cursor-pointer group">
-                <div className="relative w-full aspect-square mb-2 rounded-xl overflow-hidden">
-                  <ImageWithFallback
-                    fill
-                    src={item.image_url}
-                    placeholder={item.lqip ? "blur" : "empty"}
-                    blurDataURL={item.lqip || undefined}
-                    alt={item.name}
-                    className="object-cover"
-                  />
-
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onItemClick(item);
-                    }}
-                    size="icon"
-                    variant="outline"
-                    className="absolute bottom-2 right-2 shadow-lg hover:scale-105 transition-transform"
-                  >
-                    <Plus className="text-foreground" strokeWidth={3.5} />
-                  </Button>
-                </div>
-
-                <h3 className="md:text-lg font-medium text-foreground leading-tight line-clamp-2 mb-0.5">
-                  {item.name}
-                </h3>
-
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Ksh {item.price.toFixed(2)}
-                </p>
-              </div>
+              <MenuItemCard
+                key={item.id}
+                item={item}
+                orientation="square"
+                variant="popular"
+                onClick={() => onItemClick(item)}
+                onAdd={() =>
+                  console.log("about to add popular item --->", item)
+                }
+              />
             </Link>
           ))}
         </div>

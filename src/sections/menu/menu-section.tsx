@@ -20,6 +20,8 @@ export const MenuSection = forwardRef<HTMLDivElement, MenuSectionProps>(
             <MenuItemCard
               key={item.id}
               item={item}
+              orientation="horizontal"
+              variant="regular"
               onAdd={() => onItemClick(item)}
             />
           ))}

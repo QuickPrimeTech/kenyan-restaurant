@@ -40,11 +40,10 @@ export default async function MenuPage({
   searchParams: Promise<{ "selected-item"?: string }>;
 }) {
   const selectedItem = (await searchParams)["selected-item"];
-  console.log("Selected Item:", selectedItem);
 
   const { data: menuItems } = await api.get<ApiResponse<MenuItem[]>>(
     "/menu-items"
   );
 
-  return <MenuContent menuItems={menuItems} selectedItem={selectedItem} />;
+  return <MenuContent menuItems={menuItems} />;
 }

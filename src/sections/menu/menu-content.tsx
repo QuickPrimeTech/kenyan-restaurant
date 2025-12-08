@@ -1,24 +1,26 @@
 "use client";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useCart } from "@/hooks/use-cart";
 import { CategoryTabs } from "@/sections/menu/category-tabs";
-import { FeaturedItems } from "@/sections/menu/featured-items";
+import { PopularItems } from "@/sections/menu/popular-items";
 import { CartSidebar } from "@/sections/menu/cart-sidebar";
 import { ItemDetail } from "@/sections/menu/item-detail";
 import { MobileCartButton } from "@/sections/menu/mobile-cart-button";
 import { CheckoutModal } from "@/sections/menu/checkout-modal";
 import { MenuItem } from "@/types/menu";
 import { MenuSection } from "./menu-section";
+import { useSearchParams } from "next/navigation";
 
 type MenuContentProps = {
   menuItems: MenuItem[];
-  selectedItem?: string;
 };
 
-export default function MenuContent({
-  menuItems,
-  selectedItem,
-}: MenuContentProps) {
+export default function MenuContent({ menuItems }: MenuContentProps) {
+  const searchParams = useSearchParams();
+
+  // Read ?selected-item=slug
+  const selectedItem = searchParams.get("selected-item") || null;
+  console.log("Selected Item from MenuContent:", selectedItem, searchParams);
   const [activeCategory, setActiveCategory] = useState("Featured Items");
   const [activeItem, setActiveItem] = useState<MenuItem | null>(
     selectedItem
@@ -42,6 +44,21 @@ export default function MenuContent({
     });
     return ["Featured Items", ...Array.from(cats).sort()];
   }, [menuItems]);
+
+  useEffect(() => {
+    const slug = searchParams.get("selected-item");
+
+    if (!slug) {
+      setActiveItem(null);
+      setIsModalOpen(false);
+      return;
+    }
+
+    const found = menuItems.find((i) => i.slug === slug) || null;
+
+    setActiveItem(found);
+    setIsModalOpen(!!found);
+  }, [searchParams, menuItems]);
 
   // Get featured/popular items
   const featuredItems = useMemo(() => {
@@ -124,7 +141,7 @@ export default function MenuContent({
                   sectionRefs.current["Featured Items"] = el;
                 }}
               >
-                <FeaturedItems
+                <PopularItems
                   items={featuredItems}
                   onItemClick={handleItemClick}
                 />
