@@ -59,11 +59,7 @@ export default function FAQ() {
   const displayedFaqs = showAll ? faqs : faqs.slice(0, 4);
 
   return (
-    <section
-      className="section bg-gray-50"
-      id="faqs"
-      aria-labelledby="faqs-header"
-    >
+    <section className="section" id="faqs" aria-labelledby="faqs-header">
       {/* Section Header */}
       <div className="text-center mb-16">
         <H2 className="mb-4" id="faqs-header" role="heading" aria-level={2}>
@@ -85,7 +81,7 @@ export default function FAQ() {
           <AccordionItem
             key={index}
             value={`item-${index}`}
-            className="rounded-xl bg-background shadow-sm"
+            className="rounded-md max-w-4xl mx-auto shadow-sm"
           >
             <AccordionTrigger
               className="px-6"
@@ -96,7 +92,7 @@ export default function FAQ() {
             </AccordionTrigger>
             <AccordionContent
               id={`faq-answer-${index}`}
-              className="px-6 pb-6 text-base leading-relaxed text-muted-foreground"
+              className="px-6 pb-6 text-muted-foreground"
             >
               {faq.answer}
             </AccordionContent>
