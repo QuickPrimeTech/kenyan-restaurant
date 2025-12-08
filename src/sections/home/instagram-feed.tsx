@@ -103,7 +103,7 @@ export default function InstagramSection() {
                       alt={`Instagram post ${post.id}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center bg-black/50 text-white">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center bg-black/50 text-foreground">
                       <div className="text-center p-4">
                         <Instagram className="h-8 w-8 mx-auto mb-2" />
                         <p className="text-sm font-medium">
@@ -115,7 +115,7 @@ export default function InstagramSection() {
                 </CardHeader>
 
                 <CardFooter className="p-4">
-                  <p className="text-sm text-gray-600 line-clamp-2">
+                  <p className="text-sm text-muted-foreground line-clamp-2">
                     {post.caption}
                   </p>
                 </CardFooter>
