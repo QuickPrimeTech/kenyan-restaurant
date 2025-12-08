@@ -8,7 +8,7 @@ export default function CTA({ className }: { className?: string }) {
   return (
     <section
       className={cn(
-        "section bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg text-primary-foreground",
+        "section bg-gradient-to-br from-primary to-primary/80 rounded-lg text-primary-foreground",
         className
       )}
       aria-label="Ready to dine or order online"
@@ -28,7 +28,7 @@ export default function CTA({ className }: { className?: string }) {
             </Link>
           </Button>
 
-          <Button asChild size="lg" variant="secondary">
+          <Button asChild size="lg" variant="cta">
             <Link href="/reservations">
               <Calendar className="mr-2" />
               Reserve Your Table
