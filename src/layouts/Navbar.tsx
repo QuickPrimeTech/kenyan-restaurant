@@ -2,7 +2,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ShoppingBag, Sun, Moon, ChevronDown, User } from "lucide-react";
+import {
+  Menu,
+  ShoppingBag,
+  Sun,
+  Moon,
+  ChevronDown,
+  User,
+  Laptop,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -20,20 +28,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useTheme } from "next-themes";
-import { useCart } from "@/hooks/use-cart";
 import { site } from "@/config/site-config";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
-  const { items } = useCart();
-
-  // Get cart item count
-  const cartItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,17 +51,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   // Primary navigation links (main revenue drivers)
   const primaryLinks = [
     { href: "/", label: "Home" },
     { href: "/menu", label: "Menu" },
     { href: "/offers", label: "Special Offers" },
-    { href: "/gift-cards", label: "Gift Cards" },
-    { href: "/catering", label: "Catering" },
     { href: "/reservations", label: "Reservations" },
   ];
 
@@ -63,44 +65,32 @@ export default function Navbar() {
     { href: "/private-events", label: "Private Events" },
     { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
-    { href: "/careers", label: "Careers" },
-    { href: "/blog", label: "Blog" },
   ];
 
   const isHome = pathname === "/";
 
-  // Framer Motion animations
-  const navVariants = {
-    hidden: { y: -100, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-      },
-    },
+  const springTransition = {
+    type: "spring" as const,
+    stiffness: 300,
+    damping: 20,
   };
 
-  const linkVariants = {
+  const linkVariants: Variants = {
     hover: {
       scale: 1.05,
-      transition: { type: "spring", stiffness: 400, damping: 10 },
+      transition: springTransition,
     },
-    tap: { scale: 0.95 },
+    tap: {
+      scale: 0.95,
+    },
   };
 
-  const sheetContentVariants = {
+  const sheetContentVariants: Variants = {
     closed: { x: "100%", opacity: 0 },
     open: {
       x: 0,
       opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      },
+      transition: springTransition,
     },
   };
 
@@ -114,13 +104,16 @@ export default function Navbar() {
     "supports-[backdrop-filter]:bg-background/80"
   );
 
+  const linkClasses = (link: { href: string }) =>
+    cn(
+      "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+      pathname === link.href
+        ? "bg-primary/10 text-primary"
+        : "text-foreground hover:bg-accent"
+    );
+
   return (
-    <motion.nav
-      className={navbarClasses}
-      initial="hidden"
-      animate="visible"
-      variants={navVariants}
-    >
+    <nav className={navbarClasses}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
@@ -205,80 +198,18 @@ export default function Navbar() {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* Spacer */}
-            <div className="w-8" />
-
+            <Button asChild className="mr-8">
+              <Link href="/menu">
+                <ShoppingBag />
+                Order Now
+              </Link>
+            </Button>
             {/* Theme Toggle */}
-            {mounted && (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  aria-label="Toggle theme"
-                  className={cn(
-                    isHome && !isScrolled ? "text-white hover:text-white" : ""
-                  )}
-                >
-                  <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                </Button>
-              </motion.div>
-            )}
-
-            {/* Cart with Badge */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="ghost" size="icon" asChild className="relative">
-                <Link href="/cart">
-                  <ShoppingBag className="h-5 w-5" />
-                  {cartItemCount > 0 && (
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground"
-                    >
-                      {cartItemCount > 9 ? "9+" : cartItemCount}
-                    </motion.span>
-                  )}
-                </Link>
-              </Button>
-            </motion.div>
-
-            {/* Account */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="ghost" size="icon" asChild>
-                <Link href="/account">
-                  <User className="h-5 w-5" />
-                </Link>
-              </Button>
-            </motion.div>
-
-            {/* Order Now Button */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button asChild className="ml-2">
-                <Link href="/menu/order">Order Now</Link>
-              </Button>
-            </motion.div>
+            <ModeToggle />
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex lg:hidden items-center space-x-2">
-            {/* Cart Badge for Mobile */}
-            <Button variant="ghost" size="icon" asChild className="relative">
-              <Link href="/cart">
-                <ShoppingBag className="h-5 w-5" />
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                    {cartItemCount > 9 ? "9+" : cartItemCount}
-                  </span>
-                )}
-              </Link>
-            </Button>
-
             {/* Mobile Menu Sheet */}
             <Sheet>
               <SheetTrigger asChild>
@@ -334,12 +265,7 @@ export default function Navbar() {
                               <SheetClose asChild>
                                 <Link
                                   href={link.href}
-                                  className={cn(
-                                    "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                                    pathname === link.href
-                                      ? "bg-primary/10 text-primary"
-                                      : "text-foreground hover:bg-accent"
-                                  )}
+                                  className={linkClasses(link)}
                                 >
                                   {link.label}
                                 </Link>
@@ -349,34 +275,41 @@ export default function Navbar() {
                         </div>
 
                         {/* Secondary Links */}
-                        <div className="space-y-1 mb-6">
-                          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                            More
-                          </h3>
-                          {secondaryLinks.map((link) => (
-                            <motion.div
-                              key={link.href}
-                              whileTap={{ scale: 0.98 }}
-                            >
-                              <SheetClose asChild>
-                                <Link
-                                  href={link.href}
-                                  className={cn(
-                                    "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                                    pathname === link.href
-                                      ? "bg-primary/10 text-primary"
-                                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                                  )}
-                                >
-                                  {link.label}
-                                </Link>
-                              </SheetClose>
-                            </motion.div>
-                          ))}
-                        </div>
+                        <Collapsible>
+                          <CollapsibleTrigger
+                            className="flex w-full items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium 
+             transition-all hover:bg-accent active:scale-[0.99] 
+             data-[state=open]:bg-accent/60"
+                          >
+                            <span>More</span>
+
+                            <ChevronDown
+                              className="h-4 w-4 transition-transform duration-300 
+               data-[state=open]:rotate-180"
+                            />
+                          </CollapsibleTrigger>
+
+                          <CollapsibleContent>
+                            {secondaryLinks.map((link) => (
+                              <motion.div
+                                key={link.href}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <SheetClose asChild>
+                                  <Link
+                                    href={link.href}
+                                    className={linkClasses(link)}
+                                  >
+                                    {link.label}
+                                  </Link>
+                                </SheetClose>
+                              </motion.div>
+                            ))}
+                          </CollapsibleContent>
+                        </Collapsible>
 
                         {/* Accessibility Section */}
-                        <div className="space-y-4 border-t pt-6">
+                        <div className="space-y-4 border-t pt-6 mt-4">
                           <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                             Accessibility
                           </h3>
@@ -384,32 +317,38 @@ export default function Navbar() {
                           {/* Theme Switcher */}
                           <div className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-accent transition-colors">
                             <span className="text-sm font-medium">Theme</span>
-                            {mounted && (
-                              <div className="flex items-center space-x-2">
-                                <Button
-                                  variant={
-                                    theme === "light" ? "default" : "outline"
-                                  }
-                                  size="sm"
-                                  onClick={() => setTheme("light")}
-                                  className="h-8 px-3 text-xs"
-                                >
-                                  <Sun className="h-3 w-3 mr-1" />
-                                  Light
-                                </Button>
-                                <Button
-                                  variant={
-                                    theme === "dark" ? "default" : "outline"
-                                  }
-                                  size="sm"
-                                  onClick={() => setTheme("dark")}
-                                  className="h-8 px-3 text-xs"
-                                >
-                                  <Moon className="h-3 w-3 mr-1" />
-                                  Dark
-                                </Button>
-                              </div>
-                            )}
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                variant={
+                                  theme === "light" ? "default" : "outline"
+                                }
+                                size="icon"
+                                onClick={() => setTheme("light")}
+                                className="h-8 px-3 text-xs"
+                              >
+                                <Sun />
+                              </Button>
+                              <Button
+                                variant={
+                                  theme === "dark" ? "default" : "outline"
+                                }
+                                size="icon"
+                                onClick={() => setTheme("dark")}
+                                className="h-8 px-3 text-xs"
+                              >
+                                <Moon />
+                              </Button>
+                              <Button
+                                variant={
+                                  theme === "system" ? "default" : "outline"
+                                }
+                                size="icon"
+                                onClick={() => setTheme("system")}
+                              >
+                                <Laptop />
+                                {/* System */}
+                              </Button>
+                            </div>
                           </div>
 
                           {/* Font Size */}
@@ -460,18 +399,17 @@ export default function Navbar() {
                     {/* Bottom Actions */}
                     <div className="border-t p-4 bg-background/95 backdrop-blur">
                       <div className="grid grid-cols-2 gap-3">
-                        <Button
-                          variant="outline"
-                          asChild
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <Link href="/account">
-                            <User className="mr-2 h-4 w-4" />
-                            Account
+                        <Button variant="outline" asChild>
+                          <Link href="/reservations">
+                            <User className="mr-2" />
+                            Reservations
                           </Link>
                         </Button>
-                        <Button asChild onClick={() => setIsOpen(false)}>
-                          <Link href="/menu/order">Order Now</Link>
+                        <Button asChild>
+                          <Link href="/MenuSection">
+                            <ShoppingBag />
+                            Order Now
+                          </Link>
                         </Button>
                       </div>
                     </div>
@@ -482,6 +420,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </motion.nav>
+    </nav>
   );
 }

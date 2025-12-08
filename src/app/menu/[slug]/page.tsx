@@ -62,7 +62,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function OfferPage({
+export default async function MenuItemPage({
   params,
 }: {
   params: Promise<{ slug: string }>;

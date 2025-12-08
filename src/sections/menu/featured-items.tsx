@@ -1,11 +1,12 @@
 "use client";
-import type React from "react";
+
 import { useRef, useState, useEffect } from "react";
 import type { MenuItem } from "@/types/menu";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
-import { useCart } from "@/hooks/use-cart";
 import { Button } from "@/components/ui/button";
 import { ImageWithFallback } from "@/components/ui/image";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Link from "next/link";
 
 interface FeaturedItemsProps {
   items: MenuItem[];
@@ -13,46 +14,48 @@ interface FeaturedItemsProps {
 }
 
 export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const { addItem } = useCart();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const checkScroll = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+  // Find the Radix viewport
+  useEffect(() => {
+    if (!rootRef.current) return;
+
+    const viewport = rootRef.current.querySelector(
+      "[data-slot='scroll-area-viewport']"
+    ) as HTMLDivElement | null;
+
+    if (!viewport) return;
+
+    viewportRef.current = viewport;
+
+    const update = () => {
+      const el = viewportRef.current;
+      if (!el) return;
+
+      const { scrollLeft, scrollWidth, clientWidth } = el;
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-    }
-  };
+    };
 
-  useEffect(() => {
-    checkScroll();
-    const ref = scrollRef.current;
-    if (ref) {
-      ref.addEventListener("scroll", checkScroll);
-      return () => ref.removeEventListener("scroll", checkScroll);
-    }
+    update();
+    viewport.addEventListener("scroll", update);
+
+    return () => viewport.removeEventListener("scroll", update);
   }, []);
 
   const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 320;
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
+    const el = viewportRef.current;
+    if (!el) return;
 
-  const handleQuickAdd = (e: React.MouseEvent, item: MenuItem) => {
-    e.stopPropagation();
-    addItem({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: 1,
-      image: item.image_url,
+    const scrollAmount = 320;
+
+    el.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
     });
   };
 
@@ -63,69 +66,73 @@ export function FeaturedItems({ items, onItemClick }: FeaturedItemsProps) {
         <h2 className="text-[22px] font-bold text-foreground">
           Featured Items
         </h2>
+
         <div className="flex items-center gap-2">
           <Button
-            variant={"outline"}
-            onClick={() => scroll("left")}
-            size={"icon-sm"}
+            variant="outline"
+            size="icon-sm"
             className="rounded-full"
+            onClick={() => scroll("left")}
             disabled={!canScrollLeft}
           >
             <ArrowLeft />
           </Button>
+
           <Button
-            variant={"outline"}
+            variant="outline"
+            size="icon-sm"
+            className="rounded-full"
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
-            size={"icon-sm"}
-            className="rounded-full"
           >
             <ArrowRight />
           </Button>
         </div>
       </div>
 
-      {/* Carousel */}
-      <div
-        ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scrollbar-hide -mx-4 px-4"
-      >
-        {items.map((item) => (
-          <div
-            key={item.id}
-            onClick={() => onItemClick(item)}
-            className="flex-shrink-0 w-40 md:w-50 cursor-pointer group"
-          >
-            {/* Square image container */}
-            <div className="relative w-full aspect-square mb-2  rounded-xl overflow-hidden">
-              <ImageWithFallback
-                fill
-                src={item.image_url}
-                placeholder={item.lqip ? "blur" : "empty"}
-                blurDataURL={item.lqip || undefined}
-                alt={item.name}
-                className="object-cover"
-              />
-              {/* Plus button - Uber Eats style */}
-              <Button
-                onClick={(e) => handleQuickAdd(e, item)}
-                size="icon"
-                variant="outline"
-                className="absolute bottom-2 cursor-pointer right-2 shadow-lg hover:scale-105 transition-transform"
-              >
-                <Plus className="text-foreground" strokeWidth={3.5} />
-              </Button>
-            </div>
-            {/* Item info */}
-            <h3 className="md:text-lg font-medium text-foreground leading-tight line-clamp-2 mb-0.5">
-              {item.name}
-            </h3>
-            <p className="text-sm md:text-base text-muted-foreground">
-              Ksh {item.price.toFixed(2)}
-            </p>
-          </div>
-        ))}
-      </div>
+      {/* Scroll Area */}
+      <ScrollArea ref={rootRef} className="-mx-4 px-4">
+        <div className="flex gap-4 pb-4 w-max">
+          {items.map((item) => (
+            <Link href={`/menu?selected-item=${item.slug}`} key={item.id}>
+              <div className="flex-shrink-0 w-40 md:w-50 cursor-pointer group">
+                <div className="relative w-full aspect-square mb-2 rounded-xl overflow-hidden">
+                  <ImageWithFallback
+                    fill
+                    src={item.image_url}
+                    placeholder={item.lqip ? "blur" : "empty"}
+                    blurDataURL={item.lqip || undefined}
+                    alt={item.name}
+                    className="object-cover"
+                  />
+
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onItemClick(item);
+                    }}
+                    size="icon"
+                    variant="outline"
+                    className="absolute bottom-2 right-2 shadow-lg hover:scale-105 transition-transform"
+                  >
+                    <Plus className="text-foreground" strokeWidth={3.5} />
+                  </Button>
+                </div>
+
+                <h3 className="md:text-lg font-medium text-foreground leading-tight line-clamp-2 mb-0.5">
+                  {item.name}
+                </h3>
+
+                <p className="text-sm md:text-base text-muted-foreground">
+                  Ksh {item.price.toFixed(2)}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
     </div>
   );
 }

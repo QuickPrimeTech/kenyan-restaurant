@@ -19,7 +19,9 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
         </div>
         <div>
           <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-1">{menuItem.name}</h1>
+            <h1 className="text-2xl lg:text-3xl font-bold mb-1">
+              {menuItem.name}
+            </h1>
             <p className="text-muted-foreground mb-2">{menuItem.description}</p>
             <div className="font-semibold text-foreground">
               Ksh {menuItem.price.toFixed(2)}
