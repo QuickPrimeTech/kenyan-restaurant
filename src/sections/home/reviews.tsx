@@ -64,16 +64,26 @@ export default function Testimonials() {
               >
                 <Card className="h-full">
                   <CardHeader className="pt-4 pb-0 rounded-t-lg flex justify-between items-center">
-                    <Avatar className="size-12">
-                      <AvatarImage
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="object-cover"
-                      />
-                      <AvatarFallback>
-                        {testimonial.name.slice(0, 2)}
-                      </AvatarFallback>
-                    </Avatar>
+                    <div className="flex gap-2 items-center">
+                      <Avatar className="size-12">
+                        <AvatarImage
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="object-cover"
+                        />
+                        <AvatarFallback>
+                          {testimonial.name.slice(0, 2)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-0.5">
+                        <p className="text-sm font-semibold">
+                          {testimonial.name}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Local Guide
+                        </p>
+                      </div>
+                    </div>
                     <div className="flex mb-4">
                       {[...Array(5)].map((_, i) => (
                         <Star
@@ -102,7 +112,6 @@ export default function Testimonials() {
                         </Button>
                       )}
                     </div>
-                    <p className="font-semibold">- {testimonial.name}</p>
                   </CardContent>
                 </Card>
               </CarouselItem>

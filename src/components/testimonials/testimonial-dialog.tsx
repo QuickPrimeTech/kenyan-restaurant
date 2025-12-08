@@ -48,6 +48,7 @@ export const TestimonialDialog = ({
           py-0
           overflow-hidden
           pb-4 
+        gap-0
         "
       >
         <DialogHeader className="space-y-6 bg-muted px-3 py-4 rounded-2xl">
@@ -61,7 +62,7 @@ export const TestimonialDialog = ({
               <AvatarFallback>{testimonial.name.slice(0, 2)}</AvatarFallback>
             </Avatar>
             <div>
-              <DialogTitle className="text-2xl font-cinzel font-semibold text-foreground tracking-wide">
+              <DialogTitle className="text-lg font-semibold text-foreground tracking-tighter">
                 {testimonial.name}
               </DialogTitle>
               <div className="flex items-center mt-2 space-x-1">
@@ -73,22 +74,11 @@ export const TestimonialDialog = ({
 
         {/* Scrollable content for long reviews */}
         {/* Scrollable content for long reviews */}
-        <ScrollArea className="max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
+        <ScrollArea className="max-h-[50vh] overflow-y-auto custom-scrollbar">
           <blockquote className="relative px-8 py-6">
-            {/* Opening quote */}
-            <span className="absolute top-0 left-0 -translate-x-4 -translate-y-2 text-6xl text-primary/20 font-cinzel leading-none select-none">
-              &quot;
-            </span>
-
-            {/* Testimonial text */}
-            <p className="text-lg font-chivo leading-relaxed text-foreground italic">
+            <p className="leading-relaxed text-foreground">
               {testimonial.text}
             </p>
-
-            {/* Closing quote */}
-            <span className="absolute bottom-0 right-0 translate-x-2 translate-y-4 text-6xl text-primary/20 font-cinzel leading-none select-none">
-              &quot;
-            </span>
           </blockquote>
           <ScrollBar orientation="vertical" />
         </ScrollArea>

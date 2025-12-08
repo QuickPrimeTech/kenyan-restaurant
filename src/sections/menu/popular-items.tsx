@@ -98,8 +98,8 @@ export function PopularItems({ items, showTitle = true }: FeaturedItemsProps) {
       </div>
 
       {/* Scroll Area */}
-      <ScrollArea ref={rootRef} className="-mx-4">
-        <div className="flex gap-4 pb-4 pl-4">
+      <ScrollArea ref={rootRef} className="-mx-4 md:-mx-6 lg:-mx-8">
+        <div className="flex gap-4 pb-4 pl-4 pr-6 md:pl-6 lg:pl-8">
           {items.map((item) => (
             <Link href={`/menu?selected-item=${item.slug}`} key={item.id}>
               <MenuItemCard
