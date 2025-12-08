@@ -20,7 +20,6 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
 
   // Read ?selected-item=slug
   const selectedItem = searchParams.get("selected-item") || null;
-  console.log("Selected Item from MenuContent:", selectedItem, searchParams);
   const [activeCategory, setActiveCategory] = useState("Featured Items");
   const [activeItem, setActiveItem] = useState<MenuItem | null>(
     selectedItem

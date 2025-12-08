@@ -20,7 +20,7 @@ export type MenuItem = {
   is_available: boolean;
   image_url: string | null;
   dietary_preference: [];
-  choices?: MenuChoice[]; // optional
+  choices: MenuChoice[] | []; // optional
   lqip: string | null;
   start_time: string;
   end_time: string;
