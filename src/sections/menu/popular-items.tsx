@@ -4,16 +4,20 @@ import type { MenuItem } from "@/types/menu";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import Link from "next/link";
 import { MenuItemCard } from "./menu-item-card";
 import { cn } from "@/lib/utils";
 
 interface FeaturedItemsProps {
   items: MenuItem[];
   showTitle?: boolean;
+  setActiveItem: (menuItem: MenuItem) => void;
 }
 
-export function PopularItems({ items, showTitle = true }: FeaturedItemsProps) {
+export function PopularItems({
+  items,
+  showTitle = true,
+  setActiveItem,
+}: FeaturedItemsProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement | null>(null);
 
@@ -101,14 +105,15 @@ export function PopularItems({ items, showTitle = true }: FeaturedItemsProps) {
       <ScrollArea ref={rootRef} className="-mx-4 md:-mx-6 lg:-mx-8">
         <div className="flex gap-4 pb-4 pl-4 pr-6 md:pl-6 lg:pl-8">
           {items.map((item) => (
-            <Link href={`/menu?selected-item=${item.slug}`} key={item.id}>
-              <MenuItemCard
-                key={item.id}
-                item={item}
-                orientation="square"
-                variant="popular"
-              />
-            </Link>
+            <MenuItemCard
+              key={item.id}
+              item={item}
+              orientation="square"
+              variant="popular"
+              onClick={() => {
+                setActiveItem(item);
+              }}
+            />
           ))}
         </div>
 

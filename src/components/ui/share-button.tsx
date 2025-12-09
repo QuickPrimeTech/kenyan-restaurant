@@ -1,8 +1,7 @@
 "use client";
-
 import { forwardRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Share2 } from "lucide-react";
+import { Share } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type ShareData = {
@@ -152,7 +151,7 @@ const ShareButton = forwardRef<HTMLButtonElement, ShareButtonProps>(
       }
     };
 
-    const defaultIcon = icon || <Share2 className="h-4 w-4" />;
+    const defaultIcon = icon || <Share className="size-4" />;
 
     return (
       <Button

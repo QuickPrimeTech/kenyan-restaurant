@@ -133,7 +133,12 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
         <div className="flex">
           {/* Menu Content */}
           <div className="flex-1 section-x mt-25 overflow-hidden">
-            {!searchQuery && <PopularItems items={featuredItems} />}
+            {!searchQuery && (
+              <PopularItems
+                setActiveItem={handleItemClick}
+                items={featuredItems}
+              />
+            )}
 
             {/* Menu Sections */}
             {Object.entries(groupedMenuItems).map(([category, items]) => (
@@ -142,6 +147,7 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
                 ref={(el) => {
                   sectionRefs.current[category] = el;
                 }}
+                onClick={handleItemClick}
                 title={category}
                 items={items}
               />

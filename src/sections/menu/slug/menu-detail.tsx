@@ -1,8 +1,15 @@
-import { MenuItem } from "@/types/menu";
-import { ChoicesForm } from "../choices-form";
+"use client";
+
+import { ChoicesContent, ChoicesForm, QuantitySelector } from "../choices-form";
 import { ImageWithFallback } from "@/components/ui/image";
+import { toast } from "sonner";
+import { AddToCartButton } from "../add-cart-button";
+import { MenuItem } from "@/types/menu";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
+  const addItem = () => {
+    toast.success("Item added to cart successfully");
+  };
   return (
     <section>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -27,7 +34,17 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
               Ksh {menuItem.price.toFixed(2)}
             </div>
           </div>
-          <ChoicesForm choices={menuItem.choices} />
+          <ChoicesForm
+            basePrice={menuItem.price}
+            onAdd={addItem}
+            choices={menuItem.choices}
+          >
+            <ChoicesContent />
+            <div className="flex gap-3">
+              <QuantitySelector />
+              <AddToCartButton />
+            </div>
+          </ChoicesForm>
         </div>
       </div>
     </section>

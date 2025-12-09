@@ -12,10 +12,9 @@ import type { MenuItem } from "@/types/menu";
 import { ImageWithFallback } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ShareButton } from "@/components/ui/share-button";
-import { toast } from "sonner";
 import { ChoicesContent, ChoicesForm, QuantitySelector } from "./choices-form";
 import { AddToCartButton } from "./add-cart-button";
+import { ShareMenuButton } from "./common/share-menu-button";
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -30,26 +29,7 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
 
   const footerButtons = (
     <div className="flex gap-2 mt-4">
-      <ShareButton
-        variant={"outline"}
-        shareData={{
-          title: item.name,
-          text: `Check out this dish: ${item.name} - ${item.description}`,
-          url: `https://ziwa-nu.vercel.app/menu/${item.slug}`,
-        }}
-        onShareSuccess={() => {
-          toast.success("Menu item shared successfully!");
-        }}
-        onShareError={(error) => {
-          // Only show error if it's not a user cancellation
-          if (error.name !== "AbortError") {
-            toast.error("Failed to share menu item");
-          }
-        }}
-        onCopyFallback={() => {
-          toast.success("Menu item link copied to clipboard!");
-        }}
-      />
+      <ShareMenuButton item={item} />
       <Button variant={"secondary"} asChild>
         <Link href={`/menu/${item.slug}`}>See Details</Link>
       </Button>

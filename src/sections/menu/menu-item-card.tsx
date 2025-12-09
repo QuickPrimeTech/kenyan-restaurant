@@ -7,6 +7,7 @@ import { ImageWithFallback } from "@/components/ui/image";
 import type { MenuItem } from "@/types/menu";
 import { cn } from "@/lib/utils";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const cardVariants = cva("relative cursor-pointer overflow-hidden", {
   variants: {
@@ -43,6 +44,8 @@ export function MenuItemCard({
 }: VariantProps<typeof cardVariants> &
   React.ComponentProps<"div"> &
   MenuItemCardProps) {
+  const router = useRouter();
+
   return (
     <div className={cardVariants({ orientation, variant, size })} {...props}>
       {/* Image */}

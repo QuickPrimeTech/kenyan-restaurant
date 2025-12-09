@@ -81,7 +81,7 @@ export default async function MenuItemPage({
 
   return (
     <div className="container mx-auto section mt-8">
-      <Header />
+      <Header menuItem={menuItem} />
       <MenuDetail menuItem={menuItem} />
     </div>
   );
