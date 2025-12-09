@@ -1,12 +1,8 @@
 "use client";
 import { useState, useRef, useMemo, useEffect } from "react";
-import { useCart } from "@/hooks/use-cart";
 import { CategoryTabs } from "@/sections/menu/category-tabs";
 import { PopularItems } from "@/sections/menu/popular-items";
-import { CartSidebar } from "@/sections/menu/cart-sidebar";
 import { ItemDetail } from "@/sections/menu/item-detail";
-import { MobileCartButton } from "@/sections/menu/mobile-cart-button";
-import { CheckoutModal } from "@/sections/menu/checkout-modal";
 import { MenuItem } from "@/types/menu";
 import { MenuSection } from "./menu-section";
 import { useSearchParams } from "next/navigation";
@@ -21,17 +17,15 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
   // Read ?selected-item=slug
   const selectedItem = searchParams.get("selected-item") || null;
   const [activeCategory, setActiveCategory] = useState("Featured Items");
-  const [activeItem, setActiveItem] = useState<MenuItem | null>(
-    selectedItem
-      ? menuItems.find((item) => item.slug === selectedItem) || null
-      : null
-  );
+  const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(selectedItem ? true : false);
-  const [orderMode, setOrderMode] = useState<"delivery" | "pickup">("delivery");
   const [searchQuery, setSearchQuery] = useState("");
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const { items } = useCart();
+  // Get featured/popular items
+  const popularItems = useMemo(() => {
+    console.log(menuItems);
+    return menuItems.filter((item) => item.is_popular);
+  }, [menuItems]);
 
   // Get unique categories from menu items
   const categories = useMemo(() => {
@@ -41,7 +35,7 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
         cats.add(item.category);
       }
     });
-    return ["Featured Items", ...Array.from(cats).sort()];
+    return ["Popular Dishes", ...cats];
   }, [menuItems]);
 
   useEffect(() => {
@@ -59,11 +53,6 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
     setIsModalOpen(!!found);
   }, [searchParams, menuItems]);
 
-  // Get featured/popular items
-  const featuredItems = useMemo(() => {
-    return menuItems.filter((item) => item.is_popular && item.is_available);
-  }, [menuItems]);
-
   // Filter items by search query
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return menuItems;
@@ -71,10 +60,9 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
     const query = searchQuery.toLowerCase();
     return menuItems.filter(
       (item) =>
-        item.is_available &&
-        (item.name.toLowerCase().includes(query) ||
-          item.description.toLowerCase().includes(query) ||
-          item.category.toLowerCase().includes(query))
+        item.name.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query)
     );
   }, [searchQuery, menuItems]);
 
@@ -83,13 +71,11 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
     const grouped: Record<string, MenuItem[]> = {};
 
     filteredItems.forEach((item) => {
-      if (item.is_available) {
-        const category = item.category || "Other";
-        if (!grouped[category]) {
-          grouped[category] = [];
-        }
-        grouped[category].push(item);
+      const category = item.category;
+      if (!grouped[category]) {
+        grouped[category] = [];
       }
+      grouped[category].push(item);
     });
 
     // Sort items within each category by name
@@ -103,7 +89,7 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
   const handleCategoryClick = (category: string) => {
     setActiveCategory(category);
     setSearchQuery(""); // Clear search when clicking category
-
+    console.log("Clicked category ====>", category);
     const section = sectionRefs.current[category];
     if (section) {
       const headerOffset = 140;
@@ -135,8 +121,11 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
           <div className="flex-1 section-x mt-25 overflow-hidden">
             {!searchQuery && (
               <PopularItems
+                ref={(el) => {
+                  sectionRefs.current["Popular Dishes"] = el;
+                }}
                 setActiveItem={handleItemClick}
-                items={featuredItems}
+                items={popularItems}
               />
             )}
 
@@ -160,12 +149,12 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
                   No items found
                 </p>
                 <p className="text-muted-foreground mt-1">
-                  Try searching for "{searchQuery}" with a different term
+                  Try searching for &quot;{searchQuery}&quot; with a different
+                  term
                 </p>
               </div>
             )}
 
-            {/* No items at all */}
             {!searchQuery && Object.keys(groupedMenuItems).length === 0 && (
               <div className="text-center py-12">
                 <p className="text-lg font-medium text-foreground">
@@ -177,31 +166,13 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
               </div>
             )}
           </div>
-
-          {/* Cart Sidebar - Fixed on right */}
-          {items.length > 0 && (
-            <div className="hidden lg:block w-[340px] shrink-0">
-              <CartSidebar
-                orderMode={orderMode}
-                onCheckout={() => setCheckoutOpen(true)}
-              />
-            </div>
-          )}
         </div>
       </main>
-
-      <MobileCartButton onCheckout={() => setCheckoutOpen(true)} />
 
       <ItemDetail
         item={activeItem}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
-      />
-
-      <CheckoutModal
-        open={checkoutOpen}
-        onOpenChange={setCheckoutOpen}
-        orderMode={orderMode}
       />
     </div>
   );

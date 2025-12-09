@@ -54,7 +54,7 @@ export async function generateMetadata({
 
 export async function generateStaticParams() {
   const { data: menuItems } = await api.get<ApiResponse<MenuItem[]>>(
-    "/menu-items"
+    "/menu-items?is_available=true"
   );
 
   return menuItems.map((offer) => ({

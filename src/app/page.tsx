@@ -20,7 +20,7 @@ export default async function HomePage() {
   const { data: offers } = await api.get<ApiResponse<Offer[]>>("/offers");
 
   const { data: menuItems } = await api.get<ApiResponse<MenuItem[]>>(
-    "/menu-items"
+    "/menu-items?popular=true&is_available=true"
   );
 
   return (
