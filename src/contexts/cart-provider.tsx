@@ -1,5 +1,6 @@
 "use client";
 
+import { compareChoices } from "@/helpers/menu";
 import { CartItem, CartState } from "@/types/cart";
 import {
   createContext,
@@ -43,13 +44,22 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const addToCart = (cartItem: CartItem) => {
     setCartItems((prevCartItems) => {
+      console.log(prevCartItems);
       const existingItem = prevCartItems.find(
-        (prevCartItem) => prevCartItem === cartItem
+        (prevCartItem) =>
+          prevCartItem.id === cartItem.id &&
+          prevCartItem.specialInstructions === cartItem.specialInstructions &&
+          compareChoices(prevCartItem.choices ?? {}, cartItem.choices ?? {})
       );
+
+      console.log("existingItem ---->", existingItem);
+      console.log("cartItem ---->", cartItem);
       //Adding the totalPrice
       if (existingItem) {
         return prevCartItems.map((i) =>
-          i.id === cartItem.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === cartItem.id
+            ? { ...i, quantity: i.quantity + cartItem.quantity }
+            : i
         );
       } else {
         return [...prevCartItems, cartItem];

@@ -28,7 +28,6 @@ export function CartPopover({
   onCheckout,
 }: CartPopoverProps) {
   const { cartItems, cartItemsCount } = useCart();
-  console.log(cartItems);
   const maxItems = 3;
   return (
     <Popover open={open} onOpenChange={onOpenChange}>

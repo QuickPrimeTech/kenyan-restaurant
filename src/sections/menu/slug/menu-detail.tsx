@@ -27,9 +27,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
     };
 
     addToCart(cartItem);
-
-    console.log("original menu item ---->", menuItem);
-    console.log("This is the menu item--->", choices);
+    console.log("choices ------>", choices);
     toast.success("Item added to cart successfully");
   };
   return (
