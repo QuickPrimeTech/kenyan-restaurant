@@ -3,7 +3,7 @@ import Image from "next/image";
 import { MapPin, Phone, Clock } from "lucide-react";
 import { site } from "@/config/site-config";
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="section border-t border-border">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">

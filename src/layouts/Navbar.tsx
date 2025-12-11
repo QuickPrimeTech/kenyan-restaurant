@@ -193,7 +193,7 @@ const TextSizeSwitcher = () => (
   </div>
 );
 
-export default function Navbar() {
+export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";

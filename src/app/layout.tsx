@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Open_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/layouts/navbar";
-import Footer from "@/layouts/footer";
+import { Navbar } from "@/layouts/navbar";
+import { Footer } from "@/layouts/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { site } from "@/config/site-config";
 import { ContactButton } from "@/components/contact-button";
