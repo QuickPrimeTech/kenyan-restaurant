@@ -46,7 +46,7 @@ const SPRING_TRANSITION = {
 };
 
 const LINK_VARIANTS: Variants = {
-  hover: { scale: 1.05, transition: SPRING_TRANSITION },
+  hover: { scale: 1.01, transition: SPRING_TRANSITION },
   tap: { scale: 0.95 },
 };
 
@@ -205,13 +205,10 @@ export default function Navbar() {
   }, []);
 
   const navbarClasses = cn(
-    "fixed top-0 w-full z-50 transition-all duration-300",
-    isHome
-      ? isScrolled
-        ? "bg-background/95 backdrop-blur-md shadow-sm border-b border-border text-foreground"
-        : "bg-transparent text-white border-b border-transparent"
-      : "bg-background/95 backdrop-blur-md shadow-sm border-b border-border text-foreground",
-    "supports-[backdrop-filter]:bg-background/80"
+    "fixed top-0 w-full z-50 transition-all duration-300 bg-background/80 text-foreground border-b border-border shadow-sm backdrop-blur-md",
+    isHome &&
+      !isScrolled &&
+      "bg-transparent text-background shadow-none backdrop-blur-none border-b-2"
   );
 
   const getTextColor = (defaultColor = "text-foreground") =>
@@ -222,22 +219,21 @@ export default function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <MotionDiv>
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="relative w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300">
-                <Image
-                  fill
-                  src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1750685108/Flux_Dev_A_minimalistic_logo_for_a_coastal_restaurant_featurin_0_yyrx6o.jpg"
-                  alt="Ziwa Restaurant Logo"
-                  className="object-cover w-full h-full"
-                  priority
-                />
-              </div>
-              <span className="font-serif text-xl lg:text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Ziwa Restaurant
-              </span>
-            </Link>
-          </MotionDiv>
+          <Link href="/" className="flex items-center space-x-3">
+            <div className="relative w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300">
+              <Image
+                src="https://res.cloudinary.com/quick-prime-tech/image/upload/v1750685108/Flux_Dev_A_minimalistic_logo_for_a_coastal_restaurant_featurin_0_yyrx6o.jpg"
+                alt="Ziwa Restaurant Logo"
+                width={48}
+                height={48}
+                className="object-cover w-full h-full"
+                priority
+              />
+            </div>
+            <span className="font-serif text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Ziwa Restaurant
+            </span>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
