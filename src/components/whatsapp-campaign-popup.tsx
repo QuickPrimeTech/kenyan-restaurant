@@ -125,29 +125,27 @@ export function WhatsAppCampaignPopup() {
         <DialogContent className="w-[95vw] max-w-sm mx-auto max-h-[90vh] p-0">
           <ScrollArea className="max-h-[90vh]">
             <div className="text-center space-y-4 py-4 px-4">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <Check className="h-6 w-6 text-green-600" />
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto">
+                <Check className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
-                Welcome! 🎉
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
+              <h3 className="text-lg font-bold mb-2">Welcome! 🎉</h3>
+              <p className="text-sm text-muted-foreground mb-3">
                 You&apos;ve joined our WhatsApp family and earned 10% off!
               </p>
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
-                <div className="flex items-center gap-2 text-green-800 mb-2">
+              <div className="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg p-3 mb-3">
+                <div className="flex items-center gap-2 mb-2">
                   <Gift className="size-4" />
                   <span className="text-sm font-semibold">
                     Your Discount Code
                   </span>
                 </div>
                 <div className="w-full flex items-center gap-2">
-                  <p className="text-xl text-start flex-1 font-mono font-bold text-green-700 bg-white px-4 py-1 rounded border">
+                  <p className="text-xl text-start flex-1 font-mono font-bold text-green-700 bg-white px-4 py-1 rounded-md border">
                     WHATSAPP10
                   </p>
                   <Button
                     onClick={handleCopy}
-                    className="p-1 text-white bg-green-500 hover:bg-green-600 rounded"
+                    className="bg-green-500 hover:bg-green-600"
                     aria-label="Copy discount code"
                   >
                     {copied ? (
@@ -164,11 +162,11 @@ export function WhatsAppCampaignPopup() {
                   </Button>
                 </div>
 
-                <p className="text-xs text-green-600 mt-1">
+                <p className="text-xs text-green-600 dark:text-green-400 mt-1">
                   10% off your next order!
                 </p>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 We&apos;ll send exclusive deals via WhatsApp shortly.
               </p>
             </div>
@@ -211,26 +209,28 @@ export function WhatsAppCampaignPopup() {
 
         <ScrollArea className="h-[calc(75vh-100px)]">
           <div className="p-4 space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-2xl p-4 text-center shadow-sm">
+            <div className="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-800 rounded-2xl p-4 text-center shadow-sm">
               <Gift className="h-7 w-7 text-green-600 mx-auto mb-2" />
-              <h3 className="text-base font-semibold text-green-800 mb-1 tracking-tight">
+              <h3 className="text-base font-semibold text-green-800 dark:text-green-50 mb-1 tracking-tight">
                 {offerCard.title}
               </h3>
-              <p className="text-2xl font-extrabold text-green-700 mb-1">
+              <p className="text-2xl font-extrabold text-green-700 dark:text-green-200 mb-1">
                 {offerCard.highlight}
               </p>
-              <p className="text-sm text-green-600">{offerCard.description}</p>
+              <p className="text-sm text-green-600 dark:text-green-400">
+                {offerCard.description}
+              </p>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-2">
+              <h4 className="text-sm font-semibold mb-2">
                 What you&apos;ll get:
               </h4>
               <div className="flex flex-wrap gap-2 text-xs text-gray-600">
                 {benefits.map((benefit) => (
                   <div key={benefit} className="flex items-center gap-1">
                     <Check className="h-3 w-3 text-green-500" />
-                    <span>{benefit}</span>
+                    <span className="text-muted-foreground">{benefit}</span>
                   </div>
                 ))}
               </div>
@@ -248,7 +248,7 @@ export function WhatsAppCampaignPopup() {
                       <FormLabel>WhatsApp Number</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Smartphone className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                          <Smartphone className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <Input
                             placeholder="0712345678"
                             disabled={isSubmitting}
@@ -280,14 +280,14 @@ export function WhatsAppCampaignPopup() {
                 </Button>
               </form>
             </Form>
-            <p className="text-xs text-gray-500 text-center">
+            <p className="text-xs text-muted-foreground text-center">
               Unsubscribe anytime by replying &quot;STOP&quot;
             </p>
-            <div className="bg-blue-50 border mb-6 border-blue-200 rounded-lg p-3">
-              <h4 className="text-sm font-semibold text-blue-900 mb-1">
+            <div className="bg-blue-50 dark:bg-blue-900 border mb-6 border-blue-200 dark:border-blue-800 rounded-lg p-3">
+              <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-50 mb-1">
                 Why Join Now?
               </h4>
-              <p className="text-xs text-blue-800">
+              <p className="text-xs text-blue-800 dark:text-blue-200">
                 Join over 10,000+ happy customers who save money and never miss
                 out on our delicious new dishes and special promotions!
               </p>
