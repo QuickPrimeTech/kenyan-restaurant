@@ -25,48 +25,15 @@ import {
 import { cn } from "@/lib/utils";
 import { createItemSchema } from "@/schemas/menu";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { calculateTotalPrice, getSelectionDescription } from "@/helpers/menu";
 
 type ChoicesFormProps = {
   choices: MenuChoice[];
   defaultQuantity?: number;
-  onAdd?: (data: MenuItem) => void;
+  onAdd?: (data: any) => void;
   children?: ReactNode;
   basePrice: number;
 } & React.ComponentProps<"form">;
-
-// Helper function for price calculation
-const calculateTotalPrice = (
-  formData: any,
-  choices: MenuChoice[],
-  basePrice: number
-) => {
-  let additional = 0;
-
-  choices?.forEach((choice) => {
-    const choiceId = choice.id || choice.title;
-    const selected = formData[choiceId];
-
-    if (!selected) return;
-
-    if (Array.isArray(selected)) {
-      selected.forEach((label) => {
-        const option = choice.options.find((o) => o.label === label);
-        if (option?.price) additional += option.price;
-      });
-    } else {
-      const option = choice.options.find((o) => o.label === selected);
-      if (option?.price) additional += option.price;
-    }
-  });
-
-  return (basePrice + additional) * (formData.quantity || 1);
-};
-
-// Helper function for selection description
-const getSelectionDescription = (choice: MenuChoice) => {
-  const max = choice.maxSelectable || choice.options.length;
-  return max === 1 ? "Choose only one" : `Choose up to ${max} options`;
-};
 
 export function ChoicesForm({
   choices,
@@ -214,7 +181,7 @@ const MultipleChoiceOptions = ({
             <div
               key={option.label}
               className={cn(
-                "flex items-center space-x-3 rounded-lg border p-4 transition-colors",
+                "flex items-center pl-4 rounded-lg border transition-colors",
                 isDisabled && "opacity-50 cursor-not-allowed",
                 !isDisabled && "cursor-pointer hover:bg-accent/50",
                 isSelected && "bg-accent/30 border-primary"
@@ -261,7 +228,7 @@ const OptionLabel = ({
   <Label
     htmlFor={htmlFor}
     className={cn(
-      "flex-1 flex justify-between",
+      "flex-1 flex justify-between p-4",
       disabled ? "cursor-not-allowed" : "cursor-pointer"
     )}
   >
@@ -292,6 +259,7 @@ export function ChoicesContent() {
           <FormItem>
             <FormLabel className="text-base font-semibold">
               Special Instructions
+              <span className="text-sm text-muted-foreground">(optional)</span>
             </FormLabel>
             <FormControl>
               <Textarea
@@ -316,7 +284,7 @@ export function QuantitySelector() {
       control={form.control}
       name="quantity"
       render={({ field }) => (
-        <div className="flex items-center rounded-lg border border-border bg-background">
+        <div className="flex items-center rounded-lg border">
           <Button
             type="button"
             variant="ghost"

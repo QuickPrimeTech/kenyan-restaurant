@@ -1,16 +1,20 @@
 "use client";
-
 import { ChoicesContent, ChoicesForm, QuantitySelector } from "../choices-form";
 import { ImageWithFallback } from "@/components/ui/image";
 import { toast } from "sonner";
 import { AddToCartButton } from "../add-cart-button";
 import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { transformFormData } from "@/schemas/menu";
+import { createItemSchema } from "@/schemas/menu";
+import z from "zod";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const onAdd = (item: any) => {
+
+  const itemSchema = createItemSchema(menuItem.choices, 1);
+  type ItemSchema = z.infer<typeof itemSchema>;
+
+  const onAdd = (item: ItemSchema) => {
     console.log("original menu item ---->", menuItem);
     console.log("This is the menu item--->", item);
     toast.success("Item added to cart successfully");
@@ -41,10 +45,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
           </div>
           <ChoicesForm
             basePrice={menuItem.price}
-            onAdd={(raw) => {
-              const formatted = transformFormData(raw, menuItem.choices);
-              onAdd(formatted);
-            }}
+            onAdd={onAdd}
             choices={menuItem.choices}
           >
             <ChoicesContent />
