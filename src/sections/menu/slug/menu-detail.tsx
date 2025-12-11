@@ -7,6 +7,7 @@ import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { CartItem, RawCartOptions } from "@/types/cart";
 import { useCart } from "@/contexts/cart-provider";
+import { Badge } from "@/components/ui/badge";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -51,8 +52,13 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
               {menuItem.name}
             </h1>
             <p className="text-muted-foreground mb-2">{menuItem.description}</p>
-            <div className="font-semibold text-foreground">
-              Ksh {menuItem.price.toFixed(2)}
+            <div className="flex justify-between gap-4">
+              <div className="font-semibold text-foreground">
+                Ksh {menuItem.price.toFixed(2)}
+              </div>
+              <Badge variant={"secondary"} size="lg">
+                {menuItem.category}
+              </Badge>
             </div>
           </div>
           <ChoicesForm

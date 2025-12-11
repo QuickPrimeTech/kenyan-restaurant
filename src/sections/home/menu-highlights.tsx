@@ -1,24 +1,15 @@
-"use client";
-
 import Link from "next/link";
 import { Utensils } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { H2, Paragraph } from "@/components/ui/typography";
 import type { MenuItem } from "@/types/menu";
 import { PopularItems } from "../menu/popular-items";
-import { useRouter } from "next/navigation";
 
 export default function MenuHighlights({
   menuItems,
 }: {
   menuItems: MenuItem[];
 }) {
-  const router = useRouter();
-
-  const setActiveItem = (item: MenuItem) => {
-    router.push(`/menu?selected-item=${item.slug}`, { scroll: false });
-  };
-
   return (
     <section className="section">
       <div className="container mx-auto">
@@ -31,11 +22,7 @@ export default function MenuHighlights({
           </Paragraph>
         </div>
 
-        <PopularItems
-          items={menuItems}
-          showTitle={false}
-          setActiveItem={setActiveItem}
-        />
+        <PopularItems items={menuItems} showTitle={false} />
 
         {/* Footer CTA */}
         <div className="flex mt-12 justify-center">

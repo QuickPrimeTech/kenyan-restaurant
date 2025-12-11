@@ -6,15 +6,28 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { MenuItemCard } from "./menu-item-card";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type FeaturedItemsProps = {
   items: MenuItem[];
   showTitle?: boolean;
-  setActiveItem: (menuItem: MenuItem) => void;
+  setActiveItem?: (menuItem: MenuItem) => void;
+  className?: string;
+  title?: string;
 };
 
 export const PopularItems = forwardRef<HTMLDivElement, FeaturedItemsProps>(
-  ({ items, showTitle = true, setActiveItem }, ref) => {
+  (
+    {
+      items,
+      showTitle = true,
+      setActiveItem,
+      className,
+      title = "Popular Dishes",
+      ...props
+    },
+    ref
+  ) => {
     const rootRef = useRef<HTMLDivElement>(null);
     const viewportRef = useRef<HTMLDivElement | null>(null);
 
@@ -61,7 +74,12 @@ export const PopularItems = forwardRef<HTMLDivElement, FeaturedItemsProps>(
     };
 
     return (
-      <section ref={ref} id="popular-items">
+      <section
+        ref={ref}
+        id="popular-items"
+        className={cn(className)}
+        {...props}
+      >
         {/* Header with arrows */}
         <div
           className={cn(
@@ -70,9 +88,7 @@ export const PopularItems = forwardRef<HTMLDivElement, FeaturedItemsProps>(
           )}
         >
           {showTitle && (
-            <h2 className="text-[22px] font-bold text-foreground">
-              Popular Dishes
-            </h2>
+            <h2 className="text-[22px] font-bold text-foreground">{title}</h2>
           )}
 
           <div className="flex items-center gap-2">
@@ -101,17 +117,25 @@ export const PopularItems = forwardRef<HTMLDivElement, FeaturedItemsProps>(
         {/* Scroll Area */}
         <ScrollArea ref={rootRef} className="-mx-4 md:-mx-6 lg:-mx-8">
           <div className="flex gap-4 pb-4 pl-4 pr-6 md:pl-6 lg:pl-8">
-            {items.map((item) => (
-              <MenuItemCard
-                key={item.id}
-                item={item}
-                orientation="square"
-                variant="popular"
-                onClick={() => {
-                  setActiveItem(item);
-                }}
-              />
-            ))}
+            {items.map((item) => {
+              const card = (
+                <MenuItemCard
+                  key={item.id}
+                  item={item}
+                  orientation="square"
+                  variant="popular"
+                  onClick={() => setActiveItem?.(item)}
+                />
+              );
+
+              return setActiveItem ? (
+                card
+              ) : (
+                <Link key={item.id} href={`/menu?selected-item=${item.slug}`}>
+                  {card}
+                </Link>
+              );
+            })}
           </div>
 
           <ScrollBar orientation="horizontal" />

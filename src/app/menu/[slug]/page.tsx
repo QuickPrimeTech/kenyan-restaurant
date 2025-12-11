@@ -1,6 +1,7 @@
 import api from "@/lib/api-client";
 import { Header } from "@/sections/menu/slug/header";
 import { MenuDetail } from "@/sections/menu/slug/menu-detail";
+import { RelatedDishes } from "@/sections/menu/slug/related-dishes";
 import { ApiResponse } from "@/types/api";
 import { MenuItem } from "@/types/menu";
 import { truncate } from "@/utils/text-formatters";
@@ -69,10 +70,26 @@ export default async function MenuItemPage({
 }) {
   const { slug } = await params;
   let menuItem;
+  let relatedMenuItems;
+  let isFallback = false;
   try {
     const { data } = await api.get<ApiResponse<MenuItem>>(
       `/menu-items/slug/${slug}`
     );
+    const { data: relatedItems } = await api.get<ApiResponse<MenuItem[]>>(
+      `/menu-items?category=${encodeURIComponent(data.category)}&exclude=${
+        data.id
+      }`
+    );
+    relatedMenuItems = relatedItems;
+    // Fallback to popular items if no related items
+    if (!relatedMenuItems || relatedMenuItems.length === 0) {
+      const { data: popularItems } = await api.get<ApiResponse<MenuItem[]>>(
+        `/menu-items?is_available=true&popular=true&limit=6`
+      );
+      relatedMenuItems = popularItems;
+      isFallback = true;
+    }
     menuItem = data;
   } catch {
     // If the API returns 404, render Next.js 404 page
@@ -83,6 +100,7 @@ export default async function MenuItemPage({
     <div className="container mx-auto section mt-8">
       <Header menuItem={menuItem} />
       <MenuDetail menuItem={menuItem} />
+      <RelatedDishes menuItems={relatedMenuItems} isFallback={isFallback} />
     </div>
   );
 }
