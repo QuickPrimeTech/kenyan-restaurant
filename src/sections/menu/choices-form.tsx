@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription
+  FormDescription,
 } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -20,7 +20,7 @@ import { ReactNode } from "react";
 import { MenuChoice, MenuItem } from "@/types/menu";
 import {
   ChoicesFormProvider,
-  useChoicesForm
+  useChoicesForm,
 } from "@/contexts/choices-form-context";
 import { cn } from "@/lib/utils";
 import { createItemSchema } from "@/schemas/menu";
@@ -115,7 +115,7 @@ export function ChoicesForm({
 const ChoiceItem = ({ choice }: { choice: MenuChoice }) => {
   const { form } = useChoicesForm();
   const choiceId = choice.id || choice.title;
-  const isSingle = choice.maxSelectable === 1;
+  const isSingle = choice.maxSelectable === 1 && choice.required;
 
   return (
     <FormField

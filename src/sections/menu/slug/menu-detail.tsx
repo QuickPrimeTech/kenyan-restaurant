@@ -6,16 +6,19 @@ import { toast } from "sonner";
 import { AddToCartButton } from "../add-cart-button";
 import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { transformFormData } from "@/schemas/menu";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const addItem = () => {
+  const onAdd = (item: any) => {
+    console.log("original menu item ---->", menuItem);
+    console.log("This is the menu item--->", item);
     toast.success("Item added to cart successfully");
   };
   return (
     <section>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="relative lg:sticky lg:top-22 aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
+        <div className="relative md:sticky md:top-22 aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
           <ImageWithFallback
             src={menuItem.image_url}
             placeholder={menuItem.lqip ? "blur" : "empty"}
@@ -38,7 +41,10 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
           </div>
           <ChoicesForm
             basePrice={menuItem.price}
-            onAdd={addItem}
+            onAdd={(raw) => {
+              const formatted = transformFormData(raw, menuItem.choices);
+              onAdd(formatted);
+            }}
             choices={menuItem.choices}
           >
             <ChoicesContent />

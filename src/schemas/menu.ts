@@ -15,7 +15,7 @@ export const createItemSchema = (
 
   choices.forEach((choice) => {
     const choiceId = choice.id || choice.title;
-    const isSingleSelection = choice.maxSelectable === 1;
+    const isSingleSelection = choice.maxSelectable === 1 && choice.required;
 
     if (isSingleSelection) {
       schema[choiceId] = choice.required
@@ -42,3 +42,24 @@ export const createItemSchema = (
 
   return z.object(schema);
 };
+
+export function transformFormData(raw: any, choices: MenuChoice[]) {
+  const { quantity, specialInstructions, ...rest } = raw;
+
+  const selectedChoices = choices.map((choice) => {
+    const choiceId = choice.id;
+    const selected = rest[choiceId];
+
+    return {
+      choiceId,
+      title: choice.title,
+      selected: Array.isArray(selected) ? selected : [selected].filter(Boolean),
+    };
+  });
+
+  return {
+    quantity,
+    specialInstructions,
+    selectedChoices,
+  };
+}
