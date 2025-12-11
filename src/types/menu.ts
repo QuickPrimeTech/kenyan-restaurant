@@ -12,7 +12,7 @@ export interface MenuChoice {
 }
 
 export type MenuItem = {
-  id: 669;
+  id: number;
   name: string;
   description: string;
   price: number;

@@ -5,18 +5,30 @@ import { toast } from "sonner";
 import { AddToCartButton } from "../add-cart-button";
 import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { createItemSchema } from "@/schemas/menu";
-import z from "zod";
+import { CartItem, RawCartOptions } from "@/types/cart";
+import { useCart } from "@/contexts/cart-provider";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  const itemSchema = createItemSchema(menuItem.choices, 1);
-  type ItemSchema = z.infer<typeof itemSchema>;
+  const { addToCart } = useCart();
 
-  const onAdd = (item: ItemSchema) => {
+  const onAdd = (choicesOptions: RawCartOptions, price: number) => {
+    const { quantity, specialInstructions, ...choices } = choicesOptions;
+    const cartItem: CartItem = {
+      id: menuItem.id,
+      name: menuItem.name,
+      image_url: menuItem.image_url,
+      choices,
+      quantity: quantity,
+      specialInstructions: specialInstructions,
+      price,
+    };
+
+    addToCart(cartItem);
+
     console.log("original menu item ---->", menuItem);
-    console.log("This is the menu item--->", item);
+    console.log("This is the menu item--->", choices);
     toast.success("Item added to cart successfully");
   };
   return (

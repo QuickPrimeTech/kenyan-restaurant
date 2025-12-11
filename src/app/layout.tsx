@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { Open_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/layouts/Navbar";
-import Footer from "@/layouts/Footer";
+import Navbar from "@/layouts/navbar";
+import Footer from "@/layouts/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { site } from "@/config/site-config";
 import { ContactButton } from "@/components/contact-button";
 import { WhatsAppCampaignPopup } from "@/components/whatsapp-campaign-popup";
-import { CartProvider } from "@/hooks/use-cart";
 import { ThemeProvider } from "@/components/theme-provider";
+import { CartProvider } from "@/contexts/cart-provider";
+import { CartButton } from "@/components/cart/cart-button";
 
 // Headings
 const montserrat = Montserrat({
@@ -74,6 +75,7 @@ export default function RootLayout({
             <ContactButton />
             <WhatsAppCampaignPopup />
             <Toaster richColors position="top-center" />
+            <CartButton />
           </CartProvider>
           <Footer />
         </ThemeProvider>

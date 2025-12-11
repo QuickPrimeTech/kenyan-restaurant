@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { ReactNode } from "react";
-import { MenuChoice, MenuItem } from "@/types/menu";
+import { MenuChoice } from "@/types/menu";
 import {
   ChoicesFormProvider,
   useChoicesForm,
@@ -26,11 +26,12 @@ import { cn } from "@/lib/utils";
 import { createItemSchema } from "@/schemas/menu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { calculateTotalPrice, getSelectionDescription } from "@/helpers/menu";
+import { CartItemChoices } from "@/types/cart";
 
 type ChoicesFormProps = {
   choices: MenuChoice[];
   defaultQuantity?: number;
-  onAdd?: (data: any) => void;
+  onAdd?: (data: CartItemChoices, totalPrice: number) => void;
   children?: ReactNode;
   basePrice: number;
 } & React.ComponentProps<"form">;
@@ -67,7 +68,9 @@ export function ChoicesForm({
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((data) => onAdd?.(data as MenuItem))}
+          onSubmit={form.handleSubmit((data) =>
+            onAdd?.(data as CartItemChoices, totalPrice)
+          )}
           className={cn("space-y-6", className)}
           {...props}
         >
@@ -139,7 +142,7 @@ const SingleChoiceOptions = ({
         {choice.options.map((option) => (
           <div
             key={option.label}
-            className="flex items-center space-x-3 rounded-lg border p-4 cursor-pointer hover:bg-accent/50"
+            className="flex items-center rounded-lg border pl-4 cursor-pointer hover:bg-accent/50"
           >
             <RadioGroupItem
               value={option.label}
@@ -182,10 +185,19 @@ const MultipleChoiceOptions = ({
               key={option.label}
               className={cn(
                 "flex items-center pl-4 rounded-lg border transition-colors",
-                isDisabled && "opacity-50 cursor-not-allowed",
+                isDisabled && "opacity-80 cursor-not-allowed",
                 !isDisabled && "cursor-pointer hover:bg-accent/50",
-                isSelected && "bg-accent/30 border-primary"
+                isSelected && "bg-accent/30"
               )}
+              title={
+                isDisabled
+                  ? `You are only allowed to select up to ${
+                      choice.maxSelectable
+                    } ${choice.title}${
+                      (choice.maxSelectable || choice.options.length) > 1 && "s"
+                    }`
+                  : ``
+              }
             >
               <Checkbox
                 id={`${choiceId}-${option.label}`}
