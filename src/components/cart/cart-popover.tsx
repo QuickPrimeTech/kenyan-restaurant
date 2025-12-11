@@ -45,11 +45,13 @@ export function CartPopover({
           <ScrollArea className="h-fit max-h-48">
             {cartItems.slice(0, maxItems).map((item) => (
               <div
-                key={item.id}
+                key={item.cartItemId}
                 className="flex border px-2 rounded-sm items-center mt-2 gap-3 py-1.5"
               >
                 <div className="relative w-10 h-10 bg-muted rounded-xs flex-shrink-0 overflow-hidden">
                   <ImageWithFallback
+                    iconProps={{ className: "size-5" }}
+                    textProps={{ className: "hidden" }}
                     src={item.image_url}
                     alt={item.name}
                     width={40}
@@ -70,9 +72,10 @@ export function CartPopover({
             ))}
 
             {cartItemsCount > maxItems && (
-              <div className="text-center py-2">
+              <div className="w-fit mx-auto py-2 bg-popover px-2">
                 <p className="text-sm text-muted-foreground">
-                  +{cartItemsCount - maxItems} more items
+                  +{cartItemsCount - maxItems} more item
+                  {cartItemsCount - maxItems > 1 && "s"}
                 </p>
               </div>
             )}
@@ -80,7 +83,7 @@ export function CartPopover({
             <ScrollBar orientation="vertical" />
           </ScrollArea>
 
-          <Separator className="my-3" />
+          <Separator className="my-2.5" />
 
           <PriceBreakdown />
           <Separator />

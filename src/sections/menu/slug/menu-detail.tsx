@@ -17,6 +17,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
     const { quantity, specialInstructions, ...choices } = choicesOptions;
     console.log(choicesOptions);
     const cartItem: CartItem = {
+      cartItemId: crypto.randomUUID(),
       id: menuItem.id,
       name: menuItem.name,
       image_url: menuItem.image_url,

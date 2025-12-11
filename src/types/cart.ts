@@ -1,4 +1,5 @@
 export type CartItem = {
+  cartItemId: string;
   id: number;
   name: string;
   image_url: string | null;
