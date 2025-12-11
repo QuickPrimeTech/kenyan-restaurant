@@ -26,12 +26,12 @@ import { cn } from "@/lib/utils";
 import { createItemSchema } from "@/schemas/menu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { calculateTotalPrice, getSelectionDescription } from "@/helpers/menu";
-import { CartItemChoices } from "@/types/cart";
+import { RawCartOptions } from "@/types/cart";
 
 type ChoicesFormProps = {
   choices: MenuChoice[];
   defaultQuantity?: number;
-  onAdd?: (data: CartItemChoices, totalPrice: number) => void;
+  onAdd?: (data: RawCartOptions, totalPrice: number) => void;
   children?: ReactNode;
   basePrice: number;
 } & React.ComponentProps<"form">;
@@ -69,7 +69,7 @@ export function ChoicesForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) =>
-            onAdd?.(data as CartItemChoices, totalPrice)
+            onAdd?.(data as RawCartOptions, totalPrice)
           )}
           className={cn("space-y-6", className)}
           {...props}

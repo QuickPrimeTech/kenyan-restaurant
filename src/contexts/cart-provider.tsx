@@ -47,15 +47,15 @@ export function CartProvider({ children }: CartProviderProps) {
         (prevCartItem) => prevCartItem === cartItem
       );
       //Adding the totalPrice
-      setTotal((prevTotal) => prevTotal + cartItem.price);
       if (existingItem) {
         return prevCartItems.map((i) =>
           i.id === cartItem.id ? { ...i, quantity: i.quantity + 1 } : i
         );
       } else {
-        return [...prevCartItems, { ...cartItem, quantity: 1 }];
+        return [...prevCartItems, cartItem];
       }
     });
+    setTotal((prevTotal) => prevTotal + cartItem.price);
   };
 
   const removeFromCart = (id: number) => {

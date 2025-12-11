@@ -28,6 +28,7 @@ export function CartPopover({
   onCheckout,
 }: CartPopoverProps) {
   const { cartItems, cartItemsCount } = useCart();
+  console.log(cartItems);
   const maxItems = 3;
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
@@ -48,11 +49,12 @@ export function CartPopover({
                 key={item.id}
                 className="flex border px-2 rounded-sm items-center mt-2 gap-3 py-1.5"
               >
-                <div className="relative w-10 h-10 bg-muted rounded-md flex-shrink-0 overflow-hidden">
+                <div className="relative w-10 h-10 bg-muted rounded-xs flex-shrink-0 overflow-hidden">
                   <ImageWithFallback
                     src={item.image_url}
                     alt={item.name}
-                    fill
+                    width={40}
+                    height={40}
                     className="w-full h-full object-cover"
                   />
                 </div>

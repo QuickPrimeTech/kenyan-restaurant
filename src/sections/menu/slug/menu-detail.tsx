@@ -15,12 +15,13 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
 
   const onAdd = (choicesOptions: RawCartOptions, price: number) => {
     const { quantity, specialInstructions, ...choices } = choicesOptions;
+    console.log(choicesOptions);
     const cartItem: CartItem = {
       id: menuItem.id,
       name: menuItem.name,
       image_url: menuItem.image_url,
       choices,
-      quantity: quantity,
+      quantity,
       specialInstructions: specialInstructions,
       price,
     };
