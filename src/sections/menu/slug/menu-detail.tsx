@@ -5,15 +5,17 @@ import { ImageWithFallback } from "@/components/ui/image";
 import { toast } from "sonner";
 import { AddToCartButton } from "../add-cart-button";
 import { MenuItem } from "@/types/menu";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const addItem = () => {
     toast.success("Item added to cart successfully");
   };
   return (
     <section>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
+        <div className="relative lg:sticky lg:top-22 aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
           <ImageWithFallback
             src={menuItem.image_url}
             placeholder={menuItem.lqip ? "blur" : "empty"}
@@ -40,9 +42,9 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
             choices={menuItem.choices}
           >
             <ChoicesContent />
-            <div className="flex gap-3">
+            <div className="flex gap-2 md:gap-3">
               <QuantitySelector />
-              <AddToCartButton />
+              <AddToCartButton size={isDesktop ? "lg" : "default"} />
             </div>
           </ChoicesForm>
         </div>
