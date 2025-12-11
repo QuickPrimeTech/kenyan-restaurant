@@ -80,7 +80,7 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
             basePrice={item.price}
             onAdd={addItem}
           >
-            <ScrollArea className="flex-1 scroll-p-0">
+            <ScrollArea className="flex-1">
               {/* Image */}
               <div className="relative h-[320px] bg-muted shrink-0">
                 <ImageWithFallback

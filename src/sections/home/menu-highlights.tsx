@@ -1,9 +1,15 @@
 import Link from "next/link";
-import { Utensils } from "lucide-react";
+import { ArrowRight, Utensils } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { H2, Paragraph } from "@/components/ui/typography";
+import { Paragraph } from "@/components/ui/typography";
 import type { MenuItem } from "@/types/menu";
-import { PopularItems } from "../menu/popular-items";
+import {
+  PopularItems,
+  PopularItemsContent,
+  PopularItemsHeader,
+  PopularItemsScrollButtons,
+} from "../menu/popular-items";
+import { MenuItemCard } from "../menu/menu-item-card";
 
 export default function MenuHighlights({
   menuItems,
@@ -11,29 +17,48 @@ export default function MenuHighlights({
   menuItems: MenuItem[];
 }) {
   return (
-    <section className="section">
-      <div className="container mx-auto">
-        {/* Heading */}
-        <div className="text-center mb-8">
-          <H2 className="text-foreground">Menu Highlights</H2>
-          <Paragraph className="text-muted-foreground max-w-2xl mx-auto font-medium">
+    <PopularItems className="section">
+      <PopularItemsHeader className="flex-col gap-4 items-start md:flex-row md:items-center">
+        <div className="space-y-1">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+            Popular Dishes
+          </h2>
+          <Paragraph className="text-muted-foreground max-w-2xl mx-auto font-medium [&:not(:first-child)]:mt-0">
             Discover our chef&apos;s featured selections — vibrant, ocean-fresh,
             and beautifully plated.
           </Paragraph>
         </div>
-
-        <PopularItems items={menuItems} showTitle={false} />
-
-        {/* Footer CTA */}
-        <div className="flex mt-12 justify-center">
-          <Button size="lg" asChild>
-            <Link href="/menu">
-              <Utensils />
-              View Full Menu
+        <div className="flex items-center gap-4">
+          <Button variant={"ghost"} asChild>
+            <Link href={"/menu"}>
+              View All
+              <ArrowRight />
             </Link>
           </Button>
+          <PopularItemsScrollButtons />
         </div>
+      </PopularItemsHeader>
+
+      <PopularItemsContent>
+        {menuItems.map((item) => (
+          <Link href={`/menu?selected-item=${item.slug}`} key={item.id}>
+            <MenuItemCard
+              item={item}
+              variant={"popular"}
+              orientation={"square"}
+            />
+          </Link>
+        ))}
+      </PopularItemsContent>
+      {/* Footer CTA */}
+      <div className="flex mt-12 justify-center">
+        <Button size="lg" asChild>
+          <Link href="/menu">
+            <Utensils />
+            View Full Menu
+          </Link>
+        </Button>
       </div>
-    </section>
+    </PopularItems>
   );
 }

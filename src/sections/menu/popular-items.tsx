@@ -1,146 +1,193 @@
 "use client";
-import { useRef, useState, useEffect, forwardRef } from "react";
-import type { MenuItem } from "@/types/menu";
+import {
+  useRef,
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  ComponentProps,
+} from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { MenuItemCard } from "./menu-item-card";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
-type FeaturedItemsProps = {
-  items: MenuItem[];
-  showTitle?: boolean;
-  setActiveItem?: (menuItem: MenuItem) => void;
-  className?: string;
-  title?: string;
+// Context for sharing scroll state and controls
+type PopularItemsContextType = {
+  scroll: (direction: "left" | "right") => void;
+  canScrollLeft: boolean;
+  canScrollRight: boolean;
 };
 
-export const PopularItems = forwardRef<HTMLDivElement, FeaturedItemsProps>(
-  (
-    {
-      items,
-      showTitle = true,
-      setActiveItem,
-      className,
-      title = "Popular Dishes",
-      ...props
-    },
-    ref
-  ) => {
-    const rootRef = useRef<HTMLDivElement>(null);
-    const viewportRef = useRef<HTMLDivElement | null>(null);
+const PopularItemsContext = createContext<PopularItemsContextType | undefined>(
+  undefined
+);
 
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
-    const [canScrollRight, setCanScrollRight] = useState(true);
+const usePopularItems = () => {
+  const context = useContext(PopularItemsContext);
+  if (!context) {
+    throw new Error(
+      "usePopularItems must be used within a PopularItems component"
+    );
+  }
+  return context;
+};
 
-    // Find the Radix viewport
-    useEffect(() => {
-      if (!rootRef.current) return;
+// Main container component
+interface PopularItemsProps extends React.HTMLAttributes<HTMLDivElement> {
+  scrollAmount?: number;
+}
 
-      const viewport = rootRef.current.querySelector(
-        "[data-slot='scroll-area-viewport']"
-      ) as HTMLDivElement | null;
+const PopularItems = ({
+  children,
+  className,
+  scrollAmount = 320,
+  ...props
+}: PopularItemsProps) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
-      if (!viewport) return;
+  useEffect(() => {
+    if (!rootRef.current) return;
 
-      viewportRef.current = viewport;
+    const viewport = rootRef.current.querySelector(
+      "[data-slot='scroll-area-viewport']"
+    ) as HTMLDivElement | null;
 
-      const update = () => {
-        const el = viewportRef.current;
-        if (!el) return;
+    if (!viewport) return;
 
-        const { scrollLeft, scrollWidth, clientWidth } = el;
-        setCanScrollLeft(scrollLeft > 0);
-        setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-      };
+    viewportRef.current = viewport;
 
-      update();
-      viewport.addEventListener("scroll", update);
-
-      return () => viewport.removeEventListener("scroll", update);
-    }, []);
-
-    const scroll = (direction: "left" | "right") => {
+    const handleScroll = () => {
       const el = viewportRef.current;
       if (!el) return;
 
-      const scrollAmount = 320;
-
-      el.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+      const { scrollLeft, scrollWidth, clientWidth } = el;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
     };
 
-    return (
+    handleScroll();
+    viewport.addEventListener("scroll", handleScroll);
+
+    return () => viewport.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scroll = (direction: "left" | "right") => {
+    const el = viewportRef.current;
+    if (!el) return;
+
+    el.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <PopularItemsContext.Provider
+      value={{ scroll, canScrollLeft, canScrollRight }}
+    >
       <section
-        ref={ref}
+        ref={rootRef}
         id="popular-items"
-        className={cn(className)}
+        className={cn("relative", className)}
         {...props}
       >
-        {/* Header with arrows */}
-        <div
-          className={cn(
-            "flex items-center justify-between mb-4",
-            !showTitle && "justify-end"
-          )}
-        >
-          {showTitle && (
-            <h2 className="text-[22px] font-bold text-foreground">{title}</h2>
-          )}
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="icon-sm"
-              className="rounded-full"
-              onClick={() => scroll("left")}
-              disabled={!canScrollLeft}
-            >
-              <ArrowLeft />
-            </Button>
-
-            <Button
-              variant="outline"
-              size="icon-sm"
-              className="rounded-full"
-              onClick={() => scroll("right")}
-              disabled={!canScrollRight}
-            >
-              <ArrowRight />
-            </Button>
-          </div>
-        </div>
-
-        {/* Scroll Area */}
-        <ScrollArea ref={rootRef} className="-mx-4 md:-mx-6 lg:-mx-8">
-          <div className="flex gap-4 pb-4 pl-4 pr-6 md:pl-6 lg:pl-8">
-            {items.map((item) => {
-              const card = (
-                <MenuItemCard
-                  key={item.id}
-                  item={item}
-                  orientation="square"
-                  variant="popular"
-                  onClick={() => setActiveItem?.(item)}
-                />
-              );
-
-              return setActiveItem ? (
-                card
-              ) : (
-                <Link key={item.id} href={`/menu?selected-item=${item.slug}`}>
-                  {card}
-                </Link>
-              );
-            })}
-          </div>
-
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        {children}
       </section>
-    );
-  }
-);
+    </PopularItemsContext.Provider>
+  );
+};
+
+// Header component
+interface PopularItemsHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  title?: string;
+}
+
+const PopularItemsHeader = ({
+  children,
+  className,
+  ...props
+}: PopularItemsHeaderProps) => {
+  return (
+    <div
+      className={cn("flex items-center justify-between mb-4", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
+
+const PopularItemsContent = ({
+  children,
+  className,
+  ...props
+}: ComponentProps<"div">) => {
+  return (
+    <ScrollArea className="-mx-4 md:-mx-6 lg:-mx-8">
+      <div
+        className={cn("flex gap-4 pb-4 pl-4 pr-6 md:pl-6 lg:pl-8", className)}
+        {...props}
+      >
+        {children}
+      </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+  );
+};
+
+// Scroll buttons component
+interface PopularItemsScrollButtonsProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: "default" | "outline" | "ghost";
+  size?: "default" | "sm" | "lg" | "icon" | "icon-sm";
+}
+
+const PopularItemsScrollButtons = ({
+  className,
+  variant = "outline",
+  size = "icon-sm",
+  ...props
+}: PopularItemsScrollButtonsProps) => {
+  const { scroll, canScrollLeft, canScrollRight } = usePopularItems();
+
+  return (
+    <div className={cn("flex items-center gap-2", className)} {...props}>
+      <Button
+        variant={variant}
+        size={size}
+        className="rounded-full"
+        onClick={() => scroll("left")}
+        disabled={!canScrollLeft}
+        aria-label="scroll previous carousel"
+        title="scroll previous"
+      >
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+
+      <Button
+        variant={variant}
+        size={size}
+        className="rounded-full"
+        onClick={() => scroll("right")}
+        disabled={!canScrollRight}
+        aria-label="scroll next carousel"
+        title="scroll next"
+      >
+        <ArrowRight className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+};
+
+// Export all components
+export {
+  PopularItems,
+  PopularItemsHeader,
+  PopularItemsContent,
+  PopularItemsScrollButtons,
+  usePopularItems,
+};

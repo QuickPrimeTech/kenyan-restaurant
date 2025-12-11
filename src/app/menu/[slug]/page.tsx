@@ -97,7 +97,7 @@ export default async function MenuItemPage({
   }
 
   return (
-    <div className="container mx-auto section mt-8">
+    <div className="mx-auto section mt-8">
       <Header menuItem={menuItem} />
       <MenuDetail menuItem={menuItem} />
       <RelatedDishes menuItems={relatedMenuItems} isFallback={isFallback} />

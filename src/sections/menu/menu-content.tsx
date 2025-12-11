@@ -1,11 +1,18 @@
 "use client";
 import { useState, useRef, useMemo, useEffect } from "react";
 import { CategoryTabs } from "@/sections/menu/category-tabs";
-import { PopularItems } from "@/sections/menu/popular-items";
+import {
+  PopularItems,
+  PopularItemsContent,
+  PopularItemsHeader,
+  PopularItemsScrollButtons,
+} from "@/sections/menu/popular-items";
 import { ItemDetail } from "@/sections/menu/item-detail";
 import { MenuItem } from "@/types/menu";
 import { MenuSection } from "./menu-section";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { MenuItemCard } from "./menu-item-card";
 
 type MenuContentProps = {
   menuItems: MenuItem[];
@@ -120,13 +127,29 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
           {/* Menu Content */}
           <div className="flex-1 section-x mt-25 overflow-hidden">
             {!searchQuery && (
-              <PopularItems
-                ref={(el) => {
-                  sectionRefs.current["Popular Dishes"] = el;
-                }}
-                setActiveItem={handleItemClick}
-                items={popularItems}
-              />
+              <PopularItems>
+                <PopularItemsHeader>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Popular Dishes
+                  </h2>
+                  <PopularItemsScrollButtons />
+                </PopularItemsHeader>
+
+                <PopularItemsContent>
+                  {popularItems.map((item) => (
+                    <Link
+                      href={`/menu?selected-item=${item.slug}`}
+                      key={item.id}
+                    >
+                      <MenuItemCard
+                        item={item}
+                        variant={"popular"}
+                        orientation={"square"}
+                      />
+                    </Link>
+                  ))}
+                </PopularItemsContent>
+              </PopularItems>
             )}
 
             {/* Menu Sections */}
