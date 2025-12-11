@@ -24,7 +24,7 @@ export function SuggestedOffers({
   if (filteredOffers.length === 0) return null;
 
   return (
-    <section className="border-t border-border pt-12">
+    <section className="section">
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight text-foreground">

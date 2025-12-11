@@ -80,7 +80,7 @@ export default async function OfferPage({
     .slice(0, 6);
 
   return (
-    <div className="container mx-auto section mt-8">
+    <div className="section mt-8">
       <OfferDetail offer={offer} />
       <SuggestedOffers offers={filteredOffers} currentOfferId={offer.id} />
     </div>
