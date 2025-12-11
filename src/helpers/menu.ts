@@ -1,5 +1,7 @@
-import { CartItemChoices } from "@/types/cart";
-import { MenuChoice } from "@/types/menu";
+import { useCart } from "@/contexts/cart-provider";
+import { CartItemChoices, RawCartOptions } from "@/types/cart";
+import { MenuChoice, MenuItem } from "@/types/menu";
+import { toast } from "sonner";
 
 // Helper function for price calculation
 export const calculateTotalPrice = (
@@ -72,4 +74,32 @@ export const compareChoices = (
   }
 
   return true;
+};
+
+export const useAddToCartHandler = () => {
+  const { addToCart } = useCart();
+
+  const onAdd = (
+    raw: RawCartOptions,
+    totalPrice: number,
+    menuItem: MenuItem
+  ) => {
+    const { quantity, specialInstructions, ...choices } = raw;
+
+    const cartItem = {
+      cartItemId: crypto.randomUUID(),
+      id: menuItem.id,
+      name: menuItem.name,
+      image_url: menuItem.image_url,
+      choices,
+      quantity,
+      specialInstructions,
+      price: totalPrice,
+    };
+
+    addToCart(cartItem);
+    toast.success(`${menuItem.name} added to cart`);
+  };
+
+  return { onAdd };
 };

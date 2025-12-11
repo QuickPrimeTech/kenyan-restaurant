@@ -15,6 +15,7 @@ import Link from "next/link";
 import { ChoicesContent, ChoicesForm, QuantitySelector } from "./choices-form";
 import { AddToCartButton } from "./add-cart-button";
 import { ShareMenuButton } from "./common/share-menu-button";
+import { useAddToCartHandler } from "@/helpers/menu";
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -24,7 +25,7 @@ interface ItemDetailProps {
 
 export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-
+  const { onAdd } = useAddToCartHandler();
   if (!item) return null;
 
   const footerButtons = (
@@ -36,10 +37,6 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
     </div>
   );
 
-  const addItem = (item: MenuItem) => {
-    onOpenChange(false);
-    console.log("About to add this item to cart ----->", item);
-  };
   // Bottom Bar: Quantity + Add
   const BottomBar = () => {
     return (
@@ -78,7 +75,10 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
           <ChoicesForm
             choices={item.choices}
             basePrice={item.price}
-            onAdd={addItem}
+            onAdd={(raw, totalPrice) => {
+              onAdd(raw, totalPrice, item);
+              onOpenChange(false);
+            }}
           >
             <ScrollArea className="flex-1">
               {/* Image */}
@@ -114,7 +114,7 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
         <ChoicesForm
           choices={item.choices}
           basePrice={item.price}
-          onAdd={addItem}
+          onAdd={(raw, totalPrice) => onAdd(raw, totalPrice, item)}
           className="h-[95vh] flex flex-col overflow-hidden"
         >
           <ScrollArea className="flex-1 h-0 max-h-[calc(95vh-66px-54px)]">

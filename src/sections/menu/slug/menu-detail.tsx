@@ -1,37 +1,16 @@
 "use client";
 import { ChoicesContent, ChoicesForm, QuantitySelector } from "../choices-form";
 import { ImageWithFallback } from "@/components/ui/image";
-import { toast } from "sonner";
-import { AddToCartButton } from "../add-cart-button";
+import { AddToCartButton } from "@/sections/menu/add-cart-button";
 import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { CartItem, RawCartOptions } from "@/types/cart";
-import { useCart } from "@/contexts/cart-provider";
 import { Badge } from "@/components/ui/badge";
+import { useAddToCartHandler } from "@/helpers/menu";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const { onAdd } = useAddToCartHandler();
 
-  const { addToCart } = useCart();
-
-  const onAdd = (choicesOptions: RawCartOptions, price: number) => {
-    const { quantity, specialInstructions, ...choices } = choicesOptions;
-    console.log(choicesOptions);
-    const cartItem: CartItem = {
-      cartItemId: crypto.randomUUID(),
-      id: menuItem.id,
-      name: menuItem.name,
-      image_url: menuItem.image_url,
-      choices,
-      quantity,
-      specialInstructions: specialInstructions,
-      price,
-    };
-
-    addToCart(cartItem);
-    console.log("choices ------>", choices);
-    toast.success("Item added to cart successfully");
-  };
   return (
     <section>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -63,7 +42,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
           </div>
           <ChoicesForm
             basePrice={menuItem.price}
-            onAdd={onAdd}
+            onAdd={(raw, totalPrice) => onAdd(raw, totalPrice, menuItem)}
             choices={menuItem.choices}
           >
             <ChoicesContent />

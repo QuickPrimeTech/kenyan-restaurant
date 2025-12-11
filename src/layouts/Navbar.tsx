@@ -208,7 +208,7 @@ export default function Navbar() {
     "fixed top-0 w-full z-50 transition-all duration-300 bg-background/80 text-foreground border-b border-border shadow-sm backdrop-blur-md",
     isHome &&
       !isScrolled &&
-      "bg-transparent text-background shadow-none backdrop-blur-none border-b-2"
+      "bg-transparent text-background shadow-none backdrop-blur-none"
   );
 
   const getTextColor = (defaultColor = "text-foreground") =>
