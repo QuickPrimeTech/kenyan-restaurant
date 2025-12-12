@@ -28,7 +28,7 @@ export function CartButton({
             <Button
               size="lg"
               className={cn(
-                "rounded-full shadow-lg hover:shadow-xl transition-all duration-200 h-16 w-16 relative group"
+                "rounded-full shadow-lg hover:shadow-xl transition-all duration-200 size-14.5 relative group"
               )}
               onClick={() => setShowPopover(true)}
               {...props}
@@ -40,13 +40,13 @@ export function CartButton({
 
               {/* Item count badge */}
               {cartItemsCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold shadow-md">
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold">
                   {cartItemsCount > 99 ? "99+" : cartItemsCount}
                 </span>
               )}
 
               {/* Total amount badge */}
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-primary text-white text-xs px-2 py-0.5 rounded-full font-medium shadow-md">
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-primary text-white text-xs px-2 py-0.5 rounded-full font-medium">
                 Ksh {total.toFixed(0)}
               </div>
             </Button>
