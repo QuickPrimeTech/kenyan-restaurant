@@ -5,6 +5,26 @@ import { NumberField as NumberFieldPrimitive } from "@base-ui/react/number-field
 import { buttonVariants, Button } from "@ui/button";
 import { cn } from "@/lib/utils";
 import { Input, inputVariants } from "./input";
+import { Label } from "@ui/label";
+
+//Number field Context
+type NumberFieldContext = {
+  id: string;
+};
+
+const NumberFieldContext = React.createContext<NumberFieldContext | undefined>(
+  undefined
+);
+
+const useNumberFieldContext = (): NumberFieldContext => {
+  const context = React.useContext(NumberFieldContext);
+  if (!context) {
+    throw new Error(
+      "useNumberFieldContext should be used inside NumberFieldComponent"
+    );
+  }
+  return context;
+};
 
 function NumberField({
   className,
@@ -12,32 +32,56 @@ function NumberField({
 }: React.ComponentProps<typeof NumberFieldPrimitive.Root>) {
   const id = React.useId();
   return (
-    <NumberFieldPrimitive.Root
-      id={id}
-      data-slot="numberfield"
-      className={cn("border p-2 rounded-xl w-fit", className)}
-      {...props}
-    />
+    <NumberFieldContext.Provider value={{ id: id }}>
+      <NumberFieldPrimitive.Root
+        id={id}
+        data-slot="numberfield"
+        className={cn("border h-fit rounded-sm w-fit", className)}
+        {...props}
+      />
+    </NumberFieldContext.Provider>
   );
 }
 
 function NumberFieldScrubArea({
+  className,
   ...props
 }: React.ComponentProps<typeof NumberFieldPrimitive.ScrubArea>) {
   return (
     <NumberFieldPrimitive.ScrubArea
       data-slot="numberfield-scrub-area"
+      className={cn("drop-shadow-[0_1px_1px_#0008] filter", className)}
       {...props}
     />
   );
 }
 
 function NumberFieldScrubAreaCursor({
+  className,
   ...props
 }: React.ComponentProps<typeof NumberFieldPrimitive.ScrubAreaCursor>) {
   return (
     <NumberFieldPrimitive.ScrubAreaCursor
       data-slot="numberfield-scrub-area-cursor"
+      className={cn("cursor-w-resize", className)}
+      {...props}
+    />
+  );
+}
+
+function NumberFieldLabel({
+  className,
+  ...props
+}: React.ComponentProps<typeof Label>) {
+  const { id } = useNumberFieldContext();
+
+  return (
+    <Label
+      htmlFor={id}
+      className={cn(
+        "cursor-ew-resize text-sm font-medium text-muted-foreground",
+        className
+      )}
       {...props}
     />
   );
@@ -49,7 +93,7 @@ function NumberFieldGroup({
   return (
     <NumberFieldPrimitive.Group
       data-slot="numberfield-group"
-      className={cn("flex gap-2")}
+      className={cn("flex")}
       {...props}
     />
   );
@@ -64,7 +108,11 @@ function NumberFieldInput({
   return (
     <NumberFieldPrimitive.Input
       data-slot="numberfield-input"
-      className={cn("text-center max-w-20", inputVariants({ size, className }))}
+      className={cn(
+        inputVariants({ size }),
+        "text-center max-w-10 font-semibold h-auto rounded-xs",
+        className
+      )}
       {...props}
     />
   );
@@ -72,7 +120,7 @@ function NumberFieldInput({
 
 function NumberFieldIncrement({
   size,
-  variant,
+  variant = "ghost",
   className,
   ...props
 }: React.ComponentProps<typeof NumberFieldPrimitive.Increment> &
@@ -80,7 +128,11 @@ function NumberFieldIncrement({
   return (
     <NumberFieldPrimitive.Increment
       data-slot="numberfield-increment"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(
+        buttonVariants({ variant, size }),
+        "rounded-r-sm rounded-l-none",
+        className
+      )}
       {...props}
     />
   );
@@ -88,14 +140,18 @@ function NumberFieldIncrement({
 
 function NumberFieldDecrement({
   size,
-  variant,
+  variant = "ghost",
   className,
   ...props
 }: React.ComponentProps<typeof NumberFieldPrimitive.Decrement> &
   React.ComponentProps<typeof Button>) {
   return (
     <NumberFieldPrimitive.Decrement
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(
+        buttonVariants({ variant, size }),
+        "rounded-l-sm rounded-r-none",
+        className
+      )}
       data-slot="numberfield-decrement"
       {...props}
     />
@@ -106,6 +162,7 @@ export {
   NumberField,
   NumberFieldScrubArea,
   NumberFieldScrubAreaCursor,
+  NumberFieldLabel,
   NumberFieldGroup,
   NumberFieldInput,
   NumberFieldIncrement,

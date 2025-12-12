@@ -14,12 +14,13 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   return (
     <section>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="relative md:sticky md:top-22 aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
+        <div className="relative md:sticky md:top-22 aspect-[4/3] overflow-hidden rounded-2xl bg-muted border">
           <ImageWithFallback
             src={menuItem.image_url}
             placeholder={menuItem.lqip ? "blur" : "empty"}
             blurDataURL={menuItem.lqip || undefined}
             alt={menuItem.name}
+            sizes="(max-width:768px) 10vw, 50vw"
             fill
             className="object-cover"
             priority

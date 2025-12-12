@@ -1,6 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Minus, Plus } from "lucide-react";
+import { MinusIcon, PlusIcon } from "lucide-react";
 import {
   FormField,
   FormItem,
@@ -27,6 +26,13 @@ import { createItemSchema } from "@/schemas/menu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { calculateTotalPrice, getSelectionDescription } from "@/helpers/menu";
 import { RawCartOptions } from "@/types/cart";
+import {
+  NumberField,
+  NumberFieldDecrement,
+  NumberFieldGroup,
+  NumberFieldIncrement,
+  NumberFieldInput,
+} from "@/components/ui/number-field";
 
 type ChoicesFormProps = {
   choices: MenuChoice[];
@@ -296,30 +302,30 @@ export function QuantitySelector() {
       control={form.control}
       name="quantity"
       render={({ field }) => (
-        <div className="flex items-center rounded-lg border">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => field.onChange(Math.max(1, field.value - 1))}
-            disabled={field.value <= 1}
-            aria-label="Decrease quantity"
-          >
-            <Minus />
-          </Button>
-          <span className="w-12 text-center font-semibold text-base">
-            {field.value}
-          </span>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => field.onChange(field.value + 1)}
-            aria-label="Increase quantity"
-          >
-            <Plus />
-          </Button>
-        </div>
+        <NumberField>
+          <NumberFieldGroup>
+            <NumberFieldDecrement
+              type="button"
+              size="icon-lg"
+              onClick={() => field.onChange(Math.max(1, field.value - 1))}
+              disabled={field.value <= 1}
+              aria-label="Decrease quantity"
+              variant={"ghost"}
+            >
+              <MinusIcon />
+            </NumberFieldDecrement>
+            <NumberFieldInput {...field} />
+            <NumberFieldIncrement
+              type="button"
+              variant={"ghost"}
+              size="icon-lg"
+              onClick={() => field.onChange(field.value + 1)}
+              aria-label="Increase quantity"
+            >
+              <PlusIcon />
+            </NumberFieldIncrement>
+          </NumberFieldGroup>
+        </NumberField>
       )}
     />
   );
