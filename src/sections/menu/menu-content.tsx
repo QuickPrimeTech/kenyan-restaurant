@@ -23,14 +23,13 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
 
   // Read ?selected-item=slug
   const selectedItem = searchParams.get("selected-item") || null;
-  const [activeCategory, setActiveCategory] = useState("Featured Items");
+  const [activeCategory, setActiveCategory] = useState("Popular Dishes");
   const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(selectedItem ? true : false);
   const [searchQuery, setSearchQuery] = useState("");
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   // Get featured/popular items
   const popularItems = useMemo(() => {
-    console.log(menuItems);
     return menuItems.filter((item) => item.is_popular);
   }, [menuItems]);
 
@@ -96,7 +95,6 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
   const handleCategoryClick = (category: string) => {
     setActiveCategory(category);
     setSearchQuery(""); // Clear search when clicking category
-    console.log("Clicked category ====>", category);
     const section = sectionRefs.current[category];
     if (section) {
       const headerOffset = 140;

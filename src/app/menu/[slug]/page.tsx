@@ -1,3 +1,10 @@
+import {
+  NumberField,
+  NumberFieldDecrement,
+  NumberFieldGroup,
+  NumberFieldIncrement,
+  NumberFieldInput,
+} from "@/components/ui/number-field";
 import api from "@/lib/api-client";
 import { Header } from "@/sections/menu/slug/header";
 import { MenuDetail } from "@/sections/menu/slug/menu-detail";
@@ -5,6 +12,7 @@ import { RelatedDishes } from "@/sections/menu/slug/related-dishes";
 import { ApiResponse } from "@/types/api";
 import { MenuItem } from "@/types/menu";
 import { truncate } from "@/utils/text-formatters";
+import { MinusIcon, PlusIcon } from "lucide-react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -101,6 +109,17 @@ export default async function MenuItemPage({
       <Header menuItem={menuItem} />
       <MenuDetail menuItem={menuItem} />
       <RelatedDishes menuItems={relatedMenuItems} isFallback={isFallback} />
+      <NumberField>
+        <NumberFieldGroup>
+          <NumberFieldDecrement variant={"secondary"}>
+            <MinusIcon />
+          </NumberFieldDecrement>
+          <NumberFieldInput />
+          <NumberFieldIncrement variant={"secondary"}>
+            <PlusIcon />
+          </NumberFieldIncrement>
+        </NumberFieldGroup>
+      </NumberField>
     </div>
   );
 }

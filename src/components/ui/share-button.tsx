@@ -101,7 +101,6 @@ const ShareButton = forwardRef<HTMLButtonElement, ShareButtonProps>(
           const message =
             typeof copyMessage === "function" ? copyMessage(url) : copyMessage;
           // You can replace this with a toast notification
-          console.log(message);
         }
       } catch (err) {
         const error = err as Error;
