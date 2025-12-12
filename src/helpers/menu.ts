@@ -1,5 +1,5 @@
 import { useCart } from "@/contexts/cart-provider";
-import { CartItemChoices, RawCartOptions } from "@/types/cart";
+import { CartItem, CartItemChoices, RawCartOptions } from "@/types/cart";
 import { MenuChoice, MenuItem } from "@/types/menu";
 import { toast } from "sonner";
 
@@ -102,4 +102,15 @@ export const useAddToCartHandler = () => {
   };
 
   return { onAdd };
+};
+
+export const countItems = (cartItems: CartItem[], menuItem: MenuItem) => {
+  return cartItems.reduce(
+    (total, item) => (item.id == menuItem.id ? total + item.quantity : 0),
+    0
+  );
+};
+
+export const getCartItemsById = (cartItems: CartItem[], id: number) => {
+  return cartItems.filter((item) => item.id === id);
 };

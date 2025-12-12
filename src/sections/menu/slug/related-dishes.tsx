@@ -34,7 +34,7 @@ export function RelatedDishes({ menuItems, isFallback }: RelatedDishesProps) {
 
       <PopularItemsContent>
         {menuItems.map((item) => (
-          <Link href={`/menu?selected-item=${item.slug}`} key={item.id}>
+          <Link href={`/menu/${item.slug}`} key={item.id}>
             <MenuItemCard
               item={item}
               variant={"popular"}

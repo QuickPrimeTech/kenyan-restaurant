@@ -1,5 +1,13 @@
 import { MenuChoice } from "@/types/menu";
 import z from "zod";
+import {
+  ZodTypeAny,
+  ZodObject,
+  ZodOptional,
+  ZodDefault,
+  ZodArray,
+  ZodString,
+} from "zod";
 
 // Helper function for schema creation
 export const createItemSchema = (
@@ -42,3 +50,51 @@ export const createItemSchema = (
 
   return z.object(schema);
 };
+
+export function generateDefaultValues(schema: ZodTypeAny) {
+  const defaults: Record<string, any> = {};
+
+  if (!(schema instanceof ZodObject)) return defaults;
+
+  const shape = schema.shape;
+
+  for (const key in shape) {
+    const field = shape[key];
+
+    // Case 1: Field has a .default()
+    if (field instanceof ZodDefault) {
+      defaults[key] = field.def.defaultValue;
+      continue;
+    }
+
+    // Case 2: Optional without default → undefined
+    if (field instanceof ZodOptional) {
+      defaults[key] = undefined;
+      continue;
+    }
+
+    // Case 3: Array fields → default to empty array
+    if (field instanceof ZodArray) {
+      defaults[key] = [];
+      continue;
+    }
+
+    // Case 4: String fields → empty string
+    if (field instanceof ZodString) {
+      defaults[key] = "";
+      continue;
+    }
+
+    // Case 5: Numbers → default 0
+    const typeName = field._def.typeName;
+    if (typeName === "ZodNumber") {
+      defaults[key] = 0;
+      continue;
+    }
+
+    // Fallback
+    defaults[key] = undefined;
+  }
+
+  return defaults;
+}

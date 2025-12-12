@@ -5,12 +5,27 @@ import { AddToCartButton } from "@/sections/menu/add-cart-button";
 import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
-import { useAddToCartHandler } from "@/helpers/menu";
+import {
+  countItems,
+  getCartItemsById,
+  useAddToCartHandler,
+} from "@/helpers/menu";
+import { useCart } from "@/contexts/cart-provider";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { CardHeader } from "@/components/ui/card";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const { cartItems } = useCart();
   const { onAdd } = useAddToCartHandler();
-
+  const cartItemsCount = countItems(cartItems, menuItem);
+  const menuCartItems = getCartItemsById(cartItems, menuItem.id);
   return (
     <section>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -25,6 +40,36 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
             className="object-cover"
             priority
           />
+          {cartItemsCount > 1 && (
+            <Badge
+              variant={"secondary"}
+              size={"lg"}
+              className="absolute top-4 right-4"
+            >
+              {cartItemsCount} in cart
+            </Badge>
+          )}
+          {cartItemsCount > 0 && (
+            <Carousel className="absolute bottom-0 backdrop-blur-sm w-full">
+              <CarouselContent>
+                {}
+                <CarouselItem className="basis-full lg:basis-1/3">
+                  <div>
+                    <CardHeader>
+                      <p>Something</p>
+                      <p>Some description</p>
+                    </CardHeader>
+                  </div>
+                </CarouselItem>
+              </CarouselContent>
+              {cartItemsCount > 0 && (
+                <>
+                  <CarouselNext />
+                  <CarouselPrevious />
+                </>
+              )}
+            </Carousel>
+          )}
         </div>
         <div>
           <div className="mb-6">

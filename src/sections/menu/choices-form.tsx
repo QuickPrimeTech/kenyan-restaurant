@@ -74,9 +74,10 @@ export function ChoicesForm({
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((data) =>
-            onAdd?.(data as RawCartOptions, totalPrice)
-          )}
+          onSubmit={form.handleSubmit((data) => {
+            onAdd?.(data as RawCartOptions, totalPrice);
+            form.reset();
+          })}
           className={cn("space-y-6", className)}
           {...props}
         >
