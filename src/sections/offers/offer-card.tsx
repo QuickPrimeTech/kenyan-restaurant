@@ -12,6 +12,7 @@ import { formatDate, formatTime, getDayNames } from "@/utils/time-formatters";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type OfferCardProps = {
   offer: Offer;
@@ -46,7 +47,12 @@ export function OfferCard({ offer, minimalist = false }: OfferCardProps) {
       </CardHeader>
 
       <CardContent className="pb-6">
-        <CardTitle className="text-xl md:text-2xl font-bold transition-transform mb-2 group-hover:-translate-y-1">
+        <CardTitle
+          className={cn(
+            "text-xl md:text-2xl font-bold transition-transform mb-2 group-hover:-translate-y-1",
+            minimalist && "text-lg md:text-xl"
+          )}
+        >
           {offer.title}
         </CardTitle>
         {!minimalist && (

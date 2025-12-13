@@ -16,16 +16,41 @@ import { ChoicesContent, ChoicesForm, QuantitySelector } from "./choices-form";
 import { AddToCartButton } from "./add-cart-button";
 import { ShareMenuButton } from "./common/share-menu-button";
 import { useAddToCartHandler } from "@/helpers/menu";
+import { CartOptions } from "@/types/cart";
+import { useState } from "react";
+import { CloseAlert } from "./common/close-alert";
 
 interface ItemDetailProps {
   item: MenuItem | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  defaultValues?: Partial<CartOptions>;
 }
 
-export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
+export function ItemDetail({
+  item,
+  open,
+  onOpenChange,
+  defaultValues,
+}: ItemDetailProps) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [isDirty, setIsDirty] = useState<boolean>(false);
+  const [alertDialogOpen, onAlertDialogChange] = useState<boolean>(false);
   const { onAdd } = useAddToCartHandler();
+
+  const handleChange = (open: boolean) => {
+    if (open) {
+      onOpenChange(open);
+      return;
+    }
+    if (!open && isDirty) {
+      onAlertDialogChange(() => true);
+      return;
+    }
+
+    onOpenChange(open);
+  };
+
   if (!item) return null;
 
   const footerButtons = (
@@ -68,75 +93,87 @@ export function ItemDetail({ item, open, onOpenChange }: ItemDetailProps) {
     </div>
   );
 
-  if (isDesktop) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-[540px] p-0 gap-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
-          <ChoicesForm
-            choices={item.choices}
-            basePrice={item.price}
-            onAdd={(raw, totalPrice) => {
-              onAdd(raw, totalPrice, item);
-              onOpenChange(false);
-            }}
-          >
-            <ScrollArea className="flex-1">
-              {/* Image */}
-              <div className="relative h-[320px] bg-muted shrink-0">
-                <ImageWithFallback
-                  fill
-                  src={item.image_url}
-                  placeholder={item.lqip ? "blur" : "empty"}
-                  blurDataURL={item.lqip || undefined}
-                  alt={item.name}
-                  className="object-cover"
-                  sizes="(max-width: 540px) 100vw, 540px"
-                  priority
-                />
-              </div>
-
-              {/* Scrollable Content */}
-              <div className="max-h-[calc(90vh-320px-100px)]">{content}</div>
-              <ScrollBar orientation="vertical" />
-            </ScrollArea>
-
-            {/* Bottom Bar */}
-            <BottomBar />
-          </ChoicesForm>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent>
-        <ChoicesForm
-          choices={item.choices}
-          basePrice={item.price}
-          onAdd={(raw, totalPrice) => onAdd(raw, totalPrice, item)}
-          className="h-[95vh] flex flex-col overflow-hidden"
-        >
-          <ScrollArea className="flex-1 h-0 max-h-[calc(95vh-66px-54px)]">
-            <div className="relative h-[280px] bg-muted shrink-0">
-              <ImageWithFallback
-                fill
-                src={item.image_url}
-                placeholder={item.lqip ? "blur" : "empty"}
-                blurDataURL={item.lqip || undefined}
-                alt={item.name}
-                className="object-cover"
-                sizes="100vw"
-                priority
-              />
-            </div>
-            {content}
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-          {/* Bottom Bar */}
-          <BottomBar />
-        </ChoicesForm>
-      </DrawerContent>
-    </Drawer>
+    <>
+      <CloseAlert
+        open={alertDialogOpen}
+        onOpenChange={onAlertDialogChange}
+        handleConfirmClose={() => {
+          setIsDirty(false);
+          onOpenChange(false);
+        }}
+      />
+      ;
+      {isDesktop ? (
+        <Dialog open={open} onOpenChange={handleChange}>
+          <DialogContent className="max-w-[540px] p-0 gap-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
+            <ChoicesForm
+              choices={item.choices}
+              basePrice={item.price}
+              onAdd={(raw, totalPrice) => {
+                onAdd(raw, totalPrice, item);
+                onOpenChange(false);
+              }}
+              setDirty={setIsDirty}
+              defaultValues={defaultValues}
+            >
+              <ScrollArea className="flex-1">
+                {/* Image */}
+                <div className="relative h-[320px] bg-muted shrink-0">
+                  <ImageWithFallback
+                    fill
+                    src={item.image_url}
+                    placeholder={item.lqip ? "blur" : "empty"}
+                    blurDataURL={item.lqip || undefined}
+                    alt={item.name}
+                    className="object-cover"
+                    sizes="(max-width: 540px) 100vw, 540px"
+                    priority
+                  />
+                </div>
+
+                {/* Scrollable Content */}
+                <div className="max-h-[calc(90vh-320px-100px)]">{content}</div>
+                <ScrollBar orientation="vertical" />
+              </ScrollArea>
+
+              {/* Bottom Bar */}
+              <BottomBar />
+            </ChoicesForm>
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Drawer open={open} onOpenChange={handleChange}>
+          <DrawerContent>
+            <ChoicesForm
+              choices={item.choices}
+              basePrice={item.price}
+              defaultValues={defaultValues}
+              onAdd={(raw, totalPrice) => onAdd(raw, totalPrice, item)}
+              className="h-[95vh] flex flex-col overflow-hidden"
+            >
+              <ScrollArea className="flex-1 h-0 max-h-[calc(95vh-66px-54px)]">
+                <div className="relative h-[280px] bg-muted shrink-0">
+                  <ImageWithFallback
+                    fill
+                    src={item.image_url}
+                    placeholder={item.lqip ? "blur" : "empty"}
+                    blurDataURL={item.lqip || undefined}
+                    alt={item.name}
+                    className="object-cover"
+                    sizes="100vw"
+                    priority
+                  />
+                </div>
+                {content}
+                <ScrollBar orientation="vertical" />
+              </ScrollArea>
+              {/* Bottom Bar */}
+              <BottomBar />
+            </ChoicesForm>
+          </DrawerContent>
+        </Drawer>
+      )}
+    </>
   );
 }

@@ -18,7 +18,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { CardHeader } from "@/components/ui/card";
+import { EditCartCard } from "../edit-cart-card";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -26,6 +26,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const { onAdd } = useAddToCartHandler();
   const cartItemsCount = countItems(cartItems, menuItem);
   const menuCartItems = getCartItemsById(cartItems, menuItem.id);
+  console.log(menuCartItems);
   return (
     <section>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -50,19 +51,18 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
             </Badge>
           )}
           {cartItemsCount > 0 && (
-            <Carousel className="absolute bottom-0 backdrop-blur-sm w-full">
+            <Carousel className="px-4 absolute bottom-3 w-full">
               <CarouselContent>
-                {}
-                <CarouselItem className="basis-full lg:basis-1/3">
-                  <div>
-                    <CardHeader>
-                      <p>Something</p>
-                      <p>Some description</p>
-                    </CardHeader>
-                  </div>
-                </CarouselItem>
+                {menuCartItems.map((item) => (
+                  <CarouselItem
+                    key={item.cartItemId}
+                    className="basis-1/2 lg:basis-1/3"
+                  >
+                    <EditCartCard cartItem={item} menuItem={menuItem} />
+                  </CarouselItem>
+                ))}
               </CarouselContent>
-              {cartItemsCount > 0 && (
+              {menuCartItems.length > 3 && (
                 <>
                   <CarouselNext />
                   <CarouselPrevious />

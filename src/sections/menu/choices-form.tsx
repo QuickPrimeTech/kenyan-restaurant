@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { MenuChoice } from "@/types/menu";
 import {
   ChoicesFormProvider,
@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { createItemSchema } from "@/schemas/menu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { calculateTotalPrice, getSelectionDescription } from "@/helpers/menu";
-import { RawCartOptions } from "@/types/cart";
+import { CartOptions, RawCartOptions } from "@/types/cart";
 import {
   NumberField,
   NumberFieldDecrement,
@@ -38,16 +38,20 @@ type ChoicesFormProps = {
   choices: MenuChoice[];
   defaultQuantity?: number;
   onAdd?: (data: RawCartOptions, totalPrice: number) => void;
+  defaultValues?: Partial<CartOptions>;
   children?: ReactNode;
   basePrice: number;
+  setDirty?: (open: boolean) => void;
 } & React.ComponentProps<"form">;
 
 export function ChoicesForm({
   choices,
   defaultQuantity = 1,
   onAdd,
+  defaultValues,
   children,
   basePrice,
+  setDirty,
   className,
   ...props
 }: ChoicesFormProps) {
@@ -55,10 +59,20 @@ export function ChoicesForm({
   const form = useForm({
     resolver: zodResolver(choicesSchema),
     defaultValues: {
-      quantity: defaultQuantity,
-      specialInstructions: "",
+      quantity: defaultValues?.quantity ?? defaultQuantity,
+      specialInstructions: defaultValues?.specialInstructions ?? "",
+      ...defaultValues?.choices,
     },
   });
+
+  const { dirtyFields } = form.formState;
+
+  // Fix: Only consider form dirty if there are actual dirty fields
+  const isActuallyDirty = Object.keys(dirtyFields).length > 0;
+
+  useEffect(() => {
+    setDirty?.(isActuallyDirty);
+  }, [isActuallyDirty]);
 
   const watchedValues = form.watch();
   const totalPrice = calculateTotalPrice(watchedValues, choices, basePrice);
@@ -143,7 +157,8 @@ const SingleChoiceOptions = ({
     <FormControl>
       <RadioGroup
         onValueChange={field.onChange}
-        defaultValue={field.value}
+        // defaultValue={field.value}
+        value={field.value ?? ""}
         className="space-y-2"
       >
         {choice.options.map((option) => (

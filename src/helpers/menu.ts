@@ -106,11 +106,29 @@ export const useAddToCartHandler = () => {
 
 export const countItems = (cartItems: CartItem[], menuItem: MenuItem) => {
   return cartItems.reduce(
-    (total, item) => (item.id == menuItem.id ? total + item.quantity : 0),
+    (total, item) => (item.id == menuItem.id ? total + item.quantity : total),
     0
   );
 };
 
 export const getCartItemsById = (cartItems: CartItem[], id: number) => {
   return cartItems.filter((item) => item.id === id);
+};
+
+export const formatChoicesSummary = (choices: any) => {
+  if (!choices) return "No customisations";
+
+  const parts: string[] = [];
+
+  for (const key in choices) {
+    const value = choices[key];
+
+    if (Array.isArray(value)) {
+      parts.push(...value); // multiple selections
+    } else {
+      parts.push(value); // single selection
+    }
+  }
+
+  return parts.join(" • ") || "No customisations";
 };
