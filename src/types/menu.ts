@@ -4,7 +4,7 @@ export interface ChoiceOption {
 }
 
 export interface MenuChoice {
-  id?: string; // optional, not all choices have an id
+  id: string; // optional, not all choices have an id
   title: string;
   options: ChoiceOption[];
   required?: boolean; // optional

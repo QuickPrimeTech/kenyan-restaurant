@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 import { MenuChoice } from "@/types/menu";
 import {
   ChoicesFormProvider,
@@ -55,7 +55,11 @@ export function ChoicesForm({
   className,
   ...props
 }: ChoicesFormProps) {
-  const choicesSchema = createItemSchema(choices, defaultQuantity);
+  const choicesSchema = useMemo(
+    () => createItemSchema(choices, defaultQuantity),
+    [choices]
+  );
+
   const form = useForm({
     resolver: zodResolver(choicesSchema),
     defaultValues: {
@@ -64,6 +68,11 @@ export function ChoicesForm({
       ...defaultValues?.choices,
     },
   });
+
+  // console.log("<===================== Rerendered ========================>");
+  // console.log("<===================== FormValues ========================>");
+  // console.log(form.watch());
+  // console.log("<===================== End ========================>");
 
   const { dirtyFields } = form.formState;
 
@@ -84,11 +93,13 @@ export function ChoicesForm({
         choices,
         basePrice,
         totalPrice,
+        defaultValues,
       }}
     >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => {
+            console.log("submitted data =======>", data);
             onAdd?.(data as RawCartOptions, totalPrice);
             form.reset();
           })}
@@ -105,7 +116,7 @@ export function ChoicesForm({
 // Choice Item Component for better organization
 const ChoiceItem = ({ choice }: { choice: MenuChoice }) => {
   const { form } = useChoicesForm();
-  const choiceId = choice.id || choice.title;
+  const choiceId = choice.id;
   const isSingle = choice.maxSelectable === 1 && choice.required;
 
   return (
@@ -151,8 +162,11 @@ const SingleChoiceOptions = ({
   choice: MenuChoice;
   field: any;
 }) => {
-  const choiceId = choice.id || choice.title;
-
+  const choiceId = choice.id;
+  // console.log(
+  //   `SingleChoiceOptions render - choiceId: ${choiceId}, field.value:`,
+  //   field.value
+  // );
   return (
     <FormControl>
       <RadioGroup
@@ -190,7 +204,7 @@ const MultipleChoiceOptions = ({
   choice: MenuChoice;
   field: any;
 }) => {
-  const choiceId = choice.id || choice.title;
+  const choiceId = choice.id;
   const selectedValues = Array.isArray(field.value) ? field.value : [];
   const maxReached =
     choice.maxSelectable && selectedValues.length >= choice.maxSelectable;
@@ -282,7 +296,7 @@ export function ChoicesContent() {
     <div className="space-y-4">
       {/* Choices */}
       {choices.map((choice) => (
-        <ChoiceItem key={choice.id || choice.title} choice={choice} />
+        <ChoiceItem key={choice.id} choice={choice} />
       ))}
 
       {/* Special Instructions */}

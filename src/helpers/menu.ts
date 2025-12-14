@@ -76,8 +76,8 @@ export const compareChoices = (
   return true;
 };
 
-export const useAddToCartHandler = () => {
-  const { addToCart } = useCart();
+export const useHandleCart = () => {
+  const { addToCart, updateCartItem } = useCart();
 
   const onAdd = (
     raw: RawCartOptions,
@@ -100,8 +100,26 @@ export const useAddToCartHandler = () => {
     addToCart(cartItem);
     toast.success(`${menuItem.name} added to cart`);
   };
+  const onEdit = (
+    raw: RawCartOptions,
+    totalPrice: number,
+    cartItem: CartItem
+  ) => {
+    const { quantity, specialInstructions, ...choices } = raw;
 
-  return { onAdd };
+    const editedCartItem = {
+      ...cartItem,
+      choices,
+      quantity,
+      specialInstructions,
+      price: totalPrice,
+    };
+
+    updateCartItem(editedCartItem);
+    toast.success(`${cartItem.name} updated successfully`);
+  };
+
+  return { onAdd, onEdit };
 };
 
 export const countItems = (cartItems: CartItem[], menuItem: MenuItem) => {

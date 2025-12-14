@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   countItems,
   getCartItemsById,
-  useAddToCartHandler,
+  useHandleCart
 } from "@/helpers/menu";
 import { useCart } from "@/contexts/cart-provider";
 import {
@@ -16,17 +16,16 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious,
+  CarouselPrevious
 } from "@/components/ui/carousel";
 import { EditCartCard } from "../edit-cart-card";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { cartItems } = useCart();
-  const { onAdd } = useAddToCartHandler();
+  const { onAdd } = useHandleCart();
   const cartItemsCount = countItems(cartItems, menuItem);
   const menuCartItems = getCartItemsById(cartItems, menuItem.id);
-  console.log(menuCartItems);
   return (
     <section>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

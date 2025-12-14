@@ -10,6 +10,9 @@ import { MenuItem } from "@/types/menu";
 
 type EditCartCardProps = { cartItem: CartItem; menuItem: MenuItem };
 export function EditCartCard({ cartItem, menuItem }: EditCartCardProps) {
+  // console.log("Edit Menu item =======>", menuItem);
+  // console.log("Edit Cart item =======>", cartItem);
+
   const [open, onOpenChange] = useState(false);
   return (
     <>
@@ -18,7 +21,9 @@ export function EditCartCard({ cartItem, menuItem }: EditCartCardProps) {
         className="cursor-pointer rounded-sm border bg-background/80 backdrop-blur-sm shadow-sm p-4 space-y-2"
       >
         <div className="flex justify-between gap-1 cartItems-center flex-wrap">
-          <Badge variant="secondary">{cartItem.quantity} cartItems</Badge>
+          <Badge variant="secondary">
+            {cartItem.quantity} item{cartItem.quantity > 1 && "s"}
+          </Badge>
           <div className="text-xs text-muted-foreground">
             {formatChoicesSummary(cartItem.choices)}
           </div>

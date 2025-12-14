@@ -12,7 +12,7 @@ import {
 
 type CartContextType = {
   addToCart: (cartItem: CartItem) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  updateCartItem: (cartItem: CartItem) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
 };
@@ -72,14 +72,12 @@ export function CartProvider({ children }: CartProviderProps) {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
-  const updateQuantity = (id: number, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(id);
-      return;
-    }
+  const updateCartItem = (cartItem: CartItem) => {
     setCartItems((prevCartItems) =>
-      prevCartItems.map((cartItem) =>
-        cartItem.id === id ? { ...cartItem, quantity } : cartItem
+      prevCartItems.map((prevCartItem) =>
+        prevCartItem.cartItemId === cartItem.cartItemId
+          ? cartItem
+          : prevCartItem
       )
     );
   };
@@ -101,7 +99,7 @@ export function CartProvider({ children }: CartProviderProps) {
         total,
         cartItemsCount,
         addToCart,
-        updateQuantity,
+        updateCartItem,
         removeFromCart,
         clearCart,
       }}

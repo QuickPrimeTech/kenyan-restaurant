@@ -3,12 +3,14 @@
 import { createContext, useContext, ReactNode } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { MenuChoice } from "@/types/menu";
+import { CartOptions } from "@/types/cart";
 
 type ChoicesFormContextValue = {
   form: UseFormReturn<any>;
   choices: MenuChoice[];
   basePrice: number;
   totalPrice: number;
+  defaultValues?: Partial<CartOptions>;
 };
 
 const ChoicesFormContext = createContext<ChoicesFormContextValue | null>(null);

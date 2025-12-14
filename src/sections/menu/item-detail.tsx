@@ -15,8 +15,8 @@ import Link from "next/link";
 import { ChoicesContent, ChoicesForm, QuantitySelector } from "./choices-form";
 import { AddToCartButton } from "./add-cart-button";
 import { ShareMenuButton } from "./common/share-menu-button";
-import { useAddToCartHandler } from "@/helpers/menu";
-import { CartOptions } from "@/types/cart";
+import { useHandleCart } from "@/helpers/menu";
+import { CartItem, RawCartOptions } from "@/types/cart";
 import { useState } from "react";
 import { CloseAlert } from "./common/close-alert";
 
@@ -24,7 +24,7 @@ interface ItemDetailProps {
   item: MenuItem | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  defaultValues?: Partial<CartOptions>;
+  defaultValues?: CartItem;
 }
 
 export function ItemDetail({
@@ -36,7 +36,7 @@ export function ItemDetail({
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [isDirty, setIsDirty] = useState<boolean>(false);
   const [alertDialogOpen, onAlertDialogChange] = useState<boolean>(false);
-  const { onAdd } = useAddToCartHandler();
+  const { onAdd, onEdit } = useHandleCart();
 
   const handleChange = (open: boolean) => {
     if (open) {
@@ -52,6 +52,28 @@ export function ItemDetail({
   };
 
   if (!item) return null;
+
+  const handleAdd = (values: RawCartOptions, totalPrice: number) => {
+    console.log("handling add");
+    if (defaultValues) {
+      console.log(
+        "Reached the default values while adding ===>",
+        values,
+        totalPrice,
+        defaultValues
+      );
+      onEdit(values, totalPrice, defaultValues);
+    } else {
+      console.log(
+        "Reached the adding and not editing values while adding ===>",
+        values,
+        totalPrice,
+        defaultValues
+      );
+      onAdd(values, totalPrice, item);
+    }
+    onOpenChange(false);
+  };
 
   const footerButtons = (
     <div className="flex gap-2 mt-4">
@@ -103,17 +125,13 @@ export function ItemDetail({
           onOpenChange(false);
         }}
       />
-      ;
       {isDesktop ? (
         <Dialog open={open} onOpenChange={handleChange}>
           <DialogContent className="max-w-[540px] p-0 gap-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
             <ChoicesForm
               choices={item.choices}
               basePrice={item.price}
-              onAdd={(raw, totalPrice) => {
-                onAdd(raw, totalPrice, item);
-                onOpenChange(false);
-              }}
+              onAdd={handleAdd}
               setDirty={setIsDirty}
               defaultValues={defaultValues}
             >
@@ -148,8 +166,9 @@ export function ItemDetail({
             <ChoicesForm
               choices={item.choices}
               basePrice={item.price}
+              setDirty={setIsDirty}
               defaultValues={defaultValues}
-              onAdd={(raw, totalPrice) => onAdd(raw, totalPrice, item)}
+              onAdd={handleAdd}
               className="h-[95vh] flex flex-col overflow-hidden"
             >
               <ScrollArea className="flex-1 h-0 max-h-[calc(95vh-66px-54px)]">
