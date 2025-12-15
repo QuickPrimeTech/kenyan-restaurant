@@ -36,7 +36,7 @@ export function RelatedDishes({ menuItems, isFallback }: RelatedDishesProps) {
         {menuItems.map((item) => (
           <Link href={`/menu/${item.slug}`} key={item.id}>
             <MenuItemCard
-              item={item}
+              menuItem={item}
               variant={"popular"}
               orientation={"square"}
             />

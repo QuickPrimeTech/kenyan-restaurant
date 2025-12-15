@@ -19,7 +19,7 @@ export const MenuSection = forwardRef<
         {items.map((item) => (
           <MenuItemCard
             key={item.id}
-            item={item}
+            menuItem={item}
             orientation="horizontal"
             variant="regular"
             onClick={() => onClick(item)}

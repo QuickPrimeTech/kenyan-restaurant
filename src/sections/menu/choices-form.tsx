@@ -163,22 +163,21 @@ const SingleChoiceOptions = ({
   field: any;
 }) => {
   const choiceId = choice.id;
-  // console.log(
-  //   `SingleChoiceOptions render - choiceId: ${choiceId}, field.value:`,
-  //   field.value
-  // );
+  console.log(
+    `SingleChoiceOptions render - choiceId: ${choiceId}, field.value:`,
+    field.value
+  );
   return (
     <FormControl>
       <RadioGroup
         onValueChange={field.onChange}
-        // defaultValue={field.value}
         value={field.value ?? ""}
         className="space-y-2"
       >
         {choice.options.map((option) => (
           <div
-            key={option.label}
-            className="flex items-center rounded-lg border pl-4 cursor-pointer hover:bg-accent/50"
+            key={`${option.label}-${option.price} `}
+            className="flex items-center rounded-lg border pl-4 hover:bg-accent/50 overflow-hidden"
           >
             <RadioGroupItem
               value={option.label}

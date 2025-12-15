@@ -7,7 +7,8 @@ import { ImageWithFallback } from "@/components/ui/image";
 import type { MenuItem } from "@/types/menu";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useCart } from "@/contexts/cart-provider";
+import { countItems } from "@/helpers/menu";
 
 const cardVariants = cva("relative cursor-pointer overflow-hidden", {
   variants: {
@@ -32,11 +33,11 @@ const cardVariants = cva("relative cursor-pointer overflow-hidden", {
 });
 
 type MenuItemCardProps = {
-  item: MenuItem;
+  menuItem: MenuItem;
 };
 
 export function MenuItemCard({
-  item,
+  menuItem,
   orientation,
   variant,
   size,
@@ -44,8 +45,8 @@ export function MenuItemCard({
 }: VariantProps<typeof cardVariants> &
   React.ComponentProps<"div"> &
   MenuItemCardProps) {
-  const router = useRouter();
-
+  const { cartItems } = useCart();
+  const cartItemsCount = countItems(cartItems, menuItem);
   return (
     <div className={cardVariants({ orientation, variant, size })} {...props}>
       {/* Image */}
@@ -58,21 +59,31 @@ export function MenuItemCard({
       >
         <ImageWithFallback
           fill
-          src={item.image_url}
-          placeholder={item.lqip ? "blur" : "empty"}
-          blurDataURL={item.lqip || undefined}
-          alt={item.name}
+          src={menuItem.image_url}
+          placeholder={menuItem.lqip ? "blur" : "empty"}
+          blurDataURL={menuItem.lqip || undefined}
+          alt={menuItem.name}
           className="object-cover"
         />
 
         <Button
           size="icon-lg"
           variant="outline"
-          title={`Add ${item.name} to cart`}
+          title={`Add ${menuItem.name} to cart`}
           className="absolute bottom-2 right-2 shadow-lg hover:scale-105 transition-transform"
         >
           <Plus className="text-foreground" strokeWidth={3.5} />
         </Button>
+        {cartItemsCount && (
+          <Button
+            size="icon-sm"
+            variant="secondary"
+            title={`${cartItemsCount} ${menuItem.name} in cart`}
+            className="absolute top-2 right-2 shadow-lg hover:scale-105 transition-transform"
+          >
+            {cartItemsCount}
+          </Button>
+        )}
       </div>
 
       <div
@@ -82,15 +93,15 @@ export function MenuItemCard({
         )}
       >
         <h3 className="font-sans font-medium text-foreground leading-snug mb-1">
-          {item.name}
+          {menuItem.name}
         </h3>
         {orientation === "horizontal" && (
           <p className="text-sm text-muted-foreground leading-snug line-clamp-2 mb-2">
-            {item.description}
+            {menuItem.description}
           </p>
         )}
         <span className="text-[15px] text-foreground">
-          Ksh {item.price.toFixed(2)}
+          Ksh {menuItem.price.toFixed(2)}
         </span>
       </div>
     </div>

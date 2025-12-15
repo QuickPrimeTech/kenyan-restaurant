@@ -7,18 +7,43 @@ import { Edit2 } from "lucide-react";
 import { useState } from "react";
 import { ItemDetail } from "./item-detail";
 import { MenuItem } from "@/types/menu";
+import { cva, VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+const editCardVariants = cva(
+  "cursor-pointer rounded-sm border bg-background/80 backdrop-blur-sm shadow-sm space-y-2",
+  {
+    variants: {
+      orientation: {
+        vertical: "",
+        horizontal: "",
+      },
+      size: {
+        default: "p-4",
+        lg: "",
+      },
+    },
+
+    defaultVariants: {
+      orientation: "vertical",
+      size: "default",
+    },
+  }
+);
 
 type EditCartCardProps = { cartItem: CartItem; menuItem: MenuItem };
-export function EditCartCard({ cartItem, menuItem }: EditCartCardProps) {
-  // console.log("Edit Menu item =======>", menuItem);
-  // console.log("Edit Cart item =======>", cartItem);
-
+export function EditCartCard({
+  orientation,
+  size,
+  cartItem,
+  menuItem,
+}: EditCartCardProps & VariantProps<typeof editCardVariants>) {
   const [open, onOpenChange] = useState(false);
   return (
     <>
       <div
         onClick={() => onOpenChange(true)}
-        className="cursor-pointer rounded-sm border bg-background/80 backdrop-blur-sm shadow-sm p-4 space-y-2"
+        className={cn(editCardVariants({ size, orientation }))}
       >
         <div className="flex justify-between gap-1 cartItems-center flex-wrap">
           <Badge variant="secondary">

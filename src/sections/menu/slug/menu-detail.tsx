@@ -1,24 +1,20 @@
 "use client";
 import { ChoicesContent, ChoicesForm, QuantitySelector } from "../choices-form";
-import { ImageWithFallback } from "@/components/ui/image";
 import { AddToCartButton } from "@/sections/menu/add-cart-button";
 import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
-import {
-  countItems,
-  getCartItemsById,
-  useHandleCart
-} from "@/helpers/menu";
+import { countItems, getCartItemsById, useHandleCart } from "@/helpers/menu";
 import { useCart } from "@/contexts/cart-provider";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { EditCartCard } from "../edit-cart-card";
+import { ImageWithFallback } from "@/components/ui/image";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");

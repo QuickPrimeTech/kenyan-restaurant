@@ -134,7 +134,7 @@ const PopularItemsContent = ({
       >
         {children}
       </div>
-      <ScrollBar orientation="horizontal" />
+      <ScrollBar className="hidden" orientation="horizontal" />
     </ScrollArea>
   );
 };

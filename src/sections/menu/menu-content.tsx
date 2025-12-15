@@ -140,7 +140,7 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
                       key={item.id}
                     >
                       <MenuItemCard
-                        item={item}
+                        menuItem={item}
                         variant={"popular"}
                         orientation={"square"}
                       />

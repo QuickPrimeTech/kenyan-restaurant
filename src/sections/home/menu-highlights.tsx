@@ -43,7 +43,7 @@ export default function MenuHighlights({
         {menuItems.map((item) => (
           <Link href={`/menu?selected-item=${item.slug}`} key={item.id}>
             <MenuItemCard
-              item={item}
+              menuItem={item}
               variant={"popular"}
               orientation={"square"}
             />

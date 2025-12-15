@@ -1,3 +1,5 @@
+"use client";
+
 import { useCart } from "@/contexts/cart-provider";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
