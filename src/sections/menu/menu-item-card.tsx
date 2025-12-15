@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { useCart } from "@/contexts/cart-provider";
 import { countItems } from "@/helpers/menu";
+import Link from "next/link";
 
 const cardVariants = cva("relative cursor-pointer overflow-hidden", {
   variants: {
@@ -76,12 +77,28 @@ export function MenuItemCard({
         </Button>
         {cartItemsCount && (
           <Button
-            size="icon-sm"
+            // size="icon-sm"
             variant="secondary"
             title={`${cartItemsCount} ${menuItem.name} in cart`}
-            className="absolute top-2 right-2 shadow-lg hover:scale-105 transition-transform"
+            className="group aspect-square hover:aspect-auto absolute top-2 right-2 flex items-center gap-1 px-2 shadow-lg overflow-hidden
+               transition-all duration-300 ease-out"
+            asChild
           >
-            {cartItemsCount}
+            <Link href={`/menu/${menuItem.slug}`}>
+              {/* Count */}
+              <span className="group-hover:hidden font-medium">
+                {cartItemsCount}
+              </span>
+
+              {/* Hover text */}
+              <span
+                className="whitespace-nowrap text-xs opacity-0 translate-x-2 max-w-0
+                 group-hover:opacity-100 group-hover:translate-x-0 group-hover:max-w-[160px]
+                 transition-all duration-300 ease-out"
+              >
+                View {cartItemsCount} items in cart
+              </span>
+            </Link>
           </Button>
         )}
       </div>

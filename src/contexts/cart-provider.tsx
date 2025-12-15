@@ -13,7 +13,7 @@ import {
 type CartContextType = {
   addToCart: (cartItem: CartItem) => void;
   updateCartItem: (cartItem: CartItem) => void;
-  removeFromCart: (id: number) => void;
+  removeFromCart: (cartItemId: string) => void;
   clearCart: () => void;
 };
 
@@ -68,8 +68,10 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   };
 
-  const removeFromCart = (id: number) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const removeFromCart = (cartItemId: string) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.cartItemId !== cartItemId)
+    );
   };
 
   const updateCartItem = (cartItem: CartItem) => {

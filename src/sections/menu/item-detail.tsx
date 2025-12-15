@@ -18,7 +18,21 @@ import { ShareMenuButton } from "./common/share-menu-button";
 import { useHandleCart } from "@/helpers/menu";
 import { CartItem, RawCartOptions } from "@/types/cart";
 import { useState } from "react";
+import { Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  AlertDialogCancel,
+  AlertDialogContent,
+} from "@/components/ui/alert-dialog";
+
 import { CloseAlert } from "./common/close-alert";
+import { useCart } from "@/contexts/cart-provider";
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -37,6 +51,7 @@ export function ItemDetail({
   const [isDirty, setIsDirty] = useState<boolean>(false);
   const [alertDialogOpen, onAlertDialogChange] = useState<boolean>(false);
   const { onAdd, onEdit } = useHandleCart();
+  const { removeFromCart } = useCart();
 
   const handleChange = (open: boolean) => {
     if (open) {
@@ -77,6 +92,40 @@ export function ItemDetail({
 
   const footerButtons = (
     <div className="flex gap-2 mt-4">
+      {defaultValues && (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">
+              <Trash2 />
+              Remove from cart
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Remove {defaultValues?.quantity} × {defaultValues?.name}?
+              </AlertDialogTitle>
+
+              <AlertDialogDescription>
+                This will remove {defaultValues?.quantity} {defaultValues?.name}{" "}
+                from your cart. Any customisations you made will be lost.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>Keep item</AlertDialogCancel>
+              <AlertDialogAction
+                variant={"destructive"}
+                onClick={() => removeFromCart(defaultValues.cartItemId)}
+              >
+                <Trash2 />
+                Remove
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
       <ShareMenuButton item={item} />
       <Button variant={"secondary"} asChild>
         <Link href={`/menu/${item.slug}`}>See Details</Link>
@@ -90,7 +139,7 @@ export function ItemDetail({
       <div className="px-4 py-3 border-t">
         <div className="flex items-center gap-3">
           <QuantitySelector />
-          <AddToCartButton />
+          <AddToCartButton size={defaultValues ? "sm" : "lg"} />
         </div>
       </div>
     );
