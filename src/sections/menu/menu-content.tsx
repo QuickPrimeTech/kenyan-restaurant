@@ -11,7 +11,6 @@ import { ItemDetail } from "@/sections/menu/item-detail";
 import { MenuItem } from "@/types/menu";
 import { MenuSection } from "./menu-section";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { MenuItemCard } from "./menu-item-card";
 
 type MenuContentProps = {
@@ -135,16 +134,13 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
 
                 <PopularItemsContent>
                   {popularItems.map((item) => (
-                    <Link
-                      href={`/menu?selected-item=${item.slug}`}
+                    <MenuItemCard
                       key={item.id}
-                    >
-                      <MenuItemCard
-                        menuItem={item}
-                        variant={"popular"}
-                        orientation={"square"}
-                      />
-                    </Link>
+                      onClick={() => handleItemClick(item)}
+                      menuItem={item}
+                      variant={"popular"}
+                      orientation={"square"}
+                    />
                   ))}
                 </PopularItemsContent>
               </PopularItems>
