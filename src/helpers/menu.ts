@@ -86,7 +86,7 @@ export const useHandleCart = () => {
   ) => {
     const { quantity, specialInstructions, ...choices } = raw;
 
-    const cartItem = {
+    const cartItem: CartItem = {
       cartItemId: crypto.randomUUID(),
       id: menuItem.id,
       name: menuItem.name,
@@ -95,6 +95,7 @@ export const useHandleCart = () => {
       quantity,
       specialInstructions,
       price: totalPrice,
+      menuItem,
     };
 
     addToCart(cartItem);

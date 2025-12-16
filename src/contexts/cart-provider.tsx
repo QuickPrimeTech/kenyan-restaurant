@@ -21,14 +21,6 @@ const CartContext = createContext<(CartState & CartContextType) | undefined>(
   undefined
 );
 
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used inside the CartProvider");
-  }
-  return context;
-};
-
 type CartProviderProps = {
   children: ReactNode;
 };
@@ -118,3 +110,11 @@ export function CartProvider({ children }: CartProviderProps) {
     </CartContext.Provider>
   );
 }
+
+export const useCart = () => {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error("useCart must be used inside the CartProvider");
+  }
+  return context;
+};

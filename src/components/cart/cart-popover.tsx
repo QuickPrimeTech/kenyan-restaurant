@@ -1,6 +1,4 @@
 "use client";
-
-import type React from "react";
 import {
   Popover,
   PopoverContent,
@@ -12,26 +10,20 @@ import { ShoppingCart, Eye, ArrowRight } from "lucide-react";
 import { useCart } from "@/contexts/cart-provider";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { PriceBreakdown } from "./price-breakdown";
-import { ImageWithFallback } from "@ui/image";
+import { EditCartCard } from "@/sections/menu/edit-cart-card";
+import { useCartUI } from "@/contexts/cart-ui-provider";
+import { CartButton } from "./cart-button";
 
-type CartPopoverProps = {
-  children: React.ReactNode;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onCheckout: () => void;
-};
-
-export function CartPopover({
-  children,
-  open,
-  onOpenChange,
-  onCheckout,
-}: CartPopoverProps) {
+export function CartPopover() {
   const { cartItems, cartItemsCount } = useCart();
+  const { isCartPopoverOpen, openCartPopover, openCartCheckout } = useCartUI();
+
   const maxItems = 3;
   return (
-    <Popover open={open} onOpenChange={onOpenChange}>
-      <PopoverTrigger asChild>{children}</PopoverTrigger>
+    <Popover open={isCartPopoverOpen} onOpenChange={openCartPopover}>
+      <PopoverTrigger asChild>
+        <CartButton />
+      </PopoverTrigger>
       <PopoverContent className="w-80 p-0" side="top" align="start">
         <div className="p-4">
           <div className="flex items-center gap-2 mb-3">
@@ -44,31 +36,12 @@ export function CartPopover({
 
           <ScrollArea className="h-fit max-h-48">
             {cartItems.slice(0, maxItems).map((item) => (
-              <div
+              <EditCartCard
+                orientation="horizontal"
                 key={item.cartItemId}
-                className="flex border px-2 rounded-sm items-center mt-2 gap-3 py-1.5"
-              >
-                <div className="relative w-10 h-10 bg-muted rounded-xs flex-shrink-0 overflow-hidden">
-                  <ImageWithFallback
-                    iconProps={{ className: "size-5" }}
-                    textProps={{ className: "hidden" }}
-                    src={item.image_url}
-                    alt={item.name}
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{item.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {item.quantity}x Ksh {item.price}
-                  </p>
-                </div>
-                <p className="text-sm font-medium">
-                  Ksh {(item.price * item.quantity).toFixed(2)}
-                </p>
-              </div>
+                cartItem={item}
+                menuItem={item.menuItem}
+              />
             ))}
 
             {cartItemsCount > maxItems && (
@@ -92,12 +65,16 @@ export function CartPopover({
               variant="outline"
               size="sm"
               className="flex-1 bg-transparent"
-              onClick={() => onOpenChange(false)}
+              onClick={() => openCartPopover(false)}
             >
               <Eye className="h-4 w-4 mr-1" />
               Continue Shopping
             </Button>
-            <Button size="sm" className="flex-1" onClick={onCheckout}>
+            <Button
+              size="sm"
+              className="flex-1"
+              onClick={() => openCartCheckout(true)}
+            >
               Checkout
               <ArrowRight />
             </Button>

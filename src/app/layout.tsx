@@ -9,7 +9,8 @@ import { ContactButton } from "@/components/contact-button";
 import { WhatsAppCampaignPopup } from "@/components/whatsapp-campaign-popup";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/contexts/cart-provider";
-import { CartButton } from "@/components/cart/cart-button";
+import { CartUIProvider } from "@/contexts/cart-ui-provider";
+import { CartPopover } from "@/components/cart/cart-popover";
 
 // Headings
 const montserrat = Montserrat({
@@ -69,15 +70,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <CartProvider>
-            <Navbar />
-            {children}
-            <ContactButton />
-            <WhatsAppCampaignPopup />
-            <Toaster richColors position="top-center" />
-            <CartButton />
-          </CartProvider>
-          <Footer />
+          <CartUIProvider>
+            <CartProvider>
+              <Navbar />
+              {children}
+              <ContactButton />
+              <WhatsAppCampaignPopup />
+              <Toaster richColors position="top-center" />
+              <CartPopover />
+              <Footer />
+            </CartProvider>
+          </CartUIProvider>
         </ThemeProvider>
       </body>
     </html>

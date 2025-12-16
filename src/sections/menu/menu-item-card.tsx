@@ -80,23 +80,26 @@ export function MenuItemCard({
             // size="icon-sm"
             variant="secondary"
             title={`${cartItemsCount} ${menuItem.name} in cart`}
-            className="group aspect-square hover:aspect-auto absolute top-2 right-2 flex items-center gap-1 px-2 shadow-lg overflow-hidden
+            className="group aspect-square hover:aspect-auto justify-center absolute top-2 right-2 items-center gap-1 shadow-lg overflow-hidden
                transition-all duration-300 ease-out"
             asChild
           >
-            <Link href={`/menu/${menuItem.slug}`}>
+            <Link
+              href={`/menu/${menuItem.slug}`}
+              onClick={(e) => e.stopPropagation()}
+            >
               {/* Count */}
-              <span className="group-hover:hidden font-medium">
+              <span className="group-hover:hidden font-medium  ml-1">
                 {cartItemsCount}
               </span>
 
               {/* Hover text */}
               <span
-                className="whitespace-nowrap text-xs opacity-0 translate-x-2 max-w-0
+                className="whitespace-nowrap text-xs opacity-100 translate-x-3 max-w-0
                  group-hover:opacity-100 group-hover:translate-x-0 group-hover:max-w-[160px]
                  transition-all duration-300 ease-out"
               >
-                View {cartItemsCount} items in cart
+                View {cartItemsCount} item(s) in cart
               </span>
             </Link>
           </Button>

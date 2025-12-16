@@ -1,9 +1,12 @@
+import { MenuItem } from "./menu";
+
 export type CartItem = {
   cartItemId: string;
   id: number;
   name: string;
   image_url: string | null;
   price: number;
+  menuItem: MenuItem;
 } & CartOptions;
 
 export type CartState = {
