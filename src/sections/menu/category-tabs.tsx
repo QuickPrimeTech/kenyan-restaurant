@@ -10,6 +10,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface CategoryTabsProps {
   categories: string[];
@@ -26,6 +27,7 @@ export function CategoryTabs({
   searchQuery,
   onSearchChange,
 }: CategoryTabsProps) {
+  const isMobile = useMediaQuery("(max-width:640px)");
   const rootRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -133,7 +135,7 @@ export function CategoryTabs({
                   <Button
                     variant={"ghost"}
                     size={"icon-sm"}
-                    className="absolute right-3 p-1 hover:bg-background rounded-full"
+                    className="absolute right-3 aspect-square hover:bg-background rounded-full"
                     onClick={handleSearchClose}
                     aria-label="Close search"
                   >
@@ -155,8 +157,8 @@ export function CategoryTabs({
         </div>
 
         {/* Tabs - hide when search is expanded */}
-        {!searchExpanded && (
-          <div className="relative flex flex-1">
+        {(!isMobile || !searchExpanded) && (
+          <div className="relative w-0 flex flex-1">
             <ScrollArea ref={rootRef} className="w-0 flex-1">
               <div className="flex gap-1 pb-1">
                 {categories.map((category) => (

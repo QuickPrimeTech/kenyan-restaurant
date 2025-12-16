@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { CategoryTabs } from "@/sections/menu/category-tabs";
 import {
   PopularItems,
@@ -12,6 +12,18 @@ import { MenuItem } from "@/types/menu";
 import { MenuSection } from "./menu-section";
 import { useSearchParams } from "next/navigation";
 import { MenuItemCard } from "./menu-item-card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { CircleAlert, Gift } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useSectionTracker } from "@/hooks/use-section-tracker";
+import Link from "next/link";
 
 type MenuContentProps = {
   menuItems: MenuItem[];
@@ -19,14 +31,16 @@ type MenuContentProps = {
 
 export default function MenuContent({ menuItems }: MenuContentProps) {
   const searchParams = useSearchParams();
+  // In your component
+  const { activeSection, registerSection, scrollToSection } =
+    useSectionTracker("Popular Dishes");
 
   // Read ?selected-item=slug
   const selectedItem = searchParams.get("selected-item") || null;
-  const [activeCategory, setActiveCategory] = useState("Popular Dishes");
   const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(selectedItem ? true : false);
   const [searchQuery, setSearchQuery] = useState("");
-  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
   // Get featured/popular items
   const popularItems = useMemo(() => {
     return menuItems.filter((item) => item.is_popular);
@@ -92,16 +106,8 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
   }, [filteredItems]);
 
   const handleCategoryClick = (category: string) => {
-    setActiveCategory(category);
     setSearchQuery(""); // Clear search when clicking category
-    const section = sectionRefs.current[category];
-    if (section) {
-      const headerOffset = 140;
-      const elementPosition = section.getBoundingClientRect().top;
-      const offsetPosition =
-        elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-    }
+    scrollToSection(category, 140); // 140px offset for header
   };
 
   const handleItemClick = (item: MenuItem) => {
@@ -110,11 +116,11 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
   };
 
   return (
-    <div className="min-h-screen mb-16">
+    <div className="mb-16">
       <main className="container mx-auto">
         <CategoryTabs
           categories={categories}
-          activeCategory={activeCategory}
+          activeCategory={activeSection}
           onCategoryClick={handleCategoryClick}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
@@ -124,26 +130,28 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
           {/* Menu Content */}
           <div className="flex-1 section-x mt-25 overflow-hidden">
             {!searchQuery && (
-              <PopularItems>
-                <PopularItemsHeader>
-                  <h2 className="text-xl font-bold text-foreground">
-                    Popular Dishes
-                  </h2>
-                  <PopularItemsScrollButtons />
-                </PopularItemsHeader>
+              <div ref={(el) => registerSection("Popular Dishes", el)}>
+                <PopularItems>
+                  <PopularItemsHeader>
+                    <h2 className="text-xl font-bold text-foreground">
+                      Popular Dishes
+                    </h2>
+                    <PopularItemsScrollButtons />
+                  </PopularItemsHeader>
 
-                <PopularItemsContent>
-                  {popularItems.map((item) => (
-                    <MenuItemCard
-                      key={item.id}
-                      onClick={() => handleItemClick(item)}
-                      menuItem={item}
-                      variant={"popular"}
-                      orientation={"square"}
-                    />
-                  ))}
-                </PopularItemsContent>
-              </PopularItems>
+                  <PopularItemsContent>
+                    {popularItems.map((item) => (
+                      <MenuItemCard
+                        key={item.id}
+                        onClick={() => handleItemClick(item)}
+                        menuItem={item}
+                        variant={"popular"}
+                        orientation={"square"}
+                      />
+                    ))}
+                  </PopularItemsContent>
+                </PopularItems>
+              </div>
             )}
 
             {/* Menu Sections */}
@@ -151,7 +159,7 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
               <MenuSection
                 key={category}
                 ref={(el) => {
-                  sectionRefs.current[category] = el;
+                  registerSection(category, el);
                 }}
                 onClick={handleItemClick}
                 title={category}
@@ -161,26 +169,49 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
 
             {/* No results message */}
             {searchQuery && Object.keys(groupedMenuItems).length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-lg font-medium text-foreground">
-                  No items found
-                </p>
-                <p className="text-muted-foreground mt-1">
-                  Try searching for &quot;{searchQuery}&quot; with a different
-                  term
-                </p>
-              </div>
+              <Empty className="border border-dashed max-w-3xl">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <CircleAlert />
+                  </EmptyMedia>
+                  <EmptyTitle> No items found</EmptyTitle>
+                  <EmptyDescription>
+                    Try searching for &quot;{searchQuery}&quot; with a different
+                    term.
+                  </EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>
+                  <Button size="sm" onClick={() => setSearchQuery("")}>
+                    Clear Search
+                  </Button>
+                </EmptyContent>
+              </Empty>
             )}
 
             {!searchQuery && Object.keys(groupedMenuItems).length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-lg font-medium text-foreground">
-                  No menu items available
-                </p>
-                <p className="text-muted-foreground mt-1">
-                  Check back soon for our delicious offerings
-                </p>
-              </div>
+              <Empty className="border border-dashed max-w-3xl mx-auto">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <CircleAlert />
+                  </EmptyMedia>
+                  <EmptyTitle> No menu items found</EmptyTitle>
+                  <EmptyDescription>
+                    Please check your internet or come later when we've added
+                    menu items
+                  </EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent className="flex flex-row justify-center">
+                  <Button size="sm" variant={"outline"} asChild>
+                    <Link href={"/"}>Go back home</Link>
+                  </Button>
+                  <Button size="sm" asChild>
+                    <Link href={"/offers"}>
+                      <Gift />
+                      Checkout Our Offers
+                    </Link>
+                  </Button>
+                </EmptyContent>
+              </Empty>
             )}
           </div>
         </div>

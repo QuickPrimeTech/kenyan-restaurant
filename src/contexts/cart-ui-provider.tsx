@@ -6,7 +6,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 type CartUIContextType = {
   isCartPopoverOpen: boolean;
   openCartPopover: (open: boolean) => void;
-  isCheckoutOpen: boolean;
+  isCartCheckoutOpen: boolean;
   openCartCheckout: (open: boolean) => void;
   currentCheckoutStep: number;
   setCurrentCheckoutStep: (step: number) => void;
@@ -18,8 +18,8 @@ export function CartUIProvider({ children }: { children: ReactNode }) {
   /*-------------Cart UI States ------------- */
   const [isCartPopoverOpen, openCartPopover] =
     useState<CartUIContextType["isCartPopoverOpen"]>(false);
-  const [isCheckoutOpen, openCartCheckout] =
-    useState<CartUIContextType["isCheckoutOpen"]>(false);
+  const [isCartCheckoutOpen, openCartCheckout] =
+    useState<CartUIContextType["isCartCheckoutOpen"]>(false);
   const [currentCheckoutStep, setCurrentCheckoutStep] =
     useState<CartUIContextType["currentCheckoutStep"]>(1);
 
@@ -28,7 +28,7 @@ export function CartUIProvider({ children }: { children: ReactNode }) {
       value={{
         isCartPopoverOpen,
         openCartPopover,
-        isCheckoutOpen,
+        isCartCheckoutOpen,
         openCartCheckout,
         currentCheckoutStep,
         setCurrentCheckoutStep,

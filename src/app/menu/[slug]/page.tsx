@@ -85,7 +85,7 @@ export default async function MenuItemPage({
     // Fallback to popular items if no related items
     if (!relatedMenuItems || relatedMenuItems.length === 0) {
       const { data: popularItems } = await api.get<ApiResponse<MenuItem[]>>(
-        `/menu-items?is_available=true&popular=true&limit=6`
+        `/menu-items?is_available=true&popular=true&limit=6&exclude=${data.id}`
       );
       relatedMenuItems = popularItems;
       isFallback = true;

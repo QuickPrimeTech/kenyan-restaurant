@@ -97,7 +97,7 @@ export function ItemDetail({
           <AlertDialogTrigger asChild>
             <Button variant="destructive">
               <Trash2 />
-              Remove from cart
+              Remove <span className="hidden sm:inline">from cart</span>
             </Button>
           </AlertDialogTrigger>
 
@@ -139,7 +139,7 @@ export function ItemDetail({
       <div className="px-4 py-3 border-t">
         <div className="flex items-center gap-3">
           <QuantitySelector />
-          <AddToCartButton size={defaultValues ? "sm" : "lg"} />
+          <AddToCartButton />
         </div>
       </div>
     );

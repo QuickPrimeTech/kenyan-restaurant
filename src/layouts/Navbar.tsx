@@ -37,6 +37,7 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useTheme } from "next-themes";
 import { site } from "@/config/site-config";
 import { ModeToggle } from "@/components/mode-toggle";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Constants for reusable values
 const SPRING_TRANSITION = {
@@ -324,7 +325,7 @@ export function Navbar() {
                     </SheetHeader>
 
                     {/* Scrollable Content */}
-                    <div className="flex-1 overflow-y-auto">
+                    <ScrollArea className="h-0 flex-1">
                       <div className="px-6 py-4">
                         {/* Primary Links */}
                         <div className="space-y-1 mb-6">
@@ -378,11 +379,12 @@ export function Navbar() {
                           </div>
                         </div>
                       </div>
-                    </div>
+                      <ScrollBar orientation="vertical" />
+                    </ScrollArea>
 
                     {/* Bottom Actions */}
-                    <div className="border-t p-4 bg-background/95 backdrop-blur">
-                      <div className="grid grid-cols-2 gap-3">
+                    <div className="@container border-t p-4">
+                      <div className="grid @max-[248px]:grid-cols-1 max-sm:grid-cols-2 gap-3">
                         <Button variant="outline" asChild size="sm">
                           <Link href="/reservations">
                             <User />
@@ -390,7 +392,7 @@ export function Navbar() {
                           </Link>
                         </Button>
                         <Button asChild size="sm">
-                          <Link href="/MenuSection">
+                          <Link href="/menu">
                             <ShoppingBag />
                             Order Now
                           </Link>

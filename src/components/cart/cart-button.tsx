@@ -14,7 +14,7 @@ export function CartButton({
     <Button
       size="lg"
       className={cn(
-        "rounded-full shadow-lg fixed bottom-6 left-6 hover:shadow-xl transition-all duration-200 size-14.5 group"
+        "rounded-full shadow-lg fixed bottom-6 left-6 hover:shadow-xl transition-all duration-200 size-14.5 group z-50"
       )}
       {...props}
     >

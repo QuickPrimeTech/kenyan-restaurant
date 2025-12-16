@@ -53,7 +53,11 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
                     key={item.cartItemId}
                     className="basis-1/2 lg:basis-1/3"
                   >
-                    <EditCartCard cartItem={item} menuItem={menuItem} />
+                    <EditCartCard
+                      orientation={"vertical"}
+                      cartItem={item}
+                      menuItem={menuItem}
+                    />
                   </CarouselItem>
                 ))}
               </CarouselContent>

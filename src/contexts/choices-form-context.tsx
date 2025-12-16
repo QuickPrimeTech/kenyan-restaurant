@@ -4,12 +4,14 @@ import { createContext, useContext, ReactNode } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { MenuChoice } from "@/types/menu";
 import { CartOptions } from "@/types/cart";
+import { ZodObject } from "zod";
 
 type ChoicesFormContextValue = {
   form: UseFormReturn<any>;
   choices: MenuChoice[];
   basePrice: number;
   totalPrice: number;
+  choicesSchema: ZodObject;
   defaultValues?: Partial<CartOptions>;
 };
 

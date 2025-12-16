@@ -6,17 +6,17 @@ import { Edit2 } from "lucide-react";
 import { useState } from "react";
 import { ItemDetail } from "./item-detail";
 import { MenuItem } from "@/types/menu";
-import { cva } from "class-variance-authority";
+import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { ImageWithFallback } from "@/components/ui/image";
 
 const editCardVariants = cva(
-  "cursor-pointer rounded-sm border bg-background/80 backdrop-blur-sm shadow-sm",
+  "flex cursor-pointer rounded-sm border bg-background/80 backdrop-blur-sm",
   {
     variants: {
       orientation: {
-        vertical: "p-4 space-y-2",
-        horizontal: "flex items-center px-2 py-1.5 mt-2 gap-3",
+        vertical: "flex-col shadow-sm p-4 space-y-2",
+        horizontal: "bg-card items-center mt-2 pr-1.5 gap-3 overflow-hidden",
       },
       size: {
         default: "",
@@ -33,16 +33,14 @@ const editCardVariants = cva(
 type EditCartCardProps = {
   cartItem: CartItem;
   menuItem?: MenuItem;
-  orientation?: "vertical" | "horizontal";
-  size?: "default" | "lg";
 };
 
 export function EditCartCard({
-  orientation = "vertical",
-  size = "default",
+  orientation,
+  size,
   cartItem,
   menuItem,
-}: EditCartCardProps) {
+}: EditCartCardProps & VariantProps<typeof editCardVariants>) {
   const [open, onOpenChange] = useState(false);
 
   const handleClick = () => onOpenChange(true);
@@ -77,7 +75,7 @@ export function EditCartCard({
           </>
         ) : (
           <>
-            <div className="relative w-10 h-10 bg-muted rounded-xs flex-shrink-0 overflow-hidden">
+            <div className="relative size-10 bg-muted rounded-xs flex-shrink-0 overflow-hidden">
               <ImageWithFallback
                 iconProps={{ className: "size-5" }}
                 textProps={{ className: "hidden" }}
@@ -88,7 +86,7 @@ export function EditCartCard({
                 className="object-cover"
               />
             </div>
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 py-1.5">
               <p className="text-sm font-medium truncate">{cartItem.name}</p>
               <p className="text-xs text-muted-foreground">
                 {cartItem.quantity}x {priceDisplay}

@@ -1,5 +1,5 @@
 "use client";
-import { MinusIcon, PlusIcon } from "lucide-react";
+import { Check, MinusIcon, PlusIcon } from "lucide-react";
 import {
   FormField,
   FormItem,
@@ -33,6 +33,7 @@ import {
   NumberFieldIncrement,
   NumberFieldInput,
 } from "@/components/ui/number-field";
+import { ZodObject } from "zod";
 
 type ChoicesFormProps = {
   choices: MenuChoice[];
@@ -67,12 +68,8 @@ export function ChoicesForm({
       specialInstructions: defaultValues?.specialInstructions ?? "",
       ...defaultValues?.choices,
     },
+    reValidateMode: "onBlur",
   });
-
-  // console.log("<===================== Rerendered ========================>");
-  // console.log("<===================== FormValues ========================>");
-  // console.log(form.watch());
-  // console.log("<===================== End ========================>");
 
   const { dirtyFields } = form.formState;
 
@@ -90,6 +87,7 @@ export function ChoicesForm({
     <ChoicesFormProvider
       value={{
         form,
+        choicesSchema,
         choices,
         basePrice,
         totalPrice,
@@ -99,7 +97,6 @@ export function ChoicesForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => {
-            console.log("submitted data =======>", data);
             onAdd?.(data as RawCartOptions, totalPrice);
             form.reset();
           })}
@@ -115,9 +112,28 @@ export function ChoicesForm({
 
 // Choice Item Component for better organization
 const ChoiceItem = ({ choice }: { choice: MenuChoice }) => {
-  const { form } = useChoicesForm();
+  const { form, choicesSchema } = useChoicesForm();
   const choiceId = choice.id;
   const isSingle = choice.maxSelectable === 1 && choice.required;
+
+  // 1. Watch the value for realtime updates
+  const fieldValue = form.watch(choiceId);
+
+  // 2. Validate SILENTLY against Zod
+  // We extract the specific schema for this field from the main object
+  const isValid = useMemo(() => {
+    if (!choicesSchema || !(choicesSchema instanceof ZodObject)) return false;
+
+    // Get the specific schema for this field (e.g., choiceId "sauce")
+    const fieldSchema = choicesSchema.shape[choiceId];
+
+    if (!fieldSchema) return true; // Safety fallback
+
+    // safeParse runs the validation but DOES NOT update form state or trigger errors
+    const result = fieldSchema.safeParse(fieldValue);
+
+    return result.success;
+  }, [choicesSchema, choiceId, fieldValue]);
 
   return (
     <FormField
@@ -134,7 +150,8 @@ const ChoiceItem = ({ choice }: { choice: MenuChoice }) => {
                   <span className="text-destructive ml-1">*</span>
                 )}
               </FormLabel>
-              <Badge variant="outline">
+              <Badge variant={!isValid ? "outline" : "success"} size={"lg"}>
+                {isValid && choice.required && <Check />}
                 {choice.required ? "Required" : "Optional"}
               </Badge>
             </div>
@@ -163,10 +180,10 @@ const SingleChoiceOptions = ({
   field: any;
 }) => {
   const choiceId = choice.id;
-  console.log(
-    `SingleChoiceOptions render - choiceId: ${choiceId}, field.value:`,
-    field.value
-  );
+  // console.log(
+  //   `SingleChoiceOptions render - choiceId: ${choiceId}, field.value:`,
+  //   field.value
+  // );
   return (
     <FormControl>
       <RadioGroup

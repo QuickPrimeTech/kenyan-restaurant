@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/contexts/cart-provider";
 import { CartUIProvider } from "@/contexts/cart-ui-provider";
 import { CartPopover } from "@/components/cart/cart-popover";
+import { CartCheckoutSheet } from "@/components/cart/cart-checkout-sheet";
 
 // Headings
 const montserrat = Montserrat({
@@ -78,6 +79,7 @@ export default function RootLayout({
               <WhatsAppCampaignPopup />
               <Toaster richColors position="top-center" />
               <CartPopover />
+              <CartCheckoutSheet />
               <Footer />
             </CartProvider>
           </CartUIProvider>

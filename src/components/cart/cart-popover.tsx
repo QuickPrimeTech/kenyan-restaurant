@@ -20,67 +20,71 @@ export function CartPopover() {
 
   const maxItems = 3;
   return (
-    <Popover open={isCartPopoverOpen} onOpenChange={openCartPopover}>
-      <PopoverTrigger asChild>
-        <CartButton />
-      </PopoverTrigger>
-      <PopoverContent className="w-80 p-0" side="top" align="start">
-        <div className="p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <ShoppingCart className="h-4 w-4" />
-            <h3 className="font-semibold">Your Cart</h3>
-            <span className="text-sm text-muted-foreground">
-              ({cartItemsCount} items)
-            </span>
-          </div>
-
-          <ScrollArea className="h-fit max-h-48">
-            {cartItems.slice(0, maxItems).map((item) => (
-              <EditCartCard
-                orientation="horizontal"
-                key={item.cartItemId}
-                cartItem={item}
-                menuItem={item.menuItem}
-              />
-            ))}
-
-            {cartItemsCount > maxItems && (
-              <div className="w-fit mx-auto py-2 bg-popover px-2">
-                <p className="text-sm text-muted-foreground">
-                  +{cartItemsCount - maxItems} more item
-                  {cartItemsCount - maxItems > 1 && "s"}
-                </p>
+    <>
+      {cartItemsCount > 0 && (
+        <Popover open={isCartPopoverOpen} onOpenChange={openCartPopover}>
+          <PopoverTrigger asChild>
+            <CartButton />
+          </PopoverTrigger>
+          <PopoverContent className="w-80 p-0" side="top" align="start">
+            <div className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <ShoppingCart className="h-4 w-4" />
+                <h3 className="font-semibold">Your Cart</h3>
+                <span className="text-sm text-muted-foreground">
+                  ({cartItemsCount} items)
+                </span>
               </div>
-            )}
 
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
+              <ScrollArea className="h-fit max-h-48">
+                {cartItems.slice(0, maxItems).map((item) => (
+                  <EditCartCard
+                    orientation="horizontal"
+                    key={item.cartItemId}
+                    cartItem={item}
+                    menuItem={item.menuItem}
+                  />
+                ))}
 
-          <Separator className="my-2.5" />
+                {cartItemsCount > maxItems && (
+                  <div className="w-fit mx-auto py-2 bg-popover px-2">
+                    <p className="text-sm text-muted-foreground">
+                      +{cartItemsCount - maxItems} more item
+                      {cartItemsCount - maxItems > 1 && "s"}
+                    </p>
+                  </div>
+                )}
 
-          <PriceBreakdown />
-          <Separator />
-          <div className="flex gap-2 mt-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 bg-transparent"
-              onClick={() => openCartPopover(false)}
-            >
-              <Eye className="h-4 w-4 mr-1" />
-              Continue Shopping
-            </Button>
-            <Button
-              size="sm"
-              className="flex-1"
-              onClick={() => openCartCheckout(true)}
-            >
-              Checkout
-              <ArrowRight />
-            </Button>
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
+                <ScrollBar orientation="vertical" />
+              </ScrollArea>
+
+              <Separator className="my-2.5" />
+
+              <PriceBreakdown />
+              <Separator />
+              <div className="flex gap-2 mt-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 bg-transparent"
+                  onClick={() => openCartPopover(false)}
+                >
+                  <Eye className="h-4 w-4 mr-1" />
+                  Continue Shopping
+                </Button>
+                <Button
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => openCartCheckout(true)}
+                >
+                  Checkout
+                  <ArrowRight />
+                </Button>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+      )}
+    </>
   );
 }

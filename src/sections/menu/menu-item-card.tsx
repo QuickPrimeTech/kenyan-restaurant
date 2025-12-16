@@ -1,5 +1,4 @@
 "use client";
-
 import { cva, type VariantProps } from "class-variance-authority";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { useCart } from "@/contexts/cart-provider";
 import { countItems } from "@/helpers/menu";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const cardVariants = cva("relative cursor-pointer overflow-hidden", {
   variants: {
@@ -46,6 +45,7 @@ export function MenuItemCard({
 }: VariantProps<typeof cardVariants> &
   React.ComponentProps<"div"> &
   MenuItemCardProps) {
+  const router = useRouter();
   const { cartItems } = useCart();
   const cartItemsCount = countItems(cartItems, menuItem);
   return (
@@ -75,33 +75,29 @@ export function MenuItemCard({
         >
           <Plus className="text-foreground" strokeWidth={3.5} />
         </Button>
-        {cartItemsCount && (
+        {cartItemsCount > 0 && (
           <Button
-            // size="icon-sm"
             variant="secondary"
             title={`${cartItemsCount} ${menuItem.name} in cart`}
-            className="group aspect-square hover:aspect-auto justify-center absolute top-2 right-2 items-center gap-1 shadow-lg overflow-hidden
+            className="border group aspect-square hover:aspect-auto justify-center absolute top-2 right-2 items-center gap-1 shadow-lg overflow-hidden
                transition-all duration-300 ease-out"
-            asChild
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`/menu/${menuItem.slug}`);
+            }}
           >
-            <Link
-              href={`/menu/${menuItem.slug}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Count */}
-              <span className="group-hover:hidden font-medium  ml-1">
-                {cartItemsCount}
-              </span>
+            <span className="group-hover:hidden font-medium  ml-1">
+              {cartItemsCount}
+            </span>
 
-              {/* Hover text */}
-              <span
-                className="whitespace-nowrap text-xs opacity-100 translate-x-3 max-w-0
+            {/* Hover text */}
+            <span
+              className="whitespace-nowrap text-xs opacity-100 translate-x-3 max-w-0
                  group-hover:opacity-100 group-hover:translate-x-0 group-hover:max-w-[160px]
                  transition-all duration-300 ease-out"
-              >
-                View {cartItemsCount} item(s) in cart
-              </span>
-            </Link>
+            >
+              View {cartItemsCount} item(s) in cart
+            </span>
           </Button>
         )}
       </div>
