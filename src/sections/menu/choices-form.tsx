@@ -68,7 +68,7 @@ export function ChoicesForm({
       specialInstructions: defaultValues?.specialInstructions ?? "",
       ...defaultValues?.choices,
     },
-    reValidateMode: "onBlur",
+    reValidateMode: "onChange",
   });
 
   const { dirtyFields } = form.formState;
@@ -143,12 +143,10 @@ const ChoiceItem = ({ choice }: { choice: MenuChoice }) => {
       render={({ field }) => (
         <FormItem className="space-y-3">
           <div className="space-y-2">
-            <div className="flex items-start justify-between">
+            <div className="flex gap-3 items-center justify-between">
               <FormLabel className="text-base font-semibold">
                 {choice.title}
-                {choice.required && (
-                  <span className="text-destructive ml-1">*</span>
-                )}
+                {choice.required && <span className="text-destructive">*</span>}
               </FormLabel>
               <Badge variant={!isValid ? "outline" : "success"} size={"lg"}>
                 {isValid && choice.required && <Check />}

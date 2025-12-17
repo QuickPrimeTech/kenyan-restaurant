@@ -45,10 +45,8 @@ export function EditCartCard({
 
   const handleClick = () => onOpenChange(true);
 
-  const priceDisplay = `Ksh ${cartItem.price.toFixed(2)}`;
-  const totalPriceDisplay = `Ksh ${(cartItem.quantity * cartItem.price).toFixed(
-    2
-  )}`;
+  const priceDisplay = `Ksh ${(cartItem.price / cartItem.quantity).toFixed(2)}`;
+  const totalPriceDisplay = `Ksh ${cartItem.price.toFixed(2)}`;
   const quantityText = `${cartItem.quantity} item${
     cartItem.quantity > 1 ? "s" : ""
   }`;
@@ -89,7 +87,7 @@ export function EditCartCard({
             <div className="flex-1 min-w-0 py-1.5">
               <p className="text-sm font-medium truncate">{cartItem.name}</p>
               <p className="text-xs text-muted-foreground">
-                {cartItem.quantity}x {priceDisplay}
+                {cartItem.quantity} x {priceDisplay}
               </p>
             </div>
             <p className="text-sm font-medium">{totalPriceDisplay}</p>
