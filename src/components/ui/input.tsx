@@ -17,12 +17,9 @@ const inputVariants = cva(
   }
 );
 
-function Input({
-  size,
-  className,
-  type,
-  ...props
-}: React.ComponentProps<"input"> & VariantProps<typeof inputVariants>) {
+type InputProps = Omit<React.ComponentProps<"input">, "size"> &
+  VariantProps<typeof inputVariants>;
+function Input({ size, className, type, ...props }: InputProps) {
   return (
     <input
       type={type}
@@ -34,3 +31,4 @@ function Input({
 }
 
 export { Input, inputVariants };
+export type { InputProps };
