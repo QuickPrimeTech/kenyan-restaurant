@@ -4,6 +4,7 @@ import { ApiResponse } from "@/types/api";
 import { MenuItem } from "@/types/menu";
 import { truncate } from "@/utils/text-formatters";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export async function generateMetadata({
   searchParams,
@@ -62,5 +63,9 @@ export default async function MenuPage() {
     "/menu-items?is_available=true"
   );
 
-  return <MenuContent menuItems={menuItems} />;
+  return (
+    <Suspense fallback={<p>Loading ...</p>}>
+      <MenuContent menuItems={menuItems} />;
+    </Suspense>
+  );
 }
