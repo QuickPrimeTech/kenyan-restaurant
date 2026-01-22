@@ -6,14 +6,6 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
 import { countItems, getCartItemsById, useHandleCart } from "@/helpers/menu";
 import { useCart } from "@/contexts/cart-provider";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { EditCartCard } from "../edit-cart-card";
 import { ImageWithFallback } from "@/components/ui/image";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
@@ -36,7 +28,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
             className="object-cover"
             priority
           />
-          {cartItemsCount > 1 && (
+          {cartItemsCount > 0 && (
             <Badge
               variant={"secondary"}
               size={"lg"}
@@ -45,32 +37,8 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
               {cartItemsCount} in cart
             </Badge>
           )}
-          {cartItemsCount > 0 && (
-            <Carousel className="px-4 absolute bottom-3 w-full">
-              <CarouselContent>
-                {menuCartItems.map((item) => (
-                  <CarouselItem
-                    key={item.cartItemId}
-                    className="basis-1/2 lg:basis-1/3"
-                  >
-                    <EditCartCard
-                      orientation={"vertical"}
-                      cartItem={item}
-                      menuItem={menuItem}
-                    />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              {menuCartItems.length > 3 && (
-                <>
-                  <CarouselNext />
-                  <CarouselPrevious />
-                </>
-              )}
-            </Carousel>
-          )}
         </div>
-        <div className="relative rounded-2xl py-8 section-x bg-background -mt-4 z-20 md:mt-0">
+        <div className="relative rounded-2xl py-8 md:pt-4 md:py-0 section-x bg-background -mt-4 z-20 md:mt-0">
           <div className="mb-6">
             <h1 className="text-2xl lg:text-3xl font-bold mb-1">
               {menuItem.name}
