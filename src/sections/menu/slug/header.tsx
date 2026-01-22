@@ -11,7 +11,7 @@ export function Header({ menuItem }: { menuItem: MenuItem }) {
         asChild
         variant="link"
         size={"sm"}
-        className="bg-background text-foreground md:text-primary"
+        className="text-foreground bg-background/50 md:text-primary"
       >
         <Link href={"/menu"}>
           <ArrowLeft />

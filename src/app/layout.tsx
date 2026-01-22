@@ -12,6 +12,7 @@ import { CartProvider } from "@/contexts/cart-provider";
 import { CartUIProvider } from "@/contexts/cart-ui-provider";
 import { CartPopover } from "@/components/cart/cart-popover";
 import { CartCheckoutSheet } from "@/components/cart/cart-checkout-sheet";
+import { OrderProvider } from "@/contexts/order-context";
 
 // Headings
 const montserrat = Montserrat({
@@ -72,16 +73,18 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <CartUIProvider>
-            <CartProvider>
-              <Navbar />
-              {children}
-              <ContactButton />
-              <WhatsAppCampaignPopup />
-              <Toaster richColors position="top-center" />
-              <CartPopover />
-              <CartCheckoutSheet />
-              <Footer />
-            </CartProvider>
+            <OrderProvider>
+              <CartProvider>
+                <Navbar />
+                {children}
+                <ContactButton />
+                <WhatsAppCampaignPopup />
+                <Toaster richColors position="top-center" />
+                <CartPopover />
+                <CartCheckoutSheet />
+                <Footer />
+              </CartProvider>
+            </OrderProvider>
           </CartUIProvider>
         </ThemeProvider>
       </body>
