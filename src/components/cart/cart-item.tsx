@@ -16,22 +16,26 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useCart } from "@/contexts/cart-provider";
 import { CartItem as CartItemType } from "@/types/cart";
+import { ItemDetail } from "@/sections/menu/item-detail-dialog";
 
 type CartItemProps = { cartItem: CartItemType };
 
 export function CartItem({ cartItem }: CartItemProps) {
-  const { updateCartItem, removeFromCart } = useCart();
-  const [confirm, setConfirm] = useState(false);
-
-  const changeQty = (qty: number) => (qty <= 0 ? setConfirm(true) : 0);
+  const { removeFromCart, updateCartItem } = useCart();
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [open, setOpen] = useState(false);
+  const changeQty = (qty: number) => (qty <= 0 ? setConfirmDelete(true) : 0);
   const deleteItem = () => {
     removeFromCart(String(cartItem.cartItemId));
-    setConfirm(false);
+    setConfirmDelete(false);
   };
 
   return (
     <>
-      <div className="w-full flex flex-col gap-5 p-4 border rounded-lg bg-card border-border">
+      <div
+        className="w-full flex flex-col gap-3 p-4 rounded-lg bg-card hover:cursor-pointer"
+        onClick={() => setOpen(true)}
+      >
         <div className="flex items-center gap-4">
           {cartItem.image_url && (
             <div className="relative w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
@@ -51,7 +55,7 @@ export function CartItem({ cartItem }: CartItemProps) {
               <p className="text-sm text-muted-foreground">
                 {cartItem.quantity} * Ksh {cartItem.price / cartItem.quantity}
               </p>
-              <p className="font-bold text-primary">Ksh {cartItem.price}</p>
+              <p className="font-bold text-primary">: Ksh {cartItem.price}</p>
             </div>
           </div>
         </div>
@@ -79,18 +83,21 @@ export function CartItem({ cartItem }: CartItemProps) {
           <Button
             variant="destructive"
             size="sm"
-            onClick={() => setConfirm(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setConfirmDelete(true);
+            }}
           >
             <Trash2 />
           </Button>
         </div>
       </div>
 
-      <AlertDialog open={confirm} onOpenChange={setConfirm}>
+      <AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>
         <AlertDialogContent className="bg-card border border-border">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2 text-destructive">
-              <Trash2 className="h-5 w-5" /> Remove Item?
+              <Trash2 className="h-5 w-5" /> Remove Item from cart?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-muted-foreground">
               Are you sure you want to remove <strong>{cartItem.name}</strong>{" "}
@@ -110,6 +117,14 @@ export function CartItem({ cartItem }: CartItemProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {cartItem.menuItem && (
+        <ItemDetail
+          item={cartItem.menuItem}
+          open={open}
+          onOpenChange={setOpen}
+          defaultValues={cartItem}
+        />
+      )}
     </>
   );
 }

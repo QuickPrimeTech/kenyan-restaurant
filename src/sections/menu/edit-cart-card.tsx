@@ -2,16 +2,9 @@
 import { CartItem } from "@/types/cart";
 import { useState } from "react";
 import { ItemDetail } from "./item-detail-dialog";
-import { MenuItem } from "@/types/menu";
 import { ImageWithFallback } from "@/components/ui/image";
 
-export function EditCartCard({
-  cartItem,
-  menuItem,
-}: {
-  cartItem: CartItem;
-  menuItem?: MenuItem;
-}) {
+export function EditCartCard({ cartItem }: { cartItem: CartItem }) {
   const [open, setOpen] = useState(false);
   const handleClick = () => setOpen(true);
 
@@ -23,11 +16,11 @@ export function EditCartCard({
       <div
         key={cartItem.cartItemId}
         onClick={handleClick}
-        className="flex cursor-pointer items-center gap-3 bg-card mt-2 pr-1.5 overflow-hidden rounded-sm"
+        className="flex cursor-pointer items-center gap-3 bg-card mt-2 pr-1.5 overflow-hidden rounded-xs border "
       >
         {/* Image */}
         {cartItem.image_url && (
-          <div className="relative w-10 h-10 bg-muted rounded-xs flex-shrink-0 overflow-hidden">
+          <div className="relative h-12 aspect-square bg-muted flex-shrink-0 overflow-hidden">
             <ImageWithFallback
               iconProps={{ className: "w-5 h-5" }}
               textProps={{ className: "hidden" }}
@@ -52,9 +45,9 @@ export function EditCartCard({
         <p className="text-sm font-medium">{totalPriceDisplay}</p>
       </div>
 
-      {menuItem && (
+      {cartItem.menuItem && (
         <ItemDetail
-          item={menuItem}
+          item={cartItem.menuItem}
           open={open}
           onOpenChange={setOpen}
           defaultValues={cartItem}

@@ -105,7 +105,7 @@ export function CartCheckoutSheet() {
   return (
     <>
       <Sheet open={isCartCheckoutOpen} onOpenChange={openCartCheckout}>
-        <SheetContent className="w-full sm:max-w-lg p-0 gap-0 flex flex-col h-screen max-h-screen bg-background text-foreground">
+        <SheetContent className="w-full sm:max-w-lg p-0 gap-0 flex flex-col h-screen max-h-screen bg-muted text-foreground">
           {/* Header */}
           <SheetHeader className="flex-shrink-0 p-6 border-b border-border bg-card shadow-luxury">
             <SheetTitle className="flex items-center gap-2">

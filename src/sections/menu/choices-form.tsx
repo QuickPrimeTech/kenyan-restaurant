@@ -58,7 +58,7 @@ export function ChoicesForm({
 }: ChoicesFormProps) {
   const choicesSchema = useMemo(
     () => createItemSchema(choices, defaultQuantity),
-    [choices]
+    [choices],
   );
 
   const form = useForm({
@@ -178,10 +178,6 @@ const SingleChoiceOptions = ({
   field: any;
 }) => {
   const choiceId = choice.id;
-  // console.log(
-  //   `SingleChoiceOptions render - choiceId: ${choiceId}, field.value:`,
-  //   field.value
-  // );
   return (
     <FormControl>
       <RadioGroup
@@ -237,7 +233,7 @@ const MultipleChoiceOptions = ({
                 "flex items-center pl-4 rounded-lg border transition-colors",
                 isDisabled && "opacity-80 cursor-not-allowed",
                 !isDisabled && "cursor-pointer hover:bg-accent/50",
-                isSelected && "bg-accent/30"
+                isSelected && "bg-accent/30",
               )}
               title={
                 isDisabled
@@ -291,7 +287,7 @@ const OptionLabel = ({
     htmlFor={htmlFor}
     className={cn(
       "flex-1 flex justify-between p-4",
-      disabled ? "cursor-not-allowed" : "cursor-pointer"
+      disabled ? "cursor-not-allowed" : "cursor-pointer",
     )}
   >
     <span className="text-sm font-medium">{label}</span>

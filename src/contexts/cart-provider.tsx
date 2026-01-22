@@ -13,12 +13,13 @@ import {
 type CartContextType = {
   addToCart: (cartItem: CartItem) => void;
   updateCartItem: (cartItem: CartItem) => void;
+  updateQuantity: (cartItemId: string, quantity: number) => void;
   removeFromCart: (cartItemId: string) => void;
   clearCart: () => void;
 };
 
 const CartContext = createContext<(CartState & CartContextType) | undefined>(
-  undefined
+  undefined,
 );
 
 type CartProviderProps = {
@@ -40,7 +41,7 @@ export function CartProvider({ children }: CartProviderProps) {
         (prevCartItem) =>
           prevCartItem.id === cartItem.id &&
           prevCartItem.specialInstructions === cartItem.specialInstructions &&
-          compareChoices(prevCartItem.choices ?? {}, cartItem.choices ?? {})
+          compareChoices(prevCartItem.choices ?? {}, cartItem.choices ?? {}),
       );
 
       //Adding the totalPrice
@@ -52,7 +53,7 @@ export function CartProvider({ children }: CartProviderProps) {
                 quantity: prevCartItem.quantity + cartItem.quantity,
                 price: prevCartItem.price + cartItem.price,
               }
-            : prevCartItem
+            : prevCartItem,
         );
       } else {
         return [...prevCartItems, cartItem];
@@ -62,7 +63,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const removeFromCart = (cartItemId: string) => {
     setCartItems((prevItems) =>
-      prevItems.filter((item) => item.cartItemId !== cartItemId)
+      prevItems.filter((item) => item.cartItemId !== cartItemId),
     );
   };
 
@@ -71,26 +72,38 @@ export function CartProvider({ children }: CartProviderProps) {
       prevCartItems.map((prevCartItem) =>
         prevCartItem.cartItemId === cartItem.cartItemId
           ? cartItem
-          : prevCartItem
-      )
+          : prevCartItem,
+      ),
+    );
+  };
+
+  const updateQuantity = (cartItemId: string, quantity: number) => {
+    setCartItems((prevCartItems) =>
+      prevCartItems.map((prevCartItem) =>
+        prevCartItem.cartItemId === cartItemId
+          ? { ...prevCartItem, quantity, price: prevCartItem.price * quantity }
+          : prevCartItem,
+      ),
     );
   };
 
   const clearCart = () => {
     setCartItems([]);
   };
-
   /*-----------------Side Effects-------------------*/
 
   useEffect(() => {
     setCartItemsCount(
       cartItems.reduce(
         (totalItems, cartItem) => totalItems + cartItem.quantity,
-        0
-      )
+        0,
+      ),
     );
     setTotal(() =>
-      cartItems.reduce((totalPrice, cartItem) => totalPrice + cartItem.price, 0)
+      cartItems.reduce(
+        (totalPrice, cartItem) => totalPrice + cartItem.price,
+        0,
+      ),
     );
   }, [cartItems]);
 
@@ -102,6 +115,7 @@ export function CartProvider({ children }: CartProviderProps) {
         cartItemsCount,
         addToCart,
         updateCartItem,
+        updateQuantity,
         removeFromCart,
         clearCart,
       }}
