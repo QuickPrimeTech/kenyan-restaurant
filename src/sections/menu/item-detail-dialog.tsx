@@ -75,7 +75,7 @@ export function ItemDetail({
         "Reached the default values while adding ===>",
         values,
         totalPrice,
-        defaultValues
+        defaultValues,
       );
       onEdit(values, totalPrice, defaultValues);
     } else {
@@ -83,7 +83,7 @@ export function ItemDetail({
         "Reached the adding and not editing values while adding ===>",
         values,
         totalPrice,
-        defaultValues
+        defaultValues,
       );
       onAdd(values, totalPrice, item);
     }
@@ -115,6 +115,7 @@ export function ItemDetail({
 
             <AlertDialogFooter>
               <AlertDialogCancel>Keep item</AlertDialogCancel>
+
               <AlertDialogAction
                 variant={"destructive"}
                 onClick={() => removeFromCart(defaultValues.cartItemId)}
@@ -127,9 +128,11 @@ export function ItemDetail({
         </AlertDialog>
       )}
       <ShareMenuButton item={item} />
-      <Button variant={"secondary"} asChild>
-        <Link href={`/menu/${item.slug}`}>See Details</Link>
-      </Button>
+      {!defaultValues && (
+        <Button variant={"secondary"} asChild>
+          <Link href={`/menu/${item.slug}`}>See Details</Link>
+        </Button>
+      )}
     </div>
   );
 

@@ -4,7 +4,7 @@ import { AddToCartButton } from "@/sections/menu/add-cart-button";
 import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
-import { countItems, getCartItemsById, useHandleCart } from "@/helpers/menu";
+import { countItems, useHandleCart } from "@/helpers/menu";
 import { useCart } from "@/contexts/cart-provider";
 import { ImageWithFallback } from "@/components/ui/image";
 
@@ -13,7 +13,6 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const { cartItems } = useCart();
   const { onAdd } = useHandleCart();
   const cartItemsCount = countItems(cartItems, menuItem);
-  const menuCartItems = getCartItemsById(cartItems, menuItem.id);
   return (
     <section className="md:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">

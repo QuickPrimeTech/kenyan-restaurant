@@ -4,7 +4,7 @@ import { formatChoicesSummary } from "@/helpers/menu";
 import { CartItem } from "@/types/cart";
 import { Edit2 } from "lucide-react";
 import { useState } from "react";
-import { ItemDetail } from "./item-detail";
+import { ItemDetail } from "./item-detail-dialog";
 import { MenuItem } from "@/types/menu";
 import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
@@ -27,7 +27,7 @@ const editCardVariants = cva(
       orientation: "vertical",
       size: "default",
     },
-  }
+  },
 );
 
 type EditCartCardProps = {

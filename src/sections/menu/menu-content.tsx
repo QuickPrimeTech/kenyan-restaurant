@@ -7,7 +7,7 @@ import {
   PopularItemsHeader,
   PopularItemsScrollButtons,
 } from "@/sections/menu/popular-items";
-import { ItemDetail } from "@/sections/menu/item-detail";
+import { ItemDetail } from "@/sections/menu/item-detail-dialog";
 import { MenuItem } from "@/types/menu";
 import { MenuSection } from "./menu-section";
 import { useSearchParams } from "next/navigation";
@@ -81,7 +81,7 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
       (item) =>
         item.name.toLowerCase().includes(query) ||
         item.description.toLowerCase().includes(query) ||
-        item.category.toLowerCase().includes(query)
+        item.category.toLowerCase().includes(query),
     );
   }, [searchQuery, menuItems]);
 
