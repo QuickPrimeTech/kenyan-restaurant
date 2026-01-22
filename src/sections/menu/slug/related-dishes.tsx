@@ -16,9 +16,9 @@ type RelatedDishesProps = {
 };
 export function RelatedDishes({ menuItems, isFallback }: RelatedDishesProps) {
   return (
-    <>
+    <div className="section-x mt-12">
       {menuItems.length > 0 && (
-        <PopularItems className="mt-12">
+        <PopularItems>
           <PopularItemsHeader className="flex-col items-start md:flex-row md:items-center">
             <h2 className="text-xl font-bold text-foreground">{`Other ${
               isFallback ? "Popular" : menuItems[0].category
@@ -47,6 +47,6 @@ export function RelatedDishes({ menuItems, isFallback }: RelatedDishesProps) {
           </PopularItemsContent>
         </PopularItems>
       )}
-    </>
+    </div>
   );
 }

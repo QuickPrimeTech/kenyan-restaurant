@@ -18,7 +18,7 @@ export async function generateMetadata({
   try {
     // Fetch the offer by slug
     const { data: menuItem } = await api.get<ApiResponse<MenuItem>>(
-      `/menu-items/slug/${slug}`
+      `/menu-items/slug/${slug}`,
     );
     return {
       title: `${menuItem.name}`,
@@ -55,7 +55,7 @@ export async function generateMetadata({
 
 export async function generateStaticParams() {
   const { data: menuItems } = await api.get<ApiResponse<MenuItem[]>>(
-    "/menu-items?is_available=true"
+    "/menu-items?is_available=true",
   );
 
   return menuItems.map((offer) => ({
@@ -74,18 +74,18 @@ export default async function MenuItemPage({
   let isFallback = false;
   try {
     const { data } = await api.get<ApiResponse<MenuItem>>(
-      `/menu-items/slug/${slug}`
+      `/menu-items/slug/${slug}`,
     );
     const { data: relatedItems } = await api.get<ApiResponse<MenuItem[]>>(
       `/menu-items?category=${encodeURIComponent(data.category)}&exclude=${
         data.id
-      }`
+      }`,
     );
     relatedMenuItems = relatedItems;
     // Fallback to popular items if no related items
     if (!relatedMenuItems || relatedMenuItems.length === 0) {
       const { data: popularItems } = await api.get<ApiResponse<MenuItem[]>>(
-        `/menu-items?is_available=true&popular=true&limit=6&exclude=${data.id}`
+        `/menu-items?is_available=true&popular=true&limit=6&exclude=${data.id}`,
       );
       relatedMenuItems = popularItems;
       isFallback = true;
@@ -97,9 +97,11 @@ export default async function MenuItemPage({
   }
 
   return (
-    <div className="mx-auto section mt-8">
-      <Header menuItem={menuItem} />
-      <MenuDetail menuItem={menuItem} />
+    <div className="mx-auto py-8 md:py-16 mt-8">
+      <div className="relative">
+        <Header menuItem={menuItem} />
+        <MenuDetail menuItem={menuItem} />
+      </div>
       <RelatedDishes menuItems={relatedMenuItems} isFallback={isFallback} />
     </div>
   );

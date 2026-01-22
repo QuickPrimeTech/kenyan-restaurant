@@ -23,9 +23,9 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const cartItemsCount = countItems(cartItems, menuItem);
   const menuCartItems = getCartItemsById(cartItems, menuItem.id);
   return (
-    <section>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="relative md:sticky md:top-22 aspect-[4/3] overflow-hidden rounded-2xl bg-muted border">
+    <section className="md:px-6 lg:px-8">
+      <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
+        <div className="relative md:sticky md:top-22 aspect-[4/3] overflow-hidden md:rounded-2xl bg-muted border">
           <ImageWithFallback
             src={menuItem.image_url}
             placeholder={menuItem.lqip ? "blur" : "empty"}
@@ -70,7 +70,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
             </Carousel>
           )}
         </div>
-        <div>
+        <div className="relative rounded-2xl py-8 section-x bg-background -mt-4 z-20 md:mt-0">
           <div className="mb-6">
             <h1 className="text-2xl lg:text-3xl font-bold mb-1">
               {menuItem.name}
