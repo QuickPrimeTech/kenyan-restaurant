@@ -39,7 +39,6 @@ export function CartPopover() {
               <ScrollArea className="h-fit max-h-48">
                 {cartItems.slice(0, maxItems).map((item) => (
                   <EditCartCard
-                    orientation="horizontal"
                     key={item.cartItemId}
                     cartItem={item}
                     menuItem={item.menuItem}

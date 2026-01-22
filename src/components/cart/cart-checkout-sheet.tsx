@@ -159,7 +159,7 @@ export function CartCheckoutSheet() {
                     <ScrollArea className="flex-1 h-1/4 px-6 py-4">
                       <div className="space-y-4">
                         {cartItems.map((item) => (
-                          <CartItem key={item.id} cartItem={item} />
+                          <CartItem key={item.cartItemId} cartItem={item} />
                         ))}
                       </div>
                     </ScrollArea>
