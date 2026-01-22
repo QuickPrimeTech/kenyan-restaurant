@@ -13,14 +13,14 @@ type NumberFieldContext = {
 };
 
 const NumberFieldContext = React.createContext<NumberFieldContext | undefined>(
-  undefined
+  undefined,
 );
 
 const useNumberFieldContext = (): NumberFieldContext => {
   const context = React.useContext(NumberFieldContext);
   if (!context) {
     throw new Error(
-      "useNumberFieldContext should be used inside NumberFieldComponent"
+      "useNumberFieldContext should be used inside NumberFieldComponent",
     );
   }
   return context;
@@ -80,7 +80,7 @@ function NumberFieldLabel({
       htmlFor={id}
       className={cn(
         "cursor-ew-resize text-sm font-medium text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     />
@@ -110,8 +110,8 @@ function NumberFieldInput({
       data-slot="numberfield-input"
       className={cn(
         inputVariants({ size }),
-        "text-center max-w-10 font-semibold h-auto rounded-xs",
-        className
+        "text-center max-w-10 font-semibold h-auto rounded-none",
+        className,
       )}
       {...props}
     />
@@ -131,7 +131,7 @@ function NumberFieldIncrement({
       className={cn(
         buttonVariants({ variant, size }),
         "rounded-r-sm rounded-l-none",
-        className
+        className,
       )}
       {...props}
     />
@@ -150,7 +150,7 @@ function NumberFieldDecrement({
       className={cn(
         buttonVariants({ variant, size }),
         "rounded-l-sm rounded-r-none",
-        className
+        className,
       )}
       data-slot="numberfield-decrement"
       {...props}

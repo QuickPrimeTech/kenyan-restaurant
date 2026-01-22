@@ -69,22 +69,9 @@ export function ItemDetail({
   if (!item) return null;
 
   const handleAdd = (values: RawCartOptions, totalPrice: number) => {
-    console.log("handling add");
     if (defaultValues) {
-      console.log(
-        "Reached the default values while adding ===>",
-        values,
-        totalPrice,
-        defaultValues,
-      );
       onEdit(values, totalPrice, defaultValues);
     } else {
-      console.log(
-        "Reached the adding and not editing values while adding ===>",
-        values,
-        totalPrice,
-        defaultValues,
-      );
       onAdd(values, totalPrice, item);
     }
     onOpenChange(false);
@@ -113,11 +100,14 @@ export function ItemDetail({
               </AlertDialogDescription>
             </AlertDialogHeader>
 
-            <AlertDialogFooter>
-              <AlertDialogCancel>Keep item</AlertDialogCancel>
+            <AlertDialogFooter className="flex-row">
+              <AlertDialogCancel className="flex-1">
+                Keep item
+              </AlertDialogCancel>
 
               <AlertDialogAction
                 variant={"destructive"}
+                className="flex-1"
                 onClick={() => removeFromCart(defaultValues.cartItemId)}
               >
                 <Trash2 />

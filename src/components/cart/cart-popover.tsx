@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ShoppingCart, Eye, ArrowRight } from "lucide-react";
+import { ShoppingCart, ArrowRight, ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/cart-provider";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { PriceBreakdown } from "./price-breakdown";
@@ -26,8 +26,11 @@ export function CartPopover() {
           <PopoverTrigger asChild>
             <CartButton />
           </PopoverTrigger>
-          <PopoverContent className="w-80 p-0" side="top" align="start">
-            <div className="p-4">
+          <PopoverContent
+            className="flex flex-col h-80 w-80 p-4"
+            side="top"
+            align="start"
+          >
               <div className="flex items-center gap-2 mb-3">
                 <ShoppingCart className="h-4 w-4" />
                 <h3 className="font-semibold">Your Cart</h3>
@@ -36,24 +39,23 @@ export function CartPopover() {
                 </span>
               </div>
 
-              <ScrollArea className="h-fit max-h-48">
+              <ScrollArea className="min-h-13 flex-1 mb-3">
                 {cartItems.slice(0, maxItems).map((item) => (
                   <EditCartCard key={item.cartItemId} cartItem={item} />
                 ))}
 
-                {cartItemsCount > maxItems && (
-                  <div className="w-fit mx-auto py-2 bg-popover px-2">
-                    <p className="text-sm text-muted-foreground">
-                      +{cartItemsCount - maxItems} more item
-                      {cartItemsCount - maxItems > 1 && "s"}
-                    </p>
-                  </div>
-                )}
-
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
 
-              <Separator className="my-2.5" />
+              {cartItems.length > maxItems && (
+                <div className="relative w-fit mx-auto bg-popover z-10 px-2 my-2">
+                  <p className="text-sm text-muted-foreground">
+                    +{cartItems.length - maxItems} more item
+                    {cartItems.length - maxItems > 1 && "s"}
+                  </p>
+                </div>
+              )}
+              <Separator className="-mt-4.5 mb-4" />
 
               <PriceBreakdown />
               <Separator />
@@ -64,7 +66,7 @@ export function CartPopover() {
                   className="flex-1 bg-transparent"
                   onClick={() => openCartPopover(false)}
                 >
-                  <Eye className="h-4 w-4 mr-1" />
+                  <ShoppingBag className="mr-1" />
                   Continue Shopping
                 </Button>
                 <Button
@@ -76,7 +78,6 @@ export function CartPopover() {
                   <ArrowRight />
                 </Button>
               </div>
-            </div>
           </PopoverContent>
         </Popover>
       )}

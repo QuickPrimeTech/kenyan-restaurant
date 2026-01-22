@@ -81,7 +81,11 @@ export function CartProvider({ children }: CartProviderProps) {
     setCartItems((prevCartItems) =>
       prevCartItems.map((prevCartItem) =>
         prevCartItem.cartItemId === cartItemId
-          ? { ...prevCartItem, quantity, price: prevCartItem.price * quantity }
+          ? {
+              ...prevCartItem,
+              quantity,
+              price: (prevCartItem.price / prevCartItem.quantity) * quantity,
+            }
           : prevCartItem,
       ),
     );

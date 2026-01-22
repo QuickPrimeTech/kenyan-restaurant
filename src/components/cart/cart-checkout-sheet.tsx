@@ -156,7 +156,7 @@ export function CartCheckoutSheet() {
                 {/* Cart Step */}
                 {currentStep === "cart" && (
                   <>
-                    <ScrollArea className="flex-1 h-1/4 px-6 py-4">
+                    <ScrollArea className="flex-1 px-4 py-4">
                       <div className="space-y-4">
                         {cartItems.map((item) => (
                           <CartItem key={item.cartItemId} cartItem={item} />
@@ -182,7 +182,7 @@ export function CartCheckoutSheet() {
 
                       <PriceBreakdown className="text-lg" />
 
-                      <div className="flex gap-2 max-sm:pb-16 mt-2">
+                      <div className="flex gap-2 mt-2">
                         <Button
                           variant="outline"
                           className="flex-1"

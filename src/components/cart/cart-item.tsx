@@ -21,10 +21,13 @@ import { ItemDetail } from "@/sections/menu/item-detail-dialog";
 type CartItemProps = { cartItem: CartItemType };
 
 export function CartItem({ cartItem }: CartItemProps) {
-  const { removeFromCart, updateCartItem } = useCart();
+  const { removeFromCart, updateQuantity } = useCart();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [open, setOpen] = useState(false);
-  const changeQty = (qty: number) => (qty <= 0 ? setConfirmDelete(true) : 0);
+  const changeQty = (qty: number) =>
+    qty <= 0
+      ? setConfirmDelete(true)
+      : updateQuantity(cartItem.cartItemId, qty);
   const deleteItem = () => {
     removeFromCart(String(cartItem.cartItemId));
     setConfirmDelete(false);
@@ -38,7 +41,7 @@ export function CartItem({ cartItem }: CartItemProps) {
       >
         <div className="flex items-center gap-4">
           {cartItem.image_url && (
-            <div className="relative w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
+            <div className="relative size-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
               <Image
                 src={cartItem.image_url}
                 alt={cartItem.name}
@@ -65,7 +68,10 @@ export function CartItem({ cartItem }: CartItemProps) {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => changeQty(cartItem.quantity - 1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                changeQty(cartItem.quantity - 1);
+              }}
             >
               <Minus />
             </Button>
@@ -75,7 +81,10 @@ export function CartItem({ cartItem }: CartItemProps) {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => changeQty(cartItem.quantity + 1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                changeQty(cartItem.quantity + 1);
+              }}
             >
               <Plus />
             </Button>
