@@ -24,7 +24,7 @@ const OrderContext = createContext<OrderContextType | undefined>(undefined);
 export function OrderProvider({ children }: { children: React.ReactNode }) {
   const [pickupInfo, setPickupInfo] = useState<PickupInfo>({});
   const [openDialog, setOpenDialog] = useState(false);
-
+  console.log(pickupInfo);
   return (
     <OrderContext.Provider
       value={{

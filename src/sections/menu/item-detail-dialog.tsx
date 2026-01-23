@@ -33,6 +33,8 @@ import {
 
 import { CloseAlert } from "./common/close-alert";
 import { useCart } from "@/contexts/cart-provider";
+import { useOrder } from "@/contexts/order-context";
+import {OrderWarning} from "./order-warning"
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -52,6 +54,7 @@ export function ItemDetail({
   const [alertDialogOpen, onAlertDialogChange] = useState<boolean>(false);
   const { onAdd, onEdit } = useHandleCart();
   const { removeFromCart } = useCart();
+  const { setOpenDialog, pickupInfo } = useOrder();
 
   const handleChange = (open: boolean) => {
     if (open) {
@@ -69,6 +72,11 @@ export function ItemDetail({
   if (!item) return null;
 
   const handleAdd = (values: RawCartOptions, totalPrice: number) => {
+    const pickupInfoComplete = pickupInfo.pickupDate && pickupInfo.pickupTime;
+    if (!pickupInfoComplete) {
+      setOpenDialog(true);
+      return;
+    }
     if (defaultValues) {
       onEdit(values, totalPrice, defaultValues);
     } else {
@@ -127,16 +135,14 @@ export function ItemDetail({
   );
 
   // Bottom Bar: Quantity + Add
-  const BottomBar = () => {
-    return (
+  const bottomBar= (
       <div className="px-4 py-3 border-t">
         <div className="flex items-center gap-3">
           <QuantitySelector />
-          <AddToCartButton />
+          <AddToCartButton menuItem={item}/>
         </div>
       </div>
     );
-  };
 
   const content = (
     <div className="px-6 py-5 space-y-6">
@@ -151,6 +157,7 @@ export function ItemDetail({
         <div className="font-semibold text-foreground">
           Ksh {item.price.toFixed(2)}
         </div>
+        <OrderWarning className={"mt-4"} menuItem={item}/>
       </div>
       <ChoicesContent />
       {footerButtons}
@@ -198,7 +205,7 @@ export function ItemDetail({
               </ScrollArea>
 
               {/* Bottom Bar */}
-              <BottomBar />
+              {bottomBar}
             </ChoicesForm>
           </DialogContent>
         </Dialog>
@@ -230,7 +237,7 @@ export function ItemDetail({
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
               {/* Bottom Bar */}
-              <BottomBar />
+              {bottomBar}
             </ChoicesForm>
           </DrawerContent>
         </Drawer>

@@ -33,3 +33,21 @@ export const formatDate = (dateStr: string) => {
     year: "numeric",
   });
 };
+
+
+export function timeToMinutes(time: string) {
+  // Handles "12:00:00" or "14:30:00"
+  if (time.includes(":") && time.length === 8) {
+    const [h, m] = time.split(":").map(Number);
+    return h * 60 + m;
+  }
+
+  // Handles "2:00 PM"
+  const [raw, modifier] = time.split(" ");
+  let [hours, minutes] = raw.split(":").map(Number);
+
+  if (modifier === "PM" && hours !== 12) hours += 12;
+  if (modifier === "AM" && hours === 12) hours = 0;
+
+  return hours * 60 + minutes;
+}

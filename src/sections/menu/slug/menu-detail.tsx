@@ -7,15 +7,30 @@ import { Badge } from "@/components/ui/badge";
 import { countItems, useHandleCart } from "@/helpers/menu";
 import { useCart } from "@/contexts/cart-provider";
 import { ImageWithFallback } from "@/components/ui/image";
+import { useOrder } from "@/contexts/order-context";
+import { RawCartOptions } from "@/types/cart";
+import {formatTime} from "@/utils/time-formatters"
+import {OrderWarning} from "@/sections/menu/order-warning";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { cartItems } = useCart();
   const { onAdd } = useHandleCart();
   const cartItemsCount = countItems(cartItems, menuItem);
+  const { setOpenDialog, pickupInfo } = useOrder();
+
+
+  const handleAdd = (values: RawCartOptions, totalPrice: number) => {
+    const pickupInfoComplete = pickupInfo.pickupDate && pickupInfo.pickupTime;
+    if (!pickupInfoComplete) {
+      setOpenDialog(true);
+      return;
+    }
+    onAdd(values, totalPrice, menuItem);
+  };
   return (
     <section className="md:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="relative md:sticky md:top-22 aspect-[4/3] overflow-hidden md:rounded-2xl bg-muted border">
           <ImageWithFallback
             src={menuItem.image_url}
@@ -43,7 +58,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
               {menuItem.name}
             </h1>
             <p className="text-muted-foreground mb-2">{menuItem.description}</p>
-            <div className="flex justify-between gap-4">
+            <div className="flex justify-between items-center gap-4">
               <div className="font-semibold text-foreground">
                 Ksh {menuItem.price.toFixed(2)}
               </div>
@@ -51,16 +66,17 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
                 {menuItem.category}
               </Badge>
             </div>
+              <OrderWarning className={"mt-4"} menuItem={menuItem} />
           </div>
           <ChoicesForm
             basePrice={menuItem.price}
-            onAdd={(raw, totalPrice) => onAdd(raw, totalPrice, menuItem)}
+            onAdd={handleAdd}
             choices={menuItem.choices}
           >
             <ChoicesContent />
             <div className="flex gap-2 md:gap-3">
               <QuantitySelector />
-              <AddToCartButton size={isDesktop ? "lg" : "default"} />
+              <AddToCartButton size={isDesktop ? "lg" : "default"} menuItem={menuItem}/>
             </div>
           </ChoicesForm>
         </div>

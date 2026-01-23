@@ -1,10 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { MapPin, Clock, CalendarIcon, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { MapPin, Clock, ArrowRight } from "lucide-react";
 import { useOrder } from "@/contexts/order-context";
 
 import { Button } from "@/components/ui/button";
@@ -18,19 +16,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectValue,
-  SelectItem,
-} from "@/components/ui/select";
+
 import { PickupFormValues, pickupSchema } from "@/schemas/cart/pickup-form";
 
 interface PickupFormProps {
@@ -40,17 +26,12 @@ interface PickupFormProps {
 export function PickupForm({ onContinue }: PickupFormProps) {
   const { setPickupInfo } = useOrder();
 
-  // We still keep a small local state for the calendar to show selected date fast.
-  const [localDate, setLocalDate] = useState<Date | undefined>(undefined);
-
   const form = useForm<PickupFormValues>({
     resolver: zodResolver(pickupSchema),
     mode: "onTouched",
     defaultValues: {
       fullName: "",
       email: "",
-      date: undefined as unknown as Date,
-      time: "",
       phone: "",
       instructions: "",
     },
@@ -71,46 +52,6 @@ export function PickupForm({ onContinue }: PickupFormProps) {
     }
   }, [form]);
 
-  // Helper: generate time slots based on the currently selected date (from form or local)
-  const getSelectedDate = (): Date | undefined => {
-    // prefer react-hook-form value if present (it will be a Date if valid)
-    const watched = form.watch("date") as unknown as Date | undefined;
-    return watched instanceof Date && !Number.isNaN(watched.getTime())
-      ? watched
-      : localDate;
-  };
-
-  const generateTimeSlots = () => {
-    const slots: { value: string; label: string }[] = [];
-    const now = new Date();
-    const selected = getSelectedDate();
-    const isToday = selected && selected.toDateString() === now.toDateString();
-
-    for (let hour = 11; hour <= 22; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const slotTime = new Date(selected || now);
-        slotTime.setHours(hour, minute, 0, 0);
-
-        // Skip past times for today (require at least 30 minutes from now)
-        if (isToday && slotTime <= new Date(now.getTime() + 30 * 60000)) {
-          continue;
-        }
-
-        const timeString = slotTime.toTimeString().slice(0, 5);
-        const displayTime = slotTime.toLocaleTimeString([], {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-        });
-
-        slots.push({ value: timeString, label: displayTime });
-      }
-    }
-
-    return slots;
-  };
-
-  const timeSlots = generateTimeSlots();
 
   // onSubmit will receive typed values (date is Date due to schema)
   const onSubmit = (values: PickupFormValues) => {
@@ -124,33 +65,16 @@ export function PickupForm({ onContinue }: PickupFormProps) {
       })
     );
 
-    // values.date is a Date (per schema), but to be defensive copy it
-    const pickupDate = new Date(values.date.getTime());
-    const [hours, minutes] = values.time.split(":").map(Number);
-    const pickupTime = new Date(pickupDate);
-    pickupTime.setHours(hours, minutes, 0, 0);
 
     // ✅ Store all pickup details in context
     setPickupInfo({
       fullName: values.fullName,
-      pickupDate,
-      pickupTime,
       phone: values.phone,
       email: values.email,
       instructions: values.instructions,
     });
 
     onContinue();
-  };
-
-  // Helper to set date in both local and form state
-  const handleDateSelect = (date?: Date) => {
-    setLocalDate(date);
-    if (date) {
-      form.setValue("date", date, { shouldValidate: true, shouldDirty: true });
-    } else {
-      form.setValue("date", date as unknown as Date); // clear
-    }
   };
 
   return (
@@ -201,86 +125,6 @@ export function PickupForm({ onContinue }: PickupFormProps) {
             {form.formState.errors.fullName && (
               <p className="text-xs text-red-500">
                 {form.formState.errors.fullName.message}
-              </p>
-            )}
-          </div>
-          {/* Date */}
-          <div className="space-y-2">
-            <Label>Pickup Date *</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !form.watch("date") && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {form.watch("date")
-                    ? // guard format call
-                      (() => {
-                        const d = form.watch("date") as unknown as
-                          | Date
-                          | undefined;
-                        return d ? format(d, "PPP") : "Pick a date";
-                      })()
-                    : "Pick a date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent align="start" className="p-0">
-                <Calendar
-                  mode="single"
-                  selected={form.watch("date") as unknown as Date | undefined}
-                  onSelect={(date) => handleDateSelect(date)}
-                  disabled={(date) => {
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    const maxDate = new Date(
-                      today.getTime() + 7 * 24 * 60 * 60 * 1000
-                    );
-                    return date < today || date > maxDate;
-                  }}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            {form.formState.errors.date && (
-              <p className="text-xs text-red-500">
-                {form.formState.errors.date.message}
-              </p>
-            )}
-          </div>
-
-          {/* Time */}
-          <div className="space-y-2">
-            <Label>Pickup Time *</Label>
-            <Select
-              onValueChange={(val) =>
-                form.setValue("time", val, { shouldValidate: true })
-              }
-              value={form.watch("time")}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select time" />
-              </SelectTrigger>
-              <SelectContent>
-                {timeSlots.length > 0 ? (
-                  timeSlots.map((slot) => (
-                    <SelectItem key={slot.value} value={slot.value}>
-                      {slot.label}
-                    </SelectItem>
-                  ))
-                ) : (
-                  <div className="text-muted-foreground text-sm p-2">
-                    No times available today. Please choose another day.
-                  </div>
-                )}
-              </SelectContent>
-            </Select>
-            {form.formState.errors.time && (
-              <p className="text-xs text-red-500">
-                {form.formState.errors.time.message}
               </p>
             )}
           </div>

@@ -22,7 +22,7 @@ const pickupSchema = z.object({
   pickupTime: z.string().min(1),
 });
 
-type PickupFormValues = z.infer<typeof pickupSchema>;
+export type PickupFormValues = z.infer<typeof pickupSchema>;
 
 export const PickupDialog = () => {
   const defaultDate = AVAILABLE_DATES[0]?.label;
@@ -80,6 +80,7 @@ export const PickupDialog = () => {
                             <Button
                               variant={"outline"}
                               size={"xl"}
+                              type={"button"}
                               key={d.label}
                               onClick={() => field.onChange(d.label)}
                               className={`gap-12 rounded-2xl transition-all shadow-sm cursor-pointer ${

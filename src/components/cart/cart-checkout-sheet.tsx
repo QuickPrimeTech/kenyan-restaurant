@@ -156,8 +156,8 @@ export function CartCheckoutSheet() {
                 {/* Cart Step */}
                 {currentStep === "cart" && (
                   <>
-                    <ScrollArea className="h-0 flex-1 px-4 py-4">
-                      <div className="space-y-4">
+                    <ScrollArea className="h-0 flex-1 px-4">
+                      <div className="space-y-4 py-4">
                         {cartItems.map((item) => (
                           <CartItem key={item.cartItemId} cartItem={item} />
                         ))}

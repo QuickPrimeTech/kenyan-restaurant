@@ -66,12 +66,6 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
     setIsModalOpen(!!found);
   }, [searchParams, menuItems]);
 
-  useEffect(() => {
-    if (!pickupInfo.pickupDate || !pickupInfo.pickupTime) {
-      setOpenDialog(true);
-    }
-    handleItemClick(activeItem!);
-  }, [pickupInfo, activeItem]);
   // Filter items by search query
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return menuItems;
