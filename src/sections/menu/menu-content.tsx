@@ -12,18 +12,10 @@ import { MenuItem } from "@/types/menu";
 import { MenuSection } from "./menu-section";
 import { useSearchParams } from "next/navigation";
 import { MenuItemCard } from "./menu-item-card";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
-import { CircleAlert, Gift } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useSectionTracker } from "@/hooks/use-section-tracker";
-import Link from "next/link";
+import { EmptySearchState } from "./states/empty-search-state";
+import { EmptyMenuState } from "./states/empty-menu-state";
+import { PickupSelector } from "./pickup-selector";
 
 type MenuContentProps = {
   menuItems: MenuItem[];
@@ -126,94 +118,58 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
           onSearchChange={setSearchQuery}
         />
 
-        <div className="flex">
-          {/* Menu Content */}
-          <div className="flex-1 section-x mt-25 overflow-hidden">
-            {!searchQuery && (
-              <div ref={(el) => registerSection("Popular Dishes", el)}>
-                <PopularItems>
-                  <PopularItemsHeader>
-                    <h2 className="text-xl font-bold text-foreground">
-                      Popular Dishes
-                    </h2>
-                    <PopularItemsScrollButtons />
-                  </PopularItemsHeader>
+        {/* Menu Content */}
+        <div className="section-x mt-25 overflow-hidden">
+          <PickupSelector selectedTime="" onSelectClick={() => ""} />
+          {!searchQuery && (
+            <div ref={(el) => registerSection("Popular Dishes", el)}>
+              <PopularItems>
+                <PopularItemsHeader>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Popular Dishes
+                  </h2>
+                  <PopularItemsScrollButtons />
+                </PopularItemsHeader>
 
-                  <PopularItemsContent>
-                    {popularItems.map((item) => (
-                      <MenuItemCard
-                        key={item.id}
-                        onClick={() => handleItemClick(item)}
-                        menuItem={item}
-                        variant={"popular"}
-                        orientation={"square"}
-                      />
-                    ))}
-                  </PopularItemsContent>
-                </PopularItems>
-              </div>
-            )}
+                <PopularItemsContent>
+                  {popularItems.map((item) => (
+                    <MenuItemCard
+                      key={item.id}
+                      onClick={() => handleItemClick(item)}
+                      menuItem={item}
+                      variant={"popular"}
+                      orientation={"square"}
+                    />
+                  ))}
+                </PopularItemsContent>
+              </PopularItems>
+            </div>
+          )}
 
-            {/* Menu Sections */}
-            {Object.entries(groupedMenuItems).map(([category, items]) => (
-              <MenuSection
-                key={category}
-                ref={(el) => {
-                  registerSection(category, el);
-                }}
-                onClick={handleItemClick}
-                title={category}
-                items={items}
-              />
-            ))}
+          {/* Menu Sections */}
+          {Object.entries(groupedMenuItems).map(([category, items]) => (
+            <MenuSection
+              key={category}
+              ref={(el) => {
+                registerSection(category, el);
+              }}
+              onClick={handleItemClick}
+              title={category}
+              items={items}
+            />
+          ))}
 
-            {/* No results message */}
-            {searchQuery && Object.keys(groupedMenuItems).length === 0 && (
-              <Empty className="border border-dashed max-w-3xl">
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <CircleAlert />
-                  </EmptyMedia>
-                  <EmptyTitle> No items found</EmptyTitle>
-                  <EmptyDescription>
-                    Try searching for &quot;{searchQuery}&quot; with a different
-                    term.
-                  </EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>
-                  <Button size="sm" onClick={() => setSearchQuery("")}>
-                    Clear Search
-                  </Button>
-                </EmptyContent>
-              </Empty>
-            )}
+          {/* No results message */}
+          {searchQuery && Object.keys(groupedMenuItems).length === 0 && (
+            <EmptySearchState
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
+          )}
 
-            {!searchQuery && Object.keys(groupedMenuItems).length === 0 && (
-              <Empty className="border border-dashed max-w-3xl mx-auto">
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <CircleAlert />
-                  </EmptyMedia>
-                  <EmptyTitle> No menu items found</EmptyTitle>
-                  <EmptyDescription>
-                    Please check your internet or come later when we've added
-                    menu items
-                  </EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent className="flex flex-row justify-center">
-                  <Button size="sm" variant={"outline"} asChild>
-                    <Link href={"/"}>Go back home</Link>
-                  </Button>
-                  <Button size="sm" asChild>
-                    <Link href={"/offers"}>
-                      <Gift />
-                      Checkout Our Offers
-                    </Link>
-                  </Button>
-                </EmptyContent>
-              </Empty>
-            )}
-          </div>
+          {!searchQuery && Object.keys(groupedMenuItems).length === 0 && (
+            <EmptyMenuState />
+          )}
         </div>
       </main>
 

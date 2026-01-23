@@ -231,7 +231,7 @@ const MultipleChoiceOptions = ({
               key={option.label}
               className={cn(
                 "flex items-center pl-4 rounded-lg border transition-colors",
-                isDisabled && "opacity-80 cursor-not-allowed",
+                isDisabled && "opacity-60 cursor-not-allowed",
                 !isDisabled && "cursor-pointer hover:bg-accent/50",
                 isSelected && "bg-accent/30",
               )}
@@ -239,7 +239,7 @@ const MultipleChoiceOptions = ({
                 isDisabled
                   ? `You are only allowed to select up to ${
                       choice.maxSelectable
-                    } ${choice.title}${
+                    } option${
                       (choice.maxSelectable || choice.options.length) > 1 && "s"
                     }`
                   : ``
@@ -256,6 +256,7 @@ const MultipleChoiceOptions = ({
                     : current.filter((v: any) => v !== option.label);
                   field.onChange(next);
                 }}
+                className="disabled:opacity-100"
               />
               <OptionLabel
                 label={option.label}
