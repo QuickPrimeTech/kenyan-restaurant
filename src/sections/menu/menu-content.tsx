@@ -120,7 +120,7 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
 
         {/* Menu Content */}
         <div className="section-x mt-25 overflow-hidden">
-          <PickupSelector selectedTime="" onSelectClick={() => ""} />
+          <PickupSelector />
           {!searchQuery && (
             <div ref={(el) => registerSection("Popular Dishes", el)}>
               <PopularItems>
