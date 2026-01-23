@@ -3,30 +3,35 @@
 import type React from "react";
 import { createContext, useContext, useState } from "react";
 
-export interface PickupInfo {
-  fullName: string;
-  pickupDate: Date;
-  pickupTime: Date;
-  phone: string;
-  email: string;
+export type PickupInfo = {
+  fullName?: string;
+  phone?: string;
+  email?: string;
   instructions?: string;
-}
+  pickupDate?: string; // string value from AVAILABLE_DATES or MORE_DATES
+  pickupTime?: string; // string value from TIME_SLOTS
+};
 
-interface OrderContextType {
-  pickupInfo: PickupInfo | null;
-  setPickupInfo: (info: PickupInfo) => void;
-}
+type OrderContextType = {
+  pickupInfo: PickupInfo;
+  setPickupInfo: React.Dispatch<React.SetStateAction<PickupInfo>>;
+  openDialog: boolean;
+  setOpenDialog: (open: boolean) => void;
+};
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export function OrderProvider({ children }: { children: React.ReactNode }) {
-  const [pickupInfo, setPickupInfo] = useState<PickupInfo | null>(null);
+  const [pickupInfo, setPickupInfo] = useState<PickupInfo>({});
+  const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <OrderContext.Provider
       value={{
         pickupInfo,
         setPickupInfo,
+        openDialog,
+        setOpenDialog,
       }}
     >
       {children}
@@ -36,8 +41,6 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
 
 export function useOrder() {
   const context = useContext(OrderContext);
-  if (context === undefined) {
-    throw new Error("useOrder must be used within an OrderProvider");
-  }
+  if (!context) throw new Error("useOrder must be used within OrderProvider");
   return context;
 }

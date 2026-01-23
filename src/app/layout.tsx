@@ -13,6 +13,7 @@ import { CartUIProvider } from "@/contexts/cart-ui-provider";
 import { CartPopover } from "@/components/cart/cart-popover";
 import { CartCheckoutSheet } from "@/components/cart/cart-checkout-sheet";
 import { OrderProvider } from "@/contexts/order-context";
+import { PickupDialog } from "@/sections/menu/pickup-dialog";
 
 // Headings
 const montserrat = Montserrat({
@@ -81,7 +82,9 @@ export default function RootLayout({
                 <WhatsAppCampaignPopup />
                 <Toaster richColors position="top-center" />
                 <CartPopover />
+                {/* Dialog */}
                 <CartCheckoutSheet />
+                <PickupDialog />
                 <Footer />
               </CartProvider>
             </OrderProvider>
