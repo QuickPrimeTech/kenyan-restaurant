@@ -22,7 +22,7 @@ const cardVariants = cva("relative cursor-pointer overflow-hidden", {
     },
     variant: {
       popular: "bg-background",
-      regular: "bg-card",
+      regular: "max-sm:border-b max-sm:rounded-bl-none md:bg-card",
     },
   },
   defaultVariants: {
@@ -53,9 +53,9 @@ export function MenuItemCard({
       {/* Image */}
       <div
         className={cn(
-          "relative w-40 aspect-square border border-border",
+          "relative w-36 aspect-square border border-border",
           orientation === "square" &&
-            "lg:w-50 shrink-0 rounded-md overflow-hidden"
+            "lg:w-50 shrink-0 rounded-md overflow-hidden",
         )}
       >
         <ImageWithFallback
@@ -105,7 +105,7 @@ export function MenuItemCard({
       <div
         className={cn(
           "flex-1 py-2 flex flex-col justify-center",
-          orientation === "horizontal" && "px-4"
+          orientation === "horizontal" && "md:px-4",
         )}
       >
         <h3 className="font-sans font-medium text-foreground leading-snug mb-1">

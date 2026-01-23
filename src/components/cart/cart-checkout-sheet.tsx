@@ -164,7 +164,7 @@ export function CartCheckoutSheet() {
                       </div>
                     </ScrollArea>
 
-                    <div className="flex-shrink-0 border-t p-6 bg-card">
+                    <div className="sticky bottom-0 border-t p-6 bg-card">
                       <div className="flex items-center justify-between mb-4">
                         <Button
                           variant="outline"

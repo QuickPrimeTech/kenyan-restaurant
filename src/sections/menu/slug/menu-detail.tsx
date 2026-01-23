@@ -31,9 +31,9 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
             <Badge
               variant={"secondary"}
               size={"lg"}
-              className="absolute top-4 right-4"
+              className="absolute max-sm:bottom-4 md:top-4 right-4"
             >
-              {cartItemsCount} in cart
+              {cartItemsCount} in car
             </Badge>
           )}
         </div>
