@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { AVAILABLE_DATES, TIME_SLOTS } from "@/constants/opening-hours";
 import { useOrder } from "@/contexts/order-context";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
 export const PickupDialog = () => {
   const { pickupInfo, setPickupInfo, openDialog, setOpenDialog } = useOrder();
@@ -19,6 +20,7 @@ export const PickupDialog = () => {
   };
 
   const handleSelectTime = (value: string) => {
+    console.log(`The time selected is ${value}`);
     setPickupInfo((prev) => ({ ...prev, pickupTime: value }));
   };
 
@@ -36,20 +38,20 @@ export const PickupDialog = () => {
           <ScrollArea className="pb-3">
             <div className="flex gap-3">
               {AVAILABLE_DATES.map((d) => (
-                <button
-                  key={d.value}
-                  onClick={() => handleSelectDate(d.value)}
-                  className={`flex gap-12 items-center justify-between flex-1 rounded-2xl px-4 py-3 text-sm transition-all ${
-                    pickupInfo.pickupDate === d.value
-                      ? "bg-foreground text-background"
+                <Button
+                  variant={"outline"}
+                  size={"xl"}
+                  key={d.label}
+                  onClick={() => handleSelectDate(d.label)}
+                  className={`gap-12 rounded-2xl transition-all shadow-sm cursor-pointer ${
+                    pickupInfo.pickupDate === d.label
+                      ? "bg-foreground dark:bg-foreground text-background dark:hover:bg-foreground/95 hover:bg-foreground/95 hover:text-background"
                       : "border bg-background hover:border-foreground/20"
                   }`}
                 >
-                  <p className="font-bold">{d.label}</p>
-                  <p className="text-xs font-bold whitespace-nowrap">
-                    {d.date}
-                  </p>
-                </button>
+                  <p className="text-base font-bold">{d.label}</p>
+                  <p className="font-bold whitespace-nowrap">{d.date}</p>
+                </Button>
               ))}
             </div>
             <ScrollBar orientation="horizontal" className="mt-2" />
@@ -65,12 +67,12 @@ export const PickupDialog = () => {
               >
                 {TIME_SLOTS.map((slot) => (
                   <div
-                    key={slot.value}
+                    key={slot.time}
                     className={`flex items-center space-x-3 pl-4 border-t first:border-t-0 cursor-pointer transition-colors hover:bg-muted/50`}
                   >
-                    <RadioGroupItem value={slot.value} id={slot.value} />
+                    <RadioGroupItem value={slot.time} id={slot.time} />
                     <Label
-                      htmlFor={slot.value}
+                      htmlFor={slot.time}
                       className="text-base font-semibold flex-1 cursor-pointer py-4"
                     >
                       {slot.time}

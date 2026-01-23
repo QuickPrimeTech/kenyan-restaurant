@@ -53,9 +53,9 @@ export function MenuItemCard({
       {/* Image */}
       <div
         className={cn(
-          "relative w-36 aspect-square border border-border",
+          "relative w-36 aspect-square ",
           orientation === "square" &&
-            "lg:w-50 shrink-0 rounded-md overflow-hidden",
+            "lg:w-50 shrink-0 rounded-md overflow-hidden border",
         )}
       >
         <ImageWithFallback
@@ -79,25 +79,9 @@ export function MenuItemCard({
           <Button
             variant="secondary"
             title={`${cartItemsCount} ${menuItem.name} in cart`}
-            className="border group aspect-square hover:aspect-auto justify-center absolute top-2 right-2 items-center gap-1 shadow-lg overflow-hidden
-               transition-all duration-300 ease-out"
-            onClick={(e) => {
-              e.stopPropagation();
-              router.push(`/menu/${menuItem.slug}`);
-            }}
+            className="border aspect-square absolute top-2 right-2 shadow-lg px-0"
           >
-            <span className="group-hover:hidden font-medium  ml-1">
-              {cartItemsCount}
-            </span>
-
-            {/* Hover text */}
-            <span
-              className="whitespace-nowrap text-xs opacity-100 translate-x-3 max-w-0
-                 group-hover:opacity-100 group-hover:translate-x-0 group-hover:max-w-[160px]
-                 transition-all duration-300 ease-out"
-            >
-              View {cartItemsCount} item(s) in cart
-            </span>
+            {cartItemsCount}
           </Button>
         )}
       </div>

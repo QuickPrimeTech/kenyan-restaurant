@@ -33,7 +33,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
               size={"lg"}
               className="absolute max-sm:bottom-4 md:top-4 right-4"
             >
-              {cartItemsCount} in car
+              {cartItemsCount} in cart
             </Badge>
           )}
         </div>
