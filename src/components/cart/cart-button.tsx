@@ -3,19 +3,22 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/cart-provider";
 import { cn } from "@/lib/utils";
+import { useCartUI } from "@/contexts/cart-ui-provider";
 
 export function CartButton({
   className,
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { cartItemsCount, total } = useCart();
+  const { openCartCheckout } = useCartUI();
 
   return (
     <Button
       size="lg"
       className={cn(
-        "rounded-full shadow-lg fixed bottom-6 left-6 hover:shadow-xl transition-all duration-200 size-14.5 group z-50"
+        "rounded-full shadow-lg fixed bottom-6 left-6 hover:shadow-xl transition-all duration-200 size-14.5 group z-50 cursor-pointer",
       )}
+      onClick={() => openCartCheckout(true)}
       {...props}
     >
       <div className="flex flex-col items-center">

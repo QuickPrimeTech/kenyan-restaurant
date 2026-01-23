@@ -10,10 +10,10 @@ import { WhatsAppCampaignPopup } from "@/components/whatsapp-campaign-popup";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/contexts/cart-provider";
 import { CartUIProvider } from "@/contexts/cart-ui-provider";
-import { CartPopover } from "@/components/cart/cart-popover";
 import { CartCheckoutSheet } from "@/components/cart/cart-checkout-sheet";
 import { OrderProvider } from "@/contexts/order-context";
 import { PickupDialog } from "@/sections/menu/pickup-dialog";
+import { CartButton } from "@/components/cart/cart-button";
 
 // Headings
 const montserrat = Montserrat({
@@ -81,9 +81,9 @@ export default function RootLayout({
                 <ContactButton />
                 <WhatsAppCampaignPopup />
                 <Toaster richColors position="top-center" />
-                <CartPopover />
                 {/* Dialog */}
                 <CartCheckoutSheet />
+                <CartButton />
                 <PickupDialog />
                 <Footer />
               </CartProvider>

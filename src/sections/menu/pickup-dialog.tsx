@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -26,7 +26,7 @@ export const PickupDialog = () => {
 
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-      <DialogContent className="flex flex-col w-full max-w-md h-[85vh] rounded-2xl p-0">
+      <DialogContent className="flex flex-col w-full max-w-md max-h-[85vh] rounded-2xl p-0">
         <DialogHeader className="relative border-b px-6 py-4">
           <DialogTitle className="text-xl font-semibold">
             Order time

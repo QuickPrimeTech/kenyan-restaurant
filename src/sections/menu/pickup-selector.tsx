@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Clock, MapPin, ChevronDown } from "lucide-react";
 import { useOrder } from "@/contexts/order-context";
 import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function PickupSelector() {
+  const isMobile = useMediaQuery("(max-width:640px)");
   const { pickupInfo, setOpenDialog } = useOrder();
 
   const label =
@@ -23,16 +25,17 @@ export function PickupSelector() {
         <Button
           variant="outline"
           onClick={() => setOpenDialog(true)}
-          size={"xl"}
+          size={isMobile ? "default" : "xl"}
           className="shadow-sm cursor-pointer"
         >
           <div className="flex items-center gap-2">
             <Clock />
             <span
-              className={cn("font-bold",
-                !pickupInfo.pickupDate || !pickupInfo.pickupTime
-                  && "text-muted-foreground")
-              }
+              className={cn(
+                "font-bold",
+                !pickupInfo.pickupDate ||
+                  (!pickupInfo.pickupTime && "text-muted-foreground"),
+              )}
             >
               {label}
             </span>

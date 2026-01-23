@@ -1,4 +1,5 @@
 "use client";
+
 import { cva, type VariantProps } from "class-variance-authority";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,13 +9,12 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { useCart } from "@/contexts/cart-provider";
 import { countItems } from "@/helpers/menu";
-import { useRouter } from "next/navigation";
 
 const cardVariants = cva("relative cursor-pointer overflow-hidden", {
   variants: {
     orientation: {
       square: "w-40 lg:w-50",
-      horizontal: "flex flex-row-reverse gap-4 shadow-sm rounded-md",
+      horizontal: "flex flex-row-reverse gap-4 md:shadow-sm rounded-md",
     },
     size: {
       default: "",
@@ -45,7 +45,6 @@ export function MenuItemCard({
 }: VariantProps<typeof cardVariants> &
   React.ComponentProps<"div"> &
   MenuItemCardProps) {
-  const router = useRouter();
   const { cartItems } = useCart();
   const cartItemsCount = countItems(cartItems, menuItem);
   return (
