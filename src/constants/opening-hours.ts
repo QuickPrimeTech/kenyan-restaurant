@@ -2,10 +2,10 @@
 
 export const AVAILABLE_DATES = [
   { label: "Today", date: "Jan 23" },
-  { label: "Tomorrow", date: "Jan 24"},
+  { label: "Tomorrow", date: "Jan 24" },
   { label: "Friday", date: "Jan 25" },
-  { label: "Saturday", date: "Jan 26"},
-  { label: "Sunday", date: "Jan 27"},
+  { label: "Saturday", date: "Jan 26" },
+  { label: "Sunday", date: "Jan 27" },
 ];
 
 export const TIME_SLOTS = [
@@ -14,4 +14,11 @@ export const TIME_SLOTS = [
   { time: "2:00 PM" },
   { time: "2:15 PM" },
   { time: "2:30 PM" },
+  { time: "3:30 PM" },
+  { time: "4:30 PM" },
+  { time: "5:30 PM" },
+  { time: "6:30 PM" },
+  { time: "7:30 PM" },
+  { time: "8:30 PM" },
+  { time: "9:30 PM" },
 ];

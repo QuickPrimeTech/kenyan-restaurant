@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -29,7 +29,7 @@ export const PickupDialog = () => {
       <DialogContent className="flex flex-col w-full max-w-md max-h-[85vh] rounded-2xl p-0">
         <DialogHeader className="relative border-b px-6 py-4">
           <DialogTitle className="text-xl font-semibold">
-            Order time
+            Choose Pickup Date & Time
           </DialogTitle>
         </DialogHeader>
 
@@ -57,7 +57,7 @@ export const PickupDialog = () => {
             <ScrollBar orientation="horizontal" className="mt-2" />
           </ScrollArea>
 
-          <ScrollArea className="h-0 flex-1 rounded-2xl">
+          <ScrollArea className="h-[calc(85vh-275px)] rounded-2xl">
             {/* Time Selection */}
             <div className="bg-muted/30">
               <RadioGroup
@@ -83,6 +83,11 @@ export const PickupDialog = () => {
             </div>
             <ScrollBar />
           </ScrollArea>
+        </div>
+        <div className="border-t p-4">
+          <Button size={"xl"} className="w-full">
+            Schedule Pickup
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

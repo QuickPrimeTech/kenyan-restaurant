@@ -16,6 +16,7 @@ import { useSectionTracker } from "@/hooks/use-section-tracker";
 import { EmptySearchState } from "./states/empty-search-state";
 import { EmptyMenuState } from "./states/empty-menu-state";
 import { PickupSelector } from "./pickup-selector";
+import { useOrder } from "@/contexts/order-context";
 
 type MenuContentProps = {
   menuItems: MenuItem[];
@@ -23,6 +24,7 @@ type MenuContentProps = {
 
 export default function MenuContent({ menuItems }: MenuContentProps) {
   const searchParams = useSearchParams();
+  const { pickupInfo, setOpenDialog } = useOrder();
   // In your component
   const { activeSection, registerSection, scrollToSection } =
     useSectionTracker("Popular Dishes");
@@ -64,6 +66,12 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
     setIsModalOpen(!!found);
   }, [searchParams, menuItems]);
 
+  useEffect(() => {
+    if (!pickupInfo.pickupDate || !pickupInfo.pickupTime) {
+      setOpenDialog(true);
+    }
+    handleItemClick(activeItem!);
+  }, [pickupInfo, activeItem]);
   // Filter items by search query
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return menuItems;

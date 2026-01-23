@@ -1,5 +1,4 @@
 "use client";
-
 import { cva, type VariantProps } from "class-variance-authority";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -47,6 +46,7 @@ export function MenuItemCard({
   MenuItemCardProps) {
   const { cartItems } = useCart();
   const cartItemsCount = countItems(cartItems, menuItem);
+
   return (
     <div className={cardVariants({ orientation, variant, size })} {...props}>
       {/* Image */}

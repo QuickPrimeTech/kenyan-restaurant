@@ -19,10 +19,10 @@ export function RelatedDishes({ menuItems, isFallback }: RelatedDishesProps) {
     <div className="section-x mt-12">
       {menuItems.length > 0 && (
         <PopularItems>
-          <PopularItemsHeader className="flex-col items-start md:flex-row md:items-center">
+          <PopularItemsHeader className="flex-col gap-3 items-start md:flex-row md:items-center">
             <h2 className="text-xl font-bold text-foreground">{`Other ${
               isFallback ? "Popular" : menuItems[0].category
-            } dishes you might like`}</h2>
+            } you might like`}</h2>
             <div className="flex items-center gap-4">
               <Button variant={"ghost"} asChild>
                 <Link href={"/menu"}>
