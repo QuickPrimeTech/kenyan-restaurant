@@ -18,14 +18,13 @@ import {
 } from "@/components/ui/card";
 
 import { PickupFormValues, pickupSchema } from "@/schemas/cart/pickup-form";
+import { site } from "@/config/site-config";
+import { useCartUI } from "@/contexts/cart-ui-provider";
 
-interface PickupFormProps {
-  onContinue: () => void;
-}
 
-export function PickupForm({ onContinue }: PickupFormProps) {
+export function PickupForm() {
   const { setPickupInfo } = useOrder();
-
+  const { setCurrentCheckoutStep } = useCartUI();
   const form = useForm<PickupFormValues>({
     resolver: zodResolver(pickupSchema),
     mode: "onTouched",
@@ -74,7 +73,7 @@ export function PickupForm({ onContinue }: PickupFormProps) {
       instructions: values.instructions,
     });
 
-    onContinue();
+  setCurrentCheckoutStep("payment");
   };
 
   return (
@@ -92,9 +91,8 @@ export function PickupForm({ onContinue }: PickupFormProps) {
         </CardHeader>
         <CardContent className="text-sm text-green-700 dark:text-green-200 space-y-1">
           <p>
-            <strong className="mr-2">Located in: PETROCITY-Gigiri</strong>
+            <strong className="mr-2">Located in: {site.address}</strong>
           </p>
-          <p>Address: QR74+JR2, Limuru Rd, Nairobi</p>
           <p className="pt-2">
             <strong className="mr-2">Opening Days:</strong> Tuesday – Sunday
           </p>
@@ -183,10 +181,14 @@ export function PickupForm({ onContinue }: PickupFormProps) {
           <p>• Orders not collected within 1 hour may be cancelled</p>
         </CardContent>
       </Card>
-
-      <Button type="submit" size="lg" className="w-full">
+      <div className="flex gap-2">
+        <Button variant={"outline"} type="submit" size="lg" className="flex-1" onClick={() => setCurrentCheckoutStep("cart")}>
+        Back to Cart
+      </Button>
+      <Button type="submit" size="lg" className="flex-1">
         Continue to Payment <ArrowRight />
       </Button>
+      </div>
     </form>
   );
 }

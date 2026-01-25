@@ -18,19 +18,20 @@ import {
 
 import { phoneSchema, PhoneData } from "@/schemas/cart/mpesa-payment";
 import { useCart } from "@/contexts/cart-provider";
+import { useCartUI } from "@/contexts/cart-ui-provider";
 
-interface MpesaPaymentFormProps {
-  onSubmit: (phoneNumber: string) => void;
-  onBack: () => void;
-}
-
-export function MpesaPaymentForm({ onSubmit, onBack }: MpesaPaymentFormProps) {
+export function MpesaPaymentForm() {
   const { total } = useCart();
+  const { setCurrentCheckoutStep } = useCartUI();
 
   const phoneForm = useForm<PhoneData>({
     resolver: zodResolver(phoneSchema),
     defaultValues: { phoneNumber: "" },
   });
+
+  const onSubmit = (values: PhoneData) => {
+    console.log("Submitting M-Pesa payment with data:", values);
+  }
 
   return (
     <div className="space-y-4">
@@ -48,9 +49,7 @@ export function MpesaPaymentForm({ onSubmit, onBack }: MpesaPaymentFormProps) {
       {/* Phone form */}
       <Form {...phoneForm}>
         <form
-          onSubmit={phoneForm.handleSubmit((data) =>
-            onSubmit(data.phoneNumber)
-          )}
+          onSubmit={phoneForm.handleSubmit(onSubmit)}
           className="space-y-4"
         >
           <FormField
@@ -75,7 +74,7 @@ export function MpesaPaymentForm({ onSubmit, onBack }: MpesaPaymentFormProps) {
           />
 
           {/* Total */}
-          <div className="bg-card rounded-lg p-4">
+          <div className="bg-muted rounded-lg p-4">
             <div className="flex justify-between items-center">
               <span className="font-semibold">Total Amount:</span>
               <span className="text-xl font-bold text-green-600">
@@ -89,7 +88,7 @@ export function MpesaPaymentForm({ onSubmit, onBack }: MpesaPaymentFormProps) {
             <Button
               type="button"
               variant="outline"
-              onClick={onBack}
+              onClick={() => setCurrentCheckoutStep("details")}
               className="flex-1"
             >
               Back

@@ -1,13 +1,15 @@
 "use client";
+import { CheckoutStep } from "@/types/cart";
 // contexts/cart-ui-context.tsx
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
+
 type CartUIContextType = {
   isCartCheckoutOpen: boolean;
   openCartCheckout: (open: boolean) => void;
-  currentCheckoutStep: number;
-  setCurrentCheckoutStep: (step: number) => void;
+  currentCheckoutStep: CheckoutStep;
+  setCurrentCheckoutStep: (step: CheckoutStep) => void;
 };
 
 const CartUIContext = createContext<CartUIContextType | undefined>(undefined);
@@ -17,7 +19,7 @@ export function CartUIProvider({ children }: { children: ReactNode }) {
   const [isCartCheckoutOpen, openCartCheckout] =
     useState<CartUIContextType["isCartCheckoutOpen"]>(false);
   const [currentCheckoutStep, setCurrentCheckoutStep] =
-    useState<CartUIContextType["currentCheckoutStep"]>(1);
+    useState<CartUIContextType["currentCheckoutStep"]>("cart");
 
   return (
     <CartUIContext.Provider

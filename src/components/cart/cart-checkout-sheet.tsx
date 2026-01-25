@@ -4,7 +4,7 @@ import {
   Sheet,
   SheetContent,
   SheetHeader,
-  SheetTitle,
+  SheetTitle
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,23 +15,21 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import {
   ShoppingCart,
   Trash2,
   CreditCard,
-  Smartphone,
   ArrowLeft,
   AlertTriangle,
   MapPin,
   CheckCircle2,
   ArrowRight,
-  ShoppingBag,
+  ShoppingBag
 } from "lucide-react";
 import { useCart } from "@/contexts/cart-provider";
 import { CartItem } from "./cart-item";
-import { CardPaymentForm } from "./card-payment-form";
 import { PickupForm } from "./pickup-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CartSuccess } from "./cart-success";
@@ -48,21 +46,15 @@ type LastOrder = {
   total: number;
 };
 
-type CheckoutStep = "cart" | "details" | "payment" | "success";
 
 export function CartCheckoutSheet() {
   const { cartItems, total, cartItemsCount, clearCart } = useCart();
-  const { isCartCheckoutOpen, openCartCheckout } = useCartUI();
-  const [currentStep, setCurrentStep] = useState<CheckoutStep>("cart");
-  const [paymentMethod, setPaymentMethod] = useState<"card" | "mpesa">("mpesa");
+  const { isCartCheckoutOpen, openCartCheckout, currentCheckoutStep,setCurrentCheckoutStep } = useCartUI();
+
   const [lastOrder, setLastOrder] = useState<LastOrder | null>(null);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [isMpesaProcessing, setIsMpesaProcessing] = useState(false);
 
-  const handleBackToCart = () => setCurrentStep("cart");
-  const handleBackToDetails = () => setCurrentStep("details");
-  const handleProceedToDetails = () => setCurrentStep("details");
-  const handleProceedToPayment = () => setCurrentStep("payment");
 
   const handlePaymentSuccess = () => {
     const snapshot: LastOrder = {
@@ -70,7 +62,7 @@ export function CartCheckoutSheet() {
       total,
     };
 
-    setCurrentStep("success");
+    setCurrentCheckoutStep("success");
     setLastOrder(snapshot);
 
     toast.success("You will receive an email shortly with your order details");
@@ -79,7 +71,7 @@ export function CartCheckoutSheet() {
 
   const handleExitSuccess = () => {
     openCartCheckout(false);
-    setCurrentStep("cart");
+    setCurrentCheckoutStep("cart");
   };
 
   const handleClearCart = () => {
@@ -87,10 +79,10 @@ export function CartCheckoutSheet() {
     setShowClearConfirm(false);
   };
 
-  if (currentStep === "success" && !open) setCurrentStep("cart");
+  if (currentCheckoutStep === "success" && !isCartCheckoutOpen) setCurrentCheckoutStep("cart");
 
   const getStepTitle = () => {
-    switch (currentStep) {
+    switch (currentCheckoutStep) {
       case "cart":
         return `Your Cart (${cartItemsCount} items)`;
       case "details":
@@ -111,24 +103,24 @@ export function CartCheckoutSheet() {
           {/* Header */}
           <SheetHeader className="flex-shrink-0 p-6 border-b border-border bg-card shadow-luxury">
             <SheetTitle className="flex items-center gap-2">
-              {(currentStep === "details" || currentStep === "payment") && (
+              {(currentCheckoutStep === "details" || currentCheckoutStep === "payment") && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={
-                    currentStep === "details"
-                      ? handleBackToCart
-                      : handleBackToDetails
-                  }
+                  onClick={() => {
+                    currentCheckoutStep === "details"
+                      ? setCurrentCheckoutStep("cart")
+                      : setCurrentCheckoutStep("details")
+                  }}
                   className="p-0 h-auto"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               )}
-              {currentStep === "cart" && <ShoppingCart className="h-5 w-5" />}
-              {currentStep === "details" && <MapPin className="h-5 w-5" />}
-              {currentStep === "payment" && <CreditCard className="h-5 w-5" />}
-              {currentStep === "success" && (
+              {currentCheckoutStep === "cart" && <ShoppingCart className="h-5 w-5" />}
+              {currentCheckoutStep === "details" && <MapPin className="h-5 w-5" />}
+              {currentCheckoutStep === "payment" && <CreditCard className="h-5 w-5" />}
+              {currentCheckoutStep === "success" && (
                 <CheckCircle2 className="h-5 w-5" />
               )}
               {getStepTitle()}
@@ -137,7 +129,7 @@ export function CartCheckoutSheet() {
 
           {/* Body */}
           <div className="flex flex-col flex-1 min-h-0">
-            {cartItems.length === 0 && currentStep !== "success" ? (
+            {cartItems.length === 0 && currentCheckoutStep !== "success" ? (
               <div className="flex flex-col items-center justify-center flex-1 text-center p-6">
                 <ShoppingCart className="h-16 w-16 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">
@@ -159,7 +151,7 @@ export function CartCheckoutSheet() {
             ) : (
               <>
                 {/* Cart Step */}
-                {currentStep === "cart" && (
+                {currentCheckoutStep === "cart" && (
                   <>
                     <ScrollArea className="h-0 flex-1 px-4">
                       <div className="space-y-4 py-4">
@@ -190,13 +182,15 @@ export function CartCheckoutSheet() {
                       <div className="flex gap-2 mt-2">
                         <Button
                           variant="outline"
+                          className="flex-1"
                           onClick={() => openCartCheckout(false)}
                         >
+                          <ShoppingBag />
                           Continue Shopping
                         </Button>
                         <Button
                           className="flex-1"
-                          onClick={handleProceedToDetails}
+                          onClick={() => setCurrentCheckoutStep("details")}
                         >
                           Continue to Pickup <ArrowRight />
                         </Button>
@@ -206,65 +200,31 @@ export function CartCheckoutSheet() {
                 )}
 
                 {/* Details Step */}
-                {currentStep === "details" && (
+                {currentCheckoutStep === "details" && (
                   <div className="flex-1 min-h-0 overflow-y-auto custom-scroll p-6 space-y-6">
                     <OrderSummary />
-                    <PickupForm onContinue={handleProceedToPayment} />
+                    <PickupForm  />
                   </div>
                 )}
 
                 {/* Payment Step */}
-                {currentStep === "payment" && (
+                {currentCheckoutStep === "payment" && (
                   <div className="flex-1 min-h-0 overflow-y-auto custom-scroll p-6 space-y-6">
                     <OrderSummary />
-                    <div>
+                    <div className="bg-background p-5 rounded-2xl">
                       <h4 className="font-semibold mb-4">
-                        Choose Payment Method
+                        Pay with Mpesa
                       </h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        <Button
-                          variant={
-                            paymentMethod === "mpesa" ? "default" : "outline"
-                          }
-                          onClick={() => setPaymentMethod("mpesa")}
-                          className="flex items-center gap-2"
-                        >
-                          <Smartphone />
-                          M-Pesa
-                        </Button>
-                        <Button
-                          variant={
-                            paymentMethod === "card" ? "default" : "outline"
-                          }
-                          disabled={isMpesaProcessing}
-                          onClick={() => setPaymentMethod("card")}
-                          className="flex items-center gap-2"
-                        >
-                          <CreditCard />
-                          Card
-                        </Button>
-                      </div>
-
                       <div className="mt-4">
-                        {paymentMethod === "card" ? (
-                          <CardPaymentForm
-                            onSuccess={handlePaymentSuccess}
-                            onBack={handleBackToDetails}
-                          />
-                        ) : (
                           <MpesaPaymentStep
-                            onProcessingChange={setIsMpesaProcessing}
-                            onSuccess={handlePaymentSuccess}
-                            onBack={handleBackToDetails}
                           />
-                        )}
                       </div>
                     </div>
                   </div>
                 )}
 
                 {/* Success Step */}
-                {currentStep === "success" && lastOrder && (
+                {currentCheckoutStep === "success" && lastOrder && (
                   <CartSuccess
                     items={lastOrder.items}
                     total={lastOrder.total}

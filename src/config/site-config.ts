@@ -39,6 +39,7 @@ export const site = {
       href: "https://twitter.com/quickprimetech/",
     },
   ],
+  address: "Sir Mbarak Hinawy Road, Mombasa 80100, Kenya",
   footerLinks: [
     { label: "Home", href: "/" },
     { label: "Menu", href: "/menu" },

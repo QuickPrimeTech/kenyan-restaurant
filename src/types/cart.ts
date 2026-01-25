@@ -26,3 +26,6 @@ export type CartItemChoices = Record<string, string | string[]>;
 export type RawCartOptions = {
   [optionId: string]: string | string[];
 } & Omit<CartOptions, "choices">;
+
+
+export type CheckoutStep = "cart" | "details" | "payment" | "success";
