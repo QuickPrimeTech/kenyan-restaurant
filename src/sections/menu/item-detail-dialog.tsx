@@ -49,7 +49,7 @@ export function ItemDetail({
   onOpenChange,
   defaultValues,
 }: ItemDetailProps) {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktopOrTablet = useMediaQuery("(min-width: 640px)");
   const [isDirty, setIsDirty] = useState<boolean>(false);
   const [alertDialogOpen, onAlertDialogChange] = useState<boolean>(false);
   const { onAdd, onEdit } = useHandleCart();
@@ -136,7 +136,7 @@ export function ItemDetail({
 
   // Bottom Bar: Quantity + Add
   const bottomBar= (
-      <div className="px-4 py-3 border-t">
+      <div className="px-2 py-3 border-t">
         <div className="flex items-center gap-3">
           <QuantitySelector />
           <AddToCartButton menuItem={item}/>
@@ -174,7 +174,7 @@ export function ItemDetail({
           onOpenChange(false);
         }}
       />
-      {isDesktop ? (
+      {isDesktopOrTablet ? (
         <Dialog open={open} onOpenChange={handleChange}>
           <DialogContent className="max-w-[540px] p-0 gap-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
             <ChoicesForm

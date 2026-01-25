@@ -70,9 +70,9 @@ export function CartCheckoutSheet() {
   return (
     <>
       <Sheet open={isCartCheckoutOpen} onOpenChange={openCartCheckout}>
-        <SheetContent className="w-full sm:max-w-lg p-0 flex flex-col h-screen bg-muted">
+        <SheetContent className="w-full sm:max-w-lg p-0 gap-0 flex flex-col h-screen bg-muted">
           {/* Header */}
-          <SheetHeader className="py-6 px-4 border-b bg-card shadow-luxury">
+          <SheetHeader className="py-4 px-4 border-b bg-card shadow-luxury">
             <SheetTitle className="flex items-center gap-2">
               {["details", "payment"].includes(currentCheckoutStep) && (
                 <Button variant="ghost" size="sm" onClick={handleBack} className="p-0">
@@ -104,7 +104,7 @@ export function CartCheckoutSheet() {
             ) : (
               <>
                 {currentCheckoutStep === "cart" && (
-                  <ScrollArea className="h-[calc(100vh-75px)] -mt-4">
+                  <ScrollArea className="h-[calc(100vh-75px)]">
                     <ScrollArea className="h-[60vh] px-4">
                       <div className="space-y-4 py-4">
                         {cartItems.map((i) => (

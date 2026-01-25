@@ -1,5 +1,4 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/contexts/cart-provider";
 import { PriceBreakdown } from "./price-breakdown";
 import { CartItem } from "./cart-item";
@@ -18,8 +17,6 @@ export const OrderSummary = () => {
           ))}
         </div>
       </ScrollArea>
-
-      <Separator />
 
       <PriceBreakdown />
     </div>

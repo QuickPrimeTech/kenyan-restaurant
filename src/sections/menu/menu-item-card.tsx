@@ -21,7 +21,7 @@ const cardVariants = cva("relative cursor-pointer overflow-hidden", {
     },
     variant: {
       popular: "bg-background",
-      regular: "max-sm:border-b max-sm:rounded-bl-none md:bg-card",
+      regular: "border-b lg:border-b-0 rounded-bl-none lg:rounded-md md:bg-card",
     },
   },
   defaultVariants: {

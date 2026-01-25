@@ -110,7 +110,7 @@ function NumberFieldInput({
       data-slot="numberfield-input"
       className={cn(
         inputVariants({ size }),
-        "text-center max-w-10 font-semibold h-auto rounded-none",
+        "text-center text-xs max-w-10 font-semibold h-auto px-0 rounded-none",
         className,
       )}
       {...props}
