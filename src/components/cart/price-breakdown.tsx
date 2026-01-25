@@ -22,12 +22,13 @@ export const PriceBreakdown = ({ className }: PriceBreakdownProps) => {
 
   return (
     <div className="space-y-1 text-sm mb-2">
+      <Separator className="my-2" />
       <div className="flex justify-between">
         <span>Subtotal ({cartItemsCount} items):</span>
         <span>Ksh {formatCurrency(total)}</span>
       </div>
 
-    <div className="text-muted-foreground">
+    <div className="pl-2 text-muted-foreground">
         <div className="flex justify-between">
         <span>VAT tax(16%):</span>
         <span>Ksh {formatCurrency(tourismTaxAmount)}</span>

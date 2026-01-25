@@ -104,8 +104,8 @@ export function CartCheckoutSheet() {
             ) : (
               <>
                 {currentCheckoutStep === "cart" && (
-                  <ScrollArea className="h-(calc(100vh-75px)) bg-red-200">
-                    <ScrollArea className="h-[40vh] px-4">
+                  <ScrollArea className="h-[calc(100vh-75px)] -mt-4">
+                    <ScrollArea className="h-[60vh] px-4">
                       <div className="space-y-4 py-4">
                         {cartItems.map((i) => (
                           <CartItem key={i.cartItemId} cartItem={i} />
@@ -113,7 +113,7 @@ export function CartCheckoutSheet() {
                       </div>
                     </ScrollArea>
 
-                    <div className="border-t p-6 bg-card">
+                    <div className="border-t px-4 py-4 bg-card">
                       <div className="flex justify-between mb-4">
                         <Button
                           variant="outline"
@@ -130,13 +130,13 @@ export function CartCheckoutSheet() {
 
                       <PriceBreakdown className="text-lg" />
 
-                      <div className="flex gap-2 mt-2">
+                      <div className="flex gap-2 mt-2 mb-12">
                         <Button
                           variant="outline"
                           className="flex-1"
                           onClick={() => openCartCheckout(false)}
                         >
-                          <ShoppingBag /> Continue Shopping
+                           Continue Shopping
                         </Button>
                         <Button
                           className="flex-1"
