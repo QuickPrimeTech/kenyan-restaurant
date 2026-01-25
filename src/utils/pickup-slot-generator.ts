@@ -55,7 +55,22 @@ export function generateAvailableDates(daysAhead = 7): SelectOption[] {
   return dates;
 }
 
+function roundUpToInterval(date: Date, intervalMinutes: number) {
+  const rounded = new Date(date);
+  const minutes = rounded.getMinutes();
+  const remainder = minutes % intervalMinutes;
+
+  if (remainder !== 0) {
+    rounded.setMinutes(minutes + (intervalMinutes - remainder));
+  }
+
+  rounded.setSeconds(0, 0);
+  return rounded;
+}
+
+
 export function generateTimeSlots(
+  selectedDate: string, // YYYY-MM-DD
   intervalMinutes = 15
 ): TimeSlot[] {
   const slots: TimeSlot[] = [];
@@ -63,9 +78,24 @@ export function generateTimeSlots(
   const [openH, openM] = RESTAURANT_HOURS.openTime.split(":").map(Number);
   const [closeH, closeM] = RESTAURANT_HOURS.closeTime.split(":").map(Number);
 
-  const start = new Date();
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0];
+  const isToday = selectedDate === todayStr;
+
+  // Opening time
+  let start = new Date();
   start.setHours(openH, openM, 0, 0);
 
+  // If today → move start forward to "now (rounded up)"
+  if (isToday) {
+    const nowRounded = roundUpToInterval(today, intervalMinutes);
+
+    if (nowRounded > start) {
+      start = nowRounded;
+    }
+  }
+
+  // Closing time
   const end = new Date();
   end.setHours(closeH, closeM, 0, 0);
 
@@ -82,6 +112,7 @@ export function generateTimeSlots(
 
   return slots;
 }
+
 
 export function formatPickupDate(dateStr: string): string {
   const date = new Date(dateStr);

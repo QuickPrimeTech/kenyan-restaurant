@@ -31,14 +31,12 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
   const isMobile = useMediaQuery("(max-width: 640px)");
 
     const AVAILABLE_DATES = generateAvailableDates(7);
-const TIME_SLOTS = generateTimeSlots(15);
 
    const defaultDate = AVAILABLE_DATES.find(d => !d.isClosed)?.value;;
-    const defaultTime = TIME_SLOTS[0]?.value;
-
-    const { pickupInfo, setPickupInfo, openDialog, setOpenDialog } = useOrder();
-
-    const form = useForm<PickupFormValues>({
+   
+   const { pickupInfo, setPickupInfo, openDialog, setOpenDialog } = useOrder();
+   
+   const form = useForm<PickupFormValues>({
       resolver: zodResolver(pickupSchema),
       defaultValues: {
         pickupDate: pickupInfo.pickupDate ?? "",
@@ -48,21 +46,28 @@ const TIME_SLOTS = generateTimeSlots(15);
 
     useEffect(() => {
       if (!openDialog) return;
-
+      
       // Only set defaults if user hasn't chosen yet
       if (!pickupInfo.pickupDate && defaultDate) {
         form.setValue("pickupDate", defaultDate, { shouldDirty: false });
       }
-
+      
       if (!pickupInfo.pickupTime && defaultTime) {
         form.setValue("pickupTime", defaultTime, { shouldDirty: false });
       }
     }, [openDialog]);
-
+    
     function onSubmit(values: PickupFormValues) {
       setPickupInfo(values);
       setOpenDialog(false);
     }
+    
+    const selectedDate = form.watch("pickupDate");
+    const TIME_SLOTS = selectedDate
+      ? generateTimeSlots(selectedDate, 15)
+      : [];
+  
+  const defaultTime = TIME_SLOTS[0]?.value;
 
     const pickupContent = (
       <Form {...form}>

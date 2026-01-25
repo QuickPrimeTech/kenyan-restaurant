@@ -27,6 +27,7 @@ import {
   MapPin,
   CheckCircle2,
   ArrowRight,
+  ShoppingBag,
 } from "lucide-react";
 import { useCart } from "@/contexts/cart-provider";
 import { CartItem } from "./cart-item";
@@ -40,6 +41,7 @@ import { MpesaPaymentStep } from "./mpesa-payment-step";
 import { toast } from "sonner";
 import { CartItem as CartItemType } from "@/types/cart";
 import { useCartUI } from "@/contexts/cart-ui-provider";
+import Link from "next/link";
 
 type LastOrder = {
   items: CartItemType[];
@@ -145,10 +147,13 @@ export function CartCheckoutSheet() {
                   Add some delicious items to get started!
                 </p>
                 <Button
-                  className="bg-gradient-primary hover:shadow-glow transition-all"
-                  onClick={() => openCartCheckout(false)}
+                asChild
+                size={"xl"}
                 >
-                  Continue Shopping
+                  <Link href="/menu">
+                  <ShoppingBag />
+                 Start Shopping
+                 </Link>
                 </Button>
               </div>
             ) : (
