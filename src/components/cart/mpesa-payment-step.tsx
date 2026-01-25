@@ -11,20 +11,17 @@ export type MpesaStep = "phone" | "processing" | "error";
 export function MpesaPaymentStep() {
 
   const [step, setStep] = useState<MpesaStep>("phone");
-  const [formattedPhone, setFormattedPhone] = useState("");
 
   // 🔄 Step rendering
   if (step === "processing") {
-    return <MpesaProcessingStep formattedPhone={formattedPhone} />;
+    return <MpesaProcessingStep />;
   }
 
   if (step === "error") {
     return (
       <MpesaErrorStep
         onRetry={() => console.log("Hey there want to retry?")}
-        formattedPhone={formattedPhone}
         onChangePhone={() => {
-          setFormattedPhone("");
           setStep("phone");
         }}
       />

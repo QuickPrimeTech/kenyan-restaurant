@@ -13,6 +13,7 @@ export type CartState = {
   cartItems: CartItem[];
   total: number;
   cartItemsCount: number;
+  grandTotal: number;
 };
 
 export type CartOptions = {

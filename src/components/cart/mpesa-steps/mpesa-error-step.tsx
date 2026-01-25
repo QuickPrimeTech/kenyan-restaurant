@@ -3,24 +3,23 @@
 import { useCart } from "@/contexts/cart-provider";
 import { Smartphone, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useOrder } from "@/contexts/order-context";
 
 type MpesaErrorStepProps = {
-  formattedPhone: string;
   onRetry: () => void;
   onChangePhone: () => void; // <-- new prop
 };
 
 export function MpesaErrorStep({
-  formattedPhone,
   onRetry,
   onChangePhone,
 }: MpesaErrorStepProps) {
   const { total } = useCart();
-
+  const {pickupInfo} = useOrder();
   return (
     <div className="text-center space-y-8 py-8">
       {/* Icon */}
-      <div className="w-16 h-16 bg-red-50 dark:bg-red-950 rounded-full flex items-center justify-center mx-auto">
+      <div className="size-16 bg-red-50 dark:bg-red-950 rounded-full flex items-center justify-center mx-auto">
         <Smartphone className="h-8 w-8 text-red-700 dark:text-red-200" />
       </div>
 
@@ -47,7 +46,7 @@ export function MpesaErrorStep({
             Phone Number
           </p>
           <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            {formattedPhone}
+            {pickupInfo.phone}
           </p>
         </div>
 

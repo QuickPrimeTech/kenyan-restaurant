@@ -1,66 +1,63 @@
 // @/components/cart/mpesa-steps/mpesa-processing-step.tsx
-
-import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-provider";
-import { Smartphone, CheckCircle, Loader } from "lucide-react";
+import { useOrder } from "@/contexts/order-context";
+import { CheckCircle, Smartphone } from "lucide-react";
 
-type MpesaProcessingStepProps = {
-  formattedPhone: string;
-};
 
-export function MpesaProcessingStep({
-  formattedPhone,
-}: MpesaProcessingStepProps) {
-  const { total } = useCart();
+export function MpesaProcessingStep() {
+  const { grandTotal } = useCart();
+  const {pickupInfo} = useOrder();
 
   return (
-    <div className="text-center space-y-8 py-8">
+    <div className="text-center space-y-4 pt-4">
       {/* Icon */}
-      <div className="w-16 h-16 bg-green-50 dark:bg-green-950 rounded-full flex items-center justify-center mx-auto">
-        <Smartphone className="h-8 w-8 text-green-900 dark:text-green-50 animate-pulse" />
-      </div>
-
+     <div className="size-18 mx-auto rounded-full bg-card/80 backdrop-blur-xl border border-border flex items-center justify-center glow-green animate-pulse">
+            <div className="relative">
+              <Smartphone className="size-8 text-green-500 animate-pulse" strokeWidth={1.5} />
+              
+              {/* Scan line effect */}
+              <div className="absolute inset-0 overflow-hidden rounded-lg">
+                <div 
+                  className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-500 to-transparent animate-scan-line"
+                  style={{ animationDuration: "2s" }}
+                />
+              </div>
+            </div>
+          </div>
       {/* Heading */}
       <div>
-        <h3 className="text-xl font-bold mb-2">Processing Payment</h3>
-        <p className="text-gray-600 dark:text-gray-300 max-w-sm mx-auto">
+        <h3 className="font-bold mb-1.5">Processing Payment</h3>
+        <p className="text-muted-foreground max-w-sm mx-auto text-sm">
           Please check your phone for the M-Pesa prompt and enter your PIN to
           complete the payment.
         </p>
       </div>
 
       {/* Payment Info Card */}
-      <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-700 rounded-lg p-6 text-left space-y-4">
+      <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-700 rounded-lg p-4 text-left space-y-4">
         <div className="flex items-center gap-2 text-green-900 dark:text-green-50">
-          <CheckCircle className="h-5 w-5" />
-          <span className="text-sm font-medium">Payment Request Sent</span>
+          <CheckCircle className="size-4" />
+          <span className="text-sm font-medium">Payment Details</span>
         </div>
 
         {/* Phone Row */}
         <div>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
+          <p className="text-xs text-muted-foreground">
             Phone Number
           </p>
-          <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            {formattedPhone}
+          <p className="font-semibold text-gray-900 dark:text-gray-100">
+            {pickupInfo.phone}
           </p>
         </div>
 
         {/* Amount Row */}
         <div>
-          <p className="text-sm text-gray-600 dark:text-gray-300">Amount</p>
-          <p className="text-2xl font-bold text-green-700 dark:text-green-200">
-            Ksh {total}
+          <p className="text-xs text-muted-foreground">Amount</p>
+          <p className=" font-bold text-green-700 dark:text-green-200">
+            Ksh {Math.ceil(grandTotal).toFixed(2)}
           </p>
         </div>
       </div>
-
-      {/* Loader */}
-      <div className="flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-300">
-        <Loader className="h-5 w-5 animate-spin text-green-600" />
-        <span className="text-sm">Waiting for confirmation...</span>
-      </div>
-      <Button>Cancel</Button>
     </div>
   );
 }

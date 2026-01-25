@@ -104,7 +104,7 @@ export function CartCheckoutSheet() {
             ) : (
               <>
                 {currentCheckoutStep === "cart" && (
-                  <ScrollArea className="h-[calc(100vh-75px)]">
+                  <ScrollArea className="h-[calc(100vh-56px)]">
                     <ScrollArea className="h-[60vh] px-4">
                       <div className="space-y-4 py-4">
                         {cartItems.map((i) => (
@@ -130,7 +130,7 @@ export function CartCheckoutSheet() {
 
                       <PriceBreakdown className="text-lg" />
 
-                      <div className="flex gap-2 mt-2 mb-12">
+                      <div className="flex gap-2 mt-2 max-sm:mb-12">
                         <Button
                           variant="outline"
                           className="flex-1"
@@ -160,7 +160,7 @@ export function CartCheckoutSheet() {
                 {currentCheckoutStep === "payment" && (
                   <div className="flex-1 p-4 space-y-6 overflow-y-auto">
                     <OrderSummary />
-                    <div className="bg-background p-5 rounded-2xl">
+                    <div className="bg-background rounded-2xl">
                       <MpesaPaymentStep />
                     </div>
                   </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { CATERING_LEVY_RATE, TAX_RATE } from "@/constants/taxes";
 import { compareChoices } from "@/helpers/menu";
 import { CartItem, CartState } from "@/types/cart";
 import {
@@ -115,6 +116,7 @@ export function CartProvider({ children }: CartProviderProps) {
     <CartContext.Provider
       value={{
         cartItems,
+        grandTotal: total + total * TAX_RATE + total * CATERING_LEVY_RATE,
         total,
         cartItemsCount,
         addToCart,
