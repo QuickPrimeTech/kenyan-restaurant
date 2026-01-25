@@ -1,5 +1,6 @@
 // @/components/cart/mpesa-steps/mpesa-processing-step.tsx
 
+import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-provider";
 import { Smartphone, CheckCircle, Loader } from "lucide-react";
 
@@ -59,6 +60,7 @@ export function MpesaProcessingStep({
         <Loader className="h-5 w-5 animate-spin text-green-600" />
         <span className="text-sm">Waiting for confirmation...</span>
       </div>
+      <Button>Cancel</Button>
     </div>
   );
 }

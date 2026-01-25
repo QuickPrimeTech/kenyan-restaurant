@@ -19,17 +19,21 @@ import {
 import { phoneSchema, PhoneData } from "@/schemas/cart/mpesa-payment";
 import { useCart } from "@/contexts/cart-provider";
 import { useCartUI } from "@/contexts/cart-ui-provider";
+import { MpesaStep } from "../mpesa-payment-step";
+import { useOrder } from "@/contexts/order-context";
 
-export function MpesaPaymentForm() {
+export function MpesaPaymentForm({setStep}: {setStep: (step: MpesaStep) => void}) {
   const { total } = useCart();
   const { setCurrentCheckoutStep } = useCartUI();
+  const {pickupInfo} = useOrder();
 
   const phoneForm = useForm<PhoneData>({
     resolver: zodResolver(phoneSchema),
-    defaultValues: { phoneNumber: "" },
+    defaultValues: { phoneNumber:  pickupInfo.phone || "" },
   });
 
   const onSubmit = (values: PhoneData) => {
+    setStep('processing');
     console.log("Submitting M-Pesa payment with data:", values);
   }
 
@@ -77,7 +81,7 @@ export function MpesaPaymentForm() {
           <div className="bg-muted rounded-lg p-4">
             <div className="flex justify-between items-center">
               <span className="font-semibold">Total Amount:</span>
-              <span className="text-xl font-bold text-green-600">
+              <span className="text-xl font-bold text-green-600 dark:text-green-400">
                 Ksh {total.toFixed(2)}
               </span>
             </div>

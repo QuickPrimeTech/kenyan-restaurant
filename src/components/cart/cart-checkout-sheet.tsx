@@ -161,7 +161,6 @@ export function CartCheckoutSheet() {
                   <div className="flex-1 p-4 space-y-6 overflow-y-auto">
                     <OrderSummary />
                     <div className="bg-background p-5 rounded-2xl">
-                      <h4 className="font-semibold mb-4">Pay with Mpesa</h4>
                       <MpesaPaymentStep />
                     </div>
                   </div>

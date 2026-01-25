@@ -6,12 +6,12 @@ import { MpesaPaymentForm } from "./mpesa-steps/mpesa-payment-form";
 import { MpesaProcessingStep } from "./mpesa-steps/mpesa-processing-step";
 import { MpesaErrorStep } from "./mpesa-steps/mpesa-error-step";
 
+export type MpesaStep = "phone" | "processing" | "error";
 
 export function MpesaPaymentStep() {
 
-  const [step, setStep] = useState<"phone" | "processing" | "error">("phone");
+  const [step, setStep] = useState<MpesaStep>("phone");
   const [formattedPhone, setFormattedPhone] = useState("");
-  const [uniqueId, setUniqueId] = useState<string | null>(null);
 
   // 🔄 Step rendering
   if (step === "processing") {
@@ -33,6 +33,7 @@ export function MpesaPaymentStep() {
 
   return (
     <MpesaPaymentForm
+    setStep={setStep}
     />
   );
 }
