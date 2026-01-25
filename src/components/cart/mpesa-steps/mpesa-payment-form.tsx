@@ -34,6 +34,9 @@ export function MpesaPaymentForm({setStep}: {setStep: (step: MpesaStep) => void}
 
   const onSubmit = (values: PhoneData) => {
     setStep('processing');
+    setTimeout(() => {
+      setCurrentCheckoutStep("success");
+    }, 5000);
     console.log("Submitting M-Pesa payment with data:", values);
   }
 

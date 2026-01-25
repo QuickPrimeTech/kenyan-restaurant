@@ -14,16 +14,14 @@ export function MpesaPaymentStep() {
 
   // 🔄 Step rendering
   if (step === "processing") {
-    return <MpesaProcessingStep />;
+    return <MpesaProcessingStep/>;
   }
 
   if (step === "error") {
     return (
       <MpesaErrorStep
-        onRetry={() => console.log("Hey there want to retry?")}
-        onChangePhone={() => {
-          setStep("phone");
-        }}
+        onRetry={() => setStep("processing")}
+        setStep={setStep}
       />
     );
   }

@@ -77,9 +77,6 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.75 0.183 55.934);
-
-  /* custom variables */
-   --mpesa-green: 145 80% 45%;
 }
 
 .dark {
@@ -143,12 +140,6 @@
   }
   .section {
     @apply px-4 md:px-6 lg:px-8 py-12 md:py-14 lg:py-16;
-  }
-  .glow-green {
-    box-shadow: 
-      0 0 20px hsl(var(--mpesa-glow)/0.4),
-      0 0 40px hsl(var(--mpesa-glow)/0.2),
-      0 0 60px hsl(var(--mpesa-glow)/0.1);
   }
    .animate-scan-line{
     animation: scan-line 3s ease-in-out infinite;
