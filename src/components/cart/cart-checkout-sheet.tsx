@@ -10,7 +10,7 @@ import {
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   ShoppingCart, Trash2, CreditCard, ArrowLeft,
   AlertTriangle, MapPin, CheckCircle2,
@@ -104,8 +104,8 @@ export function CartCheckoutSheet() {
             ) : (
               <>
                 {currentCheckoutStep === "cart" && (
-                  <>
-                    <ScrollArea className="flex-1 px-4">
+                  <ScrollArea className="h-(calc(100vh-75px)) bg-red-200">
+                    <ScrollArea className="h-[40vh] px-4">
                       <div className="space-y-4 py-4">
                         {cartItems.map((i) => (
                           <CartItem key={i.cartItemId} cartItem={i} />
@@ -146,7 +146,8 @@ export function CartCheckoutSheet() {
                         </Button>
                       </div>
                     </div>
-                  </>
+                    <ScrollBar />
+                  </ScrollArea>
                 )}
 
                 {currentCheckoutStep === "details" && (

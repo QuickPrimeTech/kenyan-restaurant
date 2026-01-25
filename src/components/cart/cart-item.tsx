@@ -17,10 +17,14 @@ import {
 import { useCart } from "@/contexts/cart-provider";
 import { CartItem as CartItemType } from "@/types/cart";
 import { ItemDetail } from "@/sections/menu/item-detail-dialog";
+import { cn } from "@/lib/utils";
 
-type CartItemProps = { cartItem: CartItemType };
+type CartItemProps = { 
+  cartItem: CartItemType;
+  size?: "small" | "big";
+ };
 
-export function CartItem({ cartItem }: CartItemProps) {
+export function CartItem({ cartItem, size="big"}: CartItemProps) {
   const { removeFromCart, updateQuantity } = useCart();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [open, setOpen] = useState(false);
@@ -36,12 +40,12 @@ export function CartItem({ cartItem }: CartItemProps) {
   return (
     <>
       <div
-        className="w-full flex flex-col gap-3 p-4 rounded-lg bg-card hover:cursor-pointer"
+        className={cn("w-full flex flex-col gap-3 p-4 rounded-lg bg-card hover:cursor-pointer", size ==="small" && "p-1.5 border")}
         onClick={() => setOpen(true)}
       >
         <div className="flex items-center gap-4">
           {cartItem.image_url && (
-            <div className="relative size-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
+            <div className={cn("relative size-16 bg-muted rounded-md overflow-hidden flex-shrink-0", size === "small" && "size-10 rounded-xs")}>
               <Image
                 src={cartItem.image_url}
                 alt={cartItem.name}
@@ -51,18 +55,19 @@ export function CartItem({ cartItem }: CartItemProps) {
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h4 className="font-semibold text-foreground truncate">
+            <h4 className={cn("font-semibold text-foreground truncate", size === "small" && "text-sm")}>
               {cartItem.name}
             </h4>
             <div className="flex gap-2 mt-1 items-center">
-              <p className="text-sm text-muted-foreground">
+              <p className={cn("text-sm text-muted-foreground", size === "small" && "text-xs")}>
                 {cartItem.quantity} * Ksh {cartItem.price / cartItem.quantity}
               </p>
-              <p className="font-bold text-primary">: Ksh {cartItem.price}</p>
+              <p className={cn("font-bold text-primary", size === "small" && "text-xs text-foreground font-normal")}>: Ksh {cartItem.price}</p>
             </div>
           </div>
         </div>
-
+          {
+            size === "big" && (
         <div className="flex gap-4 justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
             <Button
@@ -100,6 +105,8 @@ export function CartItem({ cartItem }: CartItemProps) {
             <Trash2 />
           </Button>
         </div>
+            )
+          }
       </div>
 
       <AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>

@@ -28,7 +28,7 @@ export const createItemSchema = (
     if (isSingleSelection) {
       schema[choiceId] = choice.required
         ? z.string({
-            message: `Please select a ${choice.title.toLowerCase()}`,
+            message: `Please select ${choice.title.toLowerCase()}`,
           })
         : z.string().optional();
     } else {

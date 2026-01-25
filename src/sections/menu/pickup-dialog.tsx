@@ -119,7 +119,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
                         Select Time:
                       </FormLabel>
                         {/* Time Selection */}
-                        <div className="bg-muted/30">
+                        <div className="bg-muted/30 rounded-2xl overflow-hidden">
                           <RadioGroup
                             value={field.value ?? ""}
                             onValueChange={field.onChange}
