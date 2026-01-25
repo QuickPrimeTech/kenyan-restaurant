@@ -15,7 +15,7 @@ export type TimeSlot={
     label: string;
     value: string;
 }
-const weekday = new Intl.DateTimeFormat("en-GB", {
+export const weekday = new Intl.DateTimeFormat("en-GB", {
   weekday: "short",
 });
 
@@ -81,4 +81,12 @@ export function generateTimeSlots(
   }
 
   return slots;
+}
+
+export function formatPickupDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+  });
 }

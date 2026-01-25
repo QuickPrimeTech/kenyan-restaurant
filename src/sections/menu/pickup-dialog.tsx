@@ -3,8 +3,8 @@
     Dialog,
     DialogContent,
     DialogHeader,
-    DialogTitle,
-  } from "@/components/ui/dialog";
+    DialogTitle
+} from "@/components/ui/dialog";
   import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
   import { Label } from "@/components/ui/label";
   import { useOrder } from "@/contexts/order-context";
@@ -16,6 +16,8 @@
   import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
   import { useEffect } from "react";
 import { generateAvailableDates, generateTimeSlots } from "@/utils/pickup-slot-generator";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 
   const pickupSchema = z.object({
     pickupDate: z.string().min(1),
@@ -26,6 +28,8 @@ import { generateAvailableDates, generateTimeSlots } from "@/utils/pickup-slot-g
   
 
   export const PickupDialog = () => {
+  const isMobile = useMediaQuery("(max-width: 640px)");
+
     const AVAILABLE_DATES = generateAvailableDates(7);
 const TIME_SLOTS = generateTimeSlots(15);
 
@@ -60,16 +64,10 @@ const TIME_SLOTS = generateTimeSlots(15);
       setOpenDialog(false);
     }
 
-    return (
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent className="flex flex-col w-full max-w-md max-h-[90vh] rounded-2xl p-0">
-          <DialogHeader className="relative border-b px-6 py-4">
-            <DialogTitle className="text-xl font-semibold">
-              Choose Pickup Date & Time
-            </DialogTitle>
-          </DialogHeader>
-          <Form {...form}>
+    const pickupContent = (
+      <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
+          <ScrollArea className="h-[calc(85vh-230px)] rounded-2xl">
               <div className="flex flex-col gap-4 p-4 h-full overflow-hidden">
                 <FormField
                   control={form.control}
@@ -115,7 +113,6 @@ const TIME_SLOTS = generateTimeSlots(15);
                       <FormLabel className="text-base font-semibold">
                         Select Time:
                       </FormLabel>
-                      <ScrollArea className="h-[calc(95vh-330px)] rounded-2xl">
                         {/* Time Selection */}
                         <div className="bg-muted/30">
                           <RadioGroup
@@ -143,11 +140,11 @@ const TIME_SLOTS = generateTimeSlots(15);
                           </RadioGroup>
                         </div>
                         <ScrollBar />
-                      </ScrollArea>
                     </FormItem>
                   )}
                 ></FormField>
               </div>
+              </ScrollArea>
               <div className="border-t p-4">
                 <Button type="submit" size={"xl"} className="w-full">
                   Schedule Pickup
@@ -155,6 +152,28 @@ const TIME_SLOTS = generateTimeSlots(15);
               </div>
             </form>
           </Form>
+    )
+if(isMobile) {
+  return (
+    <Drawer open={openDialog} onOpenChange={setOpenDialog}>
+      <DrawerContent>
+         <DrawerHeader>
+            <DrawerTitle>Choose Pickup date and time</DrawerTitle>
+          </DrawerHeader>
+        {pickupContent}
+      </DrawerContent>
+    </Drawer>
+  )
+}
+    return (
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DialogContent className="flex flex-col w-full max-w-md max-h-[90vh] rounded-2xl p-0">
+          <DialogHeader className="relative border-b px-6 py-4">
+            <DialogTitle className="text-xl font-semibold">
+              Choose Pickup Date & Time
+            </DialogTitle>
+          </DialogHeader>
+        {pickupContent}
         </DialogContent>
       </Dialog>
     );

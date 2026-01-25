@@ -32,8 +32,7 @@ const isAvailable = useFindAvailability(menuItem)
     >
       <Icon />
       {children ? children :
-      (`${text} order • Ksh ${totalPrice.toFixed(2)}`)
-      }
+      (`${text} order ${isAvailable ? ` • Ksh ${totalPrice.toFixed(2)}` : "(Unavailable)"}` )}
     </Button>
   );
 }

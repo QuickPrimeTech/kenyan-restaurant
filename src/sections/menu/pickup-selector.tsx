@@ -4,14 +4,16 @@ import { Clock, MapPin, ChevronDown } from "lucide-react";
 import { useOrder } from "@/contexts/order-context";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { formatTime } from "@/utils/time-formatters";
+import { formatPickupDate } from "@/utils/pickup-slot-generator";
 
 export function PickupSelector() {
   const isMobile = useMediaQuery("(max-width:640px)");
   const { pickupInfo, setOpenDialog } = useOrder();
 
-  const label =
+  const label = 
     pickupInfo.pickupDate && pickupInfo.pickupTime
-      ? `${pickupInfo.pickupDate}, ${pickupInfo.pickupTime}`
+      ? `${formatPickupDate(pickupInfo.pickupDate)}, ${formatTime(pickupInfo.pickupTime)}`
       : "Select pickup time";
 
   return (

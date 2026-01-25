@@ -9,7 +9,6 @@ import { useCart } from "@/contexts/cart-provider";
 import { ImageWithFallback } from "@/components/ui/image";
 import { useOrder } from "@/contexts/order-context";
 import { RawCartOptions } from "@/types/cart";
-import {formatTime} from "@/utils/time-formatters"
 import {OrderWarning} from "@/sections/menu/order-warning";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
