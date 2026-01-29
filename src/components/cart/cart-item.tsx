@@ -19,12 +19,12 @@ import { CartItem as CartItemType } from "@/types/cart";
 import { ItemDetail } from "@/sections/menu/item-detail-dialog";
 import { cn } from "@/lib/utils";
 
-type CartItemProps = { 
+type CartItemProps = {
   cartItem: CartItemType;
   size?: "small" | "big";
- };
+};
 
-export function CartItem({ cartItem, size="big"}: CartItemProps) {
+export function CartItem({ cartItem, size = "big" }: CartItemProps) {
   const { removeFromCart, updateQuantity } = useCart();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [open, setOpen] = useState(false);
@@ -40,73 +40,99 @@ export function CartItem({ cartItem, size="big"}: CartItemProps) {
   return (
     <>
       <div
-        className={cn("w-full flex flex-col gap-3 p-4 rounded-lg bg-card hover:cursor-pointer", size ==="small" && "p-1.5 border")}
+        className={cn(
+          "w-full flex flex-col gap-3 p-4 rounded-lg bg-card hover:cursor-pointer",
+          size === "small" && "p-1.5 border",
+        )}
         onClick={() => setOpen(true)}
       >
         <div className="flex items-center gap-4">
           {cartItem.image_url && (
-            <div className={cn("relative size-16 bg-muted rounded-md overflow-hidden flex-shrink-0", size === "small" && "size-10 rounded-xs")}>
+            <div
+              className={cn(
+                "relative size-16 bg-muted rounded-md overflow-hidden flex-shrink-0",
+                size === "small" && "size-10 rounded-xs",
+              )}
+            >
               <Image
                 src={cartItem.image_url}
                 alt={cartItem.name}
+                placeholder={cartItem.menuItem.lqip ? "blur" : "empty"}
+                blurDataURL={cartItem.menuItem.lqip || undefined}
                 fill
+                sizes="48px"
                 className="object-cover"
               />
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h4 className={cn("font-semibold text-foreground truncate", size === "small" && "text-sm")}>
+            <h4
+              className={cn(
+                "font-semibold text-foreground truncate",
+                size === "small" && "text-sm",
+              )}
+            >
               {cartItem.name}
             </h4>
             <div className="flex gap-2 mt-1 items-center">
-              <p className={cn("text-sm text-muted-foreground", size === "small" && "text-xs")}>
+              <p
+                className={cn(
+                  "text-sm text-muted-foreground",
+                  size === "small" && "text-xs",
+                )}
+              >
                 {cartItem.quantity} * Ksh {cartItem.price / cartItem.quantity}
               </p>
-              <p className={cn("font-bold text-primary", size === "small" && "text-xs text-foreground font-normal")}>: Ksh {cartItem.price}</p>
+              <p
+                className={cn(
+                  "font-bold text-primary",
+                  size === "small" && "text-xs text-foreground font-normal",
+                )}
+              >
+                : Ksh {cartItem.price}
+              </p>
             </div>
           </div>
         </div>
-          {
-            size === "big" && (
-        <div className="flex gap-4 justify-between flex-shrink-0">
-          <div className="flex items-center gap-3">
+        {size === "big" && (
+          <div className="flex gap-4 justify-between flex-shrink-0">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeQty(cartItem.quantity - 1);
+                }}
+              >
+                <Minus />
+              </Button>
+              <span className="text-center text-sm font-semibold">
+                {cartItem.quantity}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeQty(cartItem.quantity + 1);
+                }}
+              >
+                <Plus />
+              </Button>
+            </div>
             <Button
-              variant="outline"
+              variant="destructive"
               size="sm"
               onClick={(e) => {
                 e.stopPropagation();
-                changeQty(cartItem.quantity - 1);
+                setConfirmDelete(true);
               }}
             >
-              <Minus />
-            </Button>
-            <span className="text-center text-sm font-semibold">
-              {cartItem.quantity}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                changeQty(cartItem.quantity + 1);
-              }}
-            >
-              <Plus />
+              <Trash2 />
             </Button>
           </div>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              setConfirmDelete(true);
-            }}
-          >
-            <Trash2 />
-          </Button>
-        </div>
-            )
-          }
+        )}
       </div>
 
       <AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>

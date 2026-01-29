@@ -2,7 +2,7 @@
 
 import { CATERING_LEVY_RATE, TAX_RATE } from "@/constants/taxes";
 import { compareChoices } from "@/helpers/menu";
-import { CartItem, CartState } from "@/types/cart";
+import { CartItem, CartSnapshot, CartState } from "@/types/cart";
 import {
   createContext,
   ReactNode,
@@ -17,6 +17,8 @@ type CartContextType = {
   updateQuantity: (cartItemId: string, quantity: number) => void;
   removeFromCart: (cartItemId: string) => void;
   clearCart: () => void;
+  cartSnapshot: CartSnapshot | null;
+  setCartSnapshot: React.Dispatch<React.SetStateAction<CartSnapshot | null>>;
 };
 
 const CartContext = createContext<(CartState & CartContextType) | undefined>(
@@ -31,6 +33,7 @@ export function CartProvider({ children }: CartProviderProps) {
   /*-----------------CART STATES--------------------*/
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartSnapshot, setCartSnapshot] = useState<CartSnapshot | null>(null);
   const [total, setTotal] = useState<number>(0);
   const [cartItemsCount, setCartItemsCount] = useState<number>(0);
 
@@ -116,6 +119,8 @@ export function CartProvider({ children }: CartProviderProps) {
     <CartContext.Provider
       value={{
         cartItems,
+        cartSnapshot,
+        setCartSnapshot,
         grandTotal: total + total * TAX_RATE + total * CATERING_LEVY_RATE,
         total,
         cartItemsCount,

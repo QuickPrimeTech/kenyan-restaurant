@@ -1,10 +1,8 @@
 // @/components/cart/mpesa-steps/mpesa-payment-form.tsx
 "use client";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Smartphone, Shield } from "lucide-react";
-
+import { Shield, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,30 +13,39 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { phoneSchema, PhoneData } from "@/schemas/cart/mpesa-payment";
 import { useCart } from "@/contexts/cart-provider";
 import { useCartUI } from "@/contexts/cart-ui-provider";
 import { MpesaStep } from "../mpesa-payment-step";
 import { useOrder } from "@/contexts/order-context";
+import { toast } from "sonner";
+import { formatCurrency } from "@/utils/currency-formatters";
 
-export function MpesaPaymentForm({setStep}: {setStep: (step: MpesaStep) => void}) {
-  const { total } = useCart();
+export function MpesaPaymentForm({
+  setStep,
+}: {
+  setStep: (step: MpesaStep) => void;
+}) {
+  const { grandTotal, cartItems, clearCart, setCartSnapshot } = useCart();
   const { setCurrentCheckoutStep } = useCartUI();
-  const {pickupInfo} = useOrder();
+  const { pickupInfo } = useOrder();
 
   const phoneForm = useForm<PhoneData>({
     resolver: zodResolver(phoneSchema),
-    defaultValues: { phoneNumber:  pickupInfo.phone || "" },
+    defaultValues: { phoneNumber: pickupInfo.phone || "" },
   });
 
-  const onSubmit = (values: PhoneData) => {
-    setStep('processing');
+  const handlePaymentSuccess = () => {
+    setStep("processing");
+    setCartSnapshot({ items: [...cartItems], total: grandTotal });
     setTimeout(() => {
+      clearCart();
+      toast.success(
+        "You will receive an email shortly with your order details",
+      );
       setCurrentCheckoutStep("success");
     }, 5000);
-    console.log("Submitting M-Pesa payment with data:", values);
-  }
+  };
 
   return (
     <div className="space-y-4 p-4">
@@ -56,7 +63,7 @@ export function MpesaPaymentForm({setStep}: {setStep: (step: MpesaStep) => void}
       {/* Phone form */}
       <Form {...phoneForm}>
         <form
-          onSubmit={phoneForm.handleSubmit(onSubmit)}
+          onSubmit={phoneForm.handleSubmit(handlePaymentSuccess)}
           className="space-y-4"
         >
           <FormField
@@ -85,7 +92,7 @@ export function MpesaPaymentForm({setStep}: {setStep: (step: MpesaStep) => void}
             <div className="flex justify-between items-center">
               <span className="font-semibold">Total Amount:</span>
               <span className="text-xl font-bold text-green-600 dark:text-green-400">
-                Ksh {total.toFixed(2)}
+                Ksh {grandTotal.toFixed(2)}
               </span>
             </div>
           </div>
@@ -94,6 +101,7 @@ export function MpesaPaymentForm({setStep}: {setStep: (step: MpesaStep) => void}
           <div className="flex gap-3 pt-4 pb-12 lg:pb-0">
             <Button
               type="button"
+              size={"lg"}
               variant="outline"
               onClick={() => setCurrentCheckoutStep("details")}
               className="flex-1"
@@ -102,10 +110,11 @@ export function MpesaPaymentForm({setStep}: {setStep: (step: MpesaStep) => void}
             </Button>
             <Button
               type="submit"
+              size={"lg"}
               className="flex-1 bg-green-600 hover:bg-green-700"
             >
-              <Smartphone className="h-4 w-4 mr-2" />
-              Pay ksh {total.toFixed(2)}
+              <Smartphone />
+              Pay ksh {formatCurrency(grandTotal)}
             </Button>
           </div>
         </form>

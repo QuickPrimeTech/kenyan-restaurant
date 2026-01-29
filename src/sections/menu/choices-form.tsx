@@ -34,6 +34,7 @@ import {
   NumberFieldInput,
 } from "@/components/ui/number-field";
 import { ZodObject } from "zod";
+import { useOrder } from "@/contexts/order-context";
 
 type ChoicesFormProps = {
   choices: MenuChoice[];
@@ -61,6 +62,9 @@ export function ChoicesForm({
     [choices],
   );
 
+  //Getting info from the order context
+  const { pickupInfo, setOpenDialog } = useOrder();
+
   const form = useForm({
     resolver: zodResolver(choicesSchema),
     defaultValues: {
@@ -83,6 +87,16 @@ export function ChoicesForm({
   const watchedValues = form.watch();
   const totalPrice = calculateTotalPrice(watchedValues, choices, basePrice);
 
+  const handleSubmit = (data: RawCartOptions) => {
+    const pickupInfoComplete = pickupInfo.pickupDate && pickupInfo.pickupTime;
+    if (!pickupInfoComplete) {
+      setOpenDialog(true);
+      return;
+    }
+    onAdd?.(data as RawCartOptions, totalPrice);
+    form.reset();
+  };
+
   return (
     <ChoicesFormProvider
       value={{
@@ -98,21 +112,23 @@ export function ChoicesForm({
         <form
           onSubmit={form.handleSubmit(
             (data) => {
-            onAdd?.(data as RawCartOptions, totalPrice);
-            form.reset();
-          },
-         (errors) => {
-          console.log("Form submission errors:", errors);
-      // Scroll to first error
-      const firstErrorField = Object.keys(errors)[0];
-      if (firstErrorField) {
-        const el = document.getElementById(firstErrorField);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "center" });
-          (el as HTMLElement).focus({ preventScroll: true });
-        }
-      }
-    })}
+              handleSubmit(data as RawCartOptions);
+            },
+            (errors) => {
+              // Scroll to first error
+              const firstErrorField = Object.keys(errors)[0];
+              if (firstErrorField) {
+                const el = document.getElementById(firstErrorField);
+                if (el) {
+                  el.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                  (el as HTMLElement).focus({ preventScroll: true });
+                }
+              }
+            },
+          )}
           className={cn("space-y-6", className)}
           {...props}
         >

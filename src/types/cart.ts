@@ -28,5 +28,9 @@ export type RawCartOptions = {
   [optionId: string]: string | string[];
 } & Omit<CartOptions, "choices">;
 
-
 export type CheckoutStep = "cart" | "details" | "payment" | "success";
+
+export type CartSnapshot = {
+  items: CartItem[];
+  total: number;
+};

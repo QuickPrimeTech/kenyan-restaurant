@@ -1,26 +1,30 @@
 "use client";
-
 import Image from "next/image";
 import { CheckCircle, CheckCircle2 } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { CartItem } from "@/types/cart";
+import { formatCurrency } from "@/utils/currency-formatters";
+import { PriceBreakdown } from "./price-breakdown";
+import { useCart } from "@/contexts/cart-provider";
+import { useCartUI } from "@/contexts/cart-ui-provider";
 
-interface CartSuccessProps {
-  items: CartItem[];
-  total: number;
-  onClose: () => void;
-}
+export function CartSuccess() {
+  const { cartSnapshot } = useCart();
+  const { openCartCheckout, setCurrentCheckoutStep } = useCartUI();
 
-export function CartSuccess({ items, total, onClose }: CartSuccessProps) {
+  const handleCompletion = () => {
+    // Close the cart checkout and reset to cart step
+    openCartCheckout(false);
+    setCurrentCheckoutStep("cart");
+  };
+  if (!cartSnapshot) return null;
   return (
-    <ScrollArea className="flex flex-col h-[calc(100vh-72px)] items-center text-center space-y-6 px-6 py-10">
+    <ScrollArea className="flex flex-col h-[calc(100vh-57px)] items-center text-center space-y-6 sm:px-6">
       {/* Icon */}
-      <CheckCircle className="mx-auto mb-8 size-16 text-green-500" />
+      <CheckCircle className="mx-auto mb-8 size-16 text-green-500 mt-4" />
       {/* Heading */}
-      <div className="space-y-2">
+      <div className="space-y-1 mb-4">
         <h2 className="text-2xl font-bold text-foreground">
           Order Confirmed 🎉
         </h2>
@@ -36,11 +40,11 @@ export function CartSuccess({ items, total, onClose }: CartSuccessProps) {
             Pickup Details
           </h4>
 
-          <ScrollArea className="space-y-3 h-50 pr-2">
-            {items.map((item) => (
+          <ScrollArea className="gap-3 h-40 pr-2">
+            {cartSnapshot.items.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center gap-3 p-2 bg-background/50 rounded-lg border border-border/40"
+                className="flex flex-wrap items-center gap-3 p-2 bg-background/50 rounded-lg border border-border/40"
               >
                 {item.image_url && (
                   <div className="relative w-12 h-12 rounded-md overflow-hidden flex-shrink-0">
@@ -55,36 +59,31 @@ export function CartSuccess({ items, total, onClose }: CartSuccessProps) {
                 <div className="flex-1 min-w-0 text-left">
                   <p className="text-sm font-medium truncate">{item.name}</p>
                   <p className="text-xs text-muted-foreground">
-                    {item.quantity} × Ksh {item.price}
+                    {item.quantity} × Ksh {item.price / item.quantity}
                   </p>
                 </div>
                 <p className="text-sm font-semibold whitespace-nowrap">
-                  Ksh {(item.price * item.quantity).toFixed(2)}
+                  Ksh {formatCurrency(item.price)}
                 </p>
               </div>
             ))}
             <ScrollBar orientation="vertical" />
           </ScrollArea>
 
-          <Separator />
-
-          <div className="flex justify-between text-base font-semibold text-primary">
-            <span>Total</span>
-            <span>Ksh {total.toFixed(2)}</span>
-          </div>
+          <PriceBreakdown cartSnapshot={cartSnapshot || undefined} />
         </CardContent>
       </Card>
 
       {/* Action */}
       <Button
-        onClick={onClose}
-        size="lg"
+        onClick={handleCompletion}
+        size="xl"
         className="w-full rounded-xl shadow-md"
       >
         Done
-        <CheckCircle2 className="size-6 ml-2" />
+        <CheckCircle2 className="size-6" />
       </Button>
-      <ScrollBar orientation="vertical" />
+      <ScrollBar />
     </ScrollArea>
   );
 }

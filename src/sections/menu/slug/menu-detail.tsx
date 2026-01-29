@@ -7,26 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { countItems, useHandleCart } from "@/helpers/menu";
 import { useCart } from "@/contexts/cart-provider";
 import { ImageWithFallback } from "@/components/ui/image";
-import { useOrder } from "@/contexts/order-context";
-import { RawCartOptions } from "@/types/cart";
-import {OrderWarning} from "@/sections/menu/order-warning";
+import { OrderWarning } from "@/sections/menu/order-warning";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { cartItems } = useCart();
   const { onAdd } = useHandleCart();
   const cartItemsCount = countItems(cartItems, menuItem);
-  const { setOpenDialog, pickupInfo } = useOrder();
 
-
-  const handleAdd = (values: RawCartOptions, totalPrice: number) => {
-    const pickupInfoComplete = pickupInfo.pickupDate && pickupInfo.pickupTime;
-    if (!pickupInfoComplete) {
-      setOpenDialog(true);
-      return;
-    }
-    onAdd(values, totalPrice, menuItem);
-  };
   return (
     <section className="md:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2">
@@ -65,17 +53,20 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
                 {menuItem.category}
               </Badge>
             </div>
-              <OrderWarning className={"mt-4"} menuItem={menuItem} />
+            <OrderWarning className={"mt-4"} menuItem={menuItem} />
           </div>
           <ChoicesForm
             basePrice={menuItem.price}
-            onAdd={handleAdd}
+            onAdd={(values, totalPrice) => onAdd(values, totalPrice, menuItem)}
             choices={menuItem.choices}
           >
             <ChoicesContent />
             <div className="flex gap-2 md:gap-3">
               <QuantitySelector />
-              <AddToCartButton size={isDesktop ? "lg" : "default"} menuItem={menuItem}/>
+              <AddToCartButton
+                size={isDesktop ? "lg" : "default"}
+                menuItem={menuItem}
+              />
             </div>
           </ChoicesForm>
         </div>
