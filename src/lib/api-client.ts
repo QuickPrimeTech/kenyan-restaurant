@@ -5,9 +5,12 @@ const API_SECRET_KEY = process.env.API_SECRET_KEY!;
 
 async function request<T = unknown>(
   path: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  noBranch?: boolean,
 ): Promise<T> {
-  const url = `${BASE_URL}/${BRANCH_ID}${path}`;
+  const url = noBranch
+    ? `${BASE_URL}${path}`
+    : `${BASE_URL}/${BRANCH_ID}${path}`;
 
   const headers = {
     "Content-Type": "application/json",
@@ -28,11 +31,19 @@ async function request<T = unknown>(
 const api = {
   get: <T = unknown>(path: string) => request<T>(path, { method: "GET" }),
 
-  post: <Req = unknown, Res = unknown>(path: string, body: Req) =>
-    request<Res>(path, {
-      method: "POST",
-      body: JSON.stringify(body),
-    }),
+  post: <Req = unknown, Res = unknown>(
+    path: string,
+    body: Req,
+    noBranch?: boolean,
+  ) =>
+    request<Res>(
+      path,
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+      },
+      noBranch,
+    ),
 
   put: <Req = unknown, Res = unknown>(path: string, body: Req) =>
     request<Res>(path, {

@@ -11,25 +11,19 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { phoneSchema, PhoneData } from "@/schemas/cart/mpesa-payment";
 import { useCart } from "@/contexts/cart-provider";
 import { useCartUI } from "@/contexts/cart-ui-provider";
-import { MpesaStep } from "../mpesa-payment-step";
 import { useOrder } from "@/contexts/order-context";
 import { formatCurrency } from "@/utils/currency-formatters";
-import api from "@/lib/api-client";
-import { ApiResponse } from "@/types/api";
-import type { OrderResponse } from "@/types/responses";
-import { OrderPayload } from "@/types/cart";
 
-export function MpesaPaymentForm({
-  setStep,
-}: {
-  setStep: (step: MpesaStep) => void;
-}) {
-  const { grandTotal, cartItems, clearCart, setCartSnapshot } = useCart();
+type MpesaPaymentFormProps = {
+  onSubmit: (values: PhoneData) => void;
+};
+export function MpesaPaymentForm({ onSubmit }: MpesaPaymentFormProps) {
+  const { grandTotal } = useCart();
   const { setCurrentCheckoutStep } = useCartUI();
   const { pickupInfo } = useOrder();
 
@@ -37,42 +31,6 @@ export function MpesaPaymentForm({
     resolver: zodResolver(phoneSchema),
     defaultValues: { phoneNumber: pickupInfo.phone || "" },
   });
-
-  const handlePaymentSuccess = async () => {
-    setStep("processing");
-    setCartSnapshot({ items: cartItems, total: grandTotal });
-    console.log("pickupInfo ---->", pickupInfo);
-    console.log(cartItems);
-
-    const payload: OrderPayload = {
-      items: cartItems,
-      pickupInfo: {
-        fullName: pickupInfo.fullName || "",
-        email: pickupInfo.email || "",
-        phone: pickupInfo.phone || "",
-        pickupDate: pickupInfo.pickupDate || "",
-        pickupTime: pickupInfo.pickupDate || "",
-        specialInstructions: pickupInfo.instructions || "",
-      },
-      total: grandTotal,
-      paymentMethod: "Mpesa",
-    };
-
-    //Calling the payment api endpoint
-    const { data } = await api.post<OrderPayload, ApiResponse<OrderResponse>>(
-      "/payment",
-      payload,
-    );
-
-    console.log("Data returned ------>", data);
-    // setTimeout(() => {
-    //   clearCart();
-    //   toast.success(
-    //     "You will receive an email shortly with your order details",
-    //   );
-    //   setCurrentCheckoutStep("success");
-    // }, 5000);
-  };
 
   return (
     <div className="space-y-4 p-4">
@@ -89,10 +47,7 @@ export function MpesaPaymentForm({
 
       {/* Phone form */}
       <Form {...phoneForm}>
-        <form
-          onSubmit={phoneForm.handleSubmit(handlePaymentSuccess)}
-          className="space-y-4"
-        >
+        <form onSubmit={phoneForm.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={phoneForm.control}
             name="phoneNumber"

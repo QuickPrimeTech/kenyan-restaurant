@@ -37,6 +37,7 @@ export type CartSnapshot = {
 
 export type OrderPayload = {
   items: CartItem[];
+  phone: string;
   pickupInfo: {
     fullName: string;
     email: string;
