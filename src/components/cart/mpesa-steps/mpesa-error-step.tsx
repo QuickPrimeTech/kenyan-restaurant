@@ -10,27 +10,27 @@ type MpesaErrorStepProps = {
   setStep: (step: MpesaStep) => void; // <-- new prop
 };
 
-export function MpesaErrorStep({
-  onRetry,
-  setStep,
-}: MpesaErrorStepProps) {
-
+export function MpesaErrorStep({ onRetry, setStep }: MpesaErrorStepProps) {
   const { grandTotal } = useCart();
-  const {pickupInfo} = useOrder();
+  const { pickupInfo } = useOrder();
 
   return (
     <div className="text-center space-y-4 p-4 text-sm">
       {/* Icon */}
-     <div className="size-18 mx-auto rounded-full flex items-center justify-center bg-red-200">
-            <div className="relative">
-              <Smartphone className="size-8 text-red-600 dark:text-red-400 animate-pulse" strokeWidth={1.5} />
-            </div>
-          </div>
+      <div className="size-18 mx-auto rounded-full flex items-center justify-center bg-red-200 dark:bg-red-950">
+        <div className="relative">
+          <Smartphone
+            className="size-8 text-red-600 dark:text-red-200 animate-pulse"
+            strokeWidth={1.5}
+          />
+        </div>
+      </div>
       {/* Heading */}
       <div>
         <h3 className="font-bold mb-1.5">Payment Failed</h3>
         <p className="text-muted-foreground max-w-sm mx-auto text-xs">
-          Please make sure you've entered the correct PIN on your M-Pesa and try again
+          Please make sure you've entered the correct PIN on your M-Pesa and try
+          again
         </p>
       </div>
 
@@ -43,9 +43,7 @@ export function MpesaErrorStep({
 
         {/* Phone Row */}
         <div>
-          <p className="text-xs text-muted-foreground">
-            Phone Number
-          </p>
+          <p className="text-xs text-muted-foreground">Phone Number</p>
           <p className="font-semibold text-gray-900 dark:text-gray-100">
             {pickupInfo.phone}
           </p>
@@ -60,8 +58,16 @@ export function MpesaErrorStep({
         </div>
       </div>
       <div className="flex gap-2">
-        <Button onClick={() =>setStep("phone")} variant={"outline"}className="flex-1">Cancel</Button>
-        <Button onClick={onRetry} className="flex-1">Retry Payment</Button>
+        <Button
+          onClick={() => setStep("phone")}
+          variant={"outline"}
+          className="flex-1"
+        >
+          Cancel
+        </Button>
+        <Button onClick={onRetry} className="flex-1">
+          Retry Payment
+        </Button>
       </div>
     </div>
   );
