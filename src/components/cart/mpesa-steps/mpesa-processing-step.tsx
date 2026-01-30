@@ -3,25 +3,27 @@ import { useCart } from "@/contexts/cart-provider";
 import { useOrder } from "@/contexts/order-context";
 import { CheckCircle, Smartphone } from "lucide-react";
 
-
 export function MpesaProcessingStep() {
   const { grandTotal } = useCart();
-  const {pickupInfo} = useOrder();
+  const { pickupInfo } = useOrder();
 
   return (
     <div className="text-center space-y-4 p-4 text-sm">
       {/* Icon */}
-     <div className="size-18 mx-auto rounded-full bg-card border flex items-center justify-center">
-            <div className="relative">
-              <Smartphone className="size-8 text-green-600 dark:text-green-400 animate-pulse" strokeWidth={1.5} />
-              <div className="absolute inset-0 overflow-hidden rounded-lg">
-                <div 
-                  className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-600 dark:via-green-400 to-transparent animate-scan-line"
-                  style={{ animationDuration: "2s" }}
-                />
-              </div>
-            </div>
+      <div className="size-18 mx-auto rounded-full bg-card border flex items-center justify-center">
+        <div className="relative">
+          <Smartphone
+            className="size-8 text-green-600 dark:text-green-400 animate-pulse"
+            strokeWidth={1.5}
+          />
+          <div className="absolute inset-0 overflow-hidden rounded-lg">
+            <div
+              className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-600 dark:via-green-400 to-transparent animate-scan-line"
+              style={{ animationDuration: "2s" }}
+            />
           </div>
+        </div>
+      </div>
       {/* Heading */}
       <div>
         <h3 className="font-bold mb-1.5">Processing Payment</h3>
@@ -40,9 +42,7 @@ export function MpesaProcessingStep() {
 
         {/* Phone Row */}
         <div>
-          <p className="text-xs text-muted-foreground">
-            Phone Number
-          </p>
+          <p className="text-xs text-muted-foreground">Phone Number</p>
           <p className="font-semibold text-gray-900 dark:text-gray-100">
             {pickupInfo.phone}
           </p>

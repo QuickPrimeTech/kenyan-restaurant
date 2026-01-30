@@ -34,3 +34,18 @@ export type CartSnapshot = {
   items: CartItem[];
   total: number;
 };
+
+export type OrderPayload = {
+  items: CartItem[];
+  pickupInfo: {
+    fullName: string;
+    email: string;
+    phone: string;
+    pickupDate: string;
+    pickupTime: string;
+    specialInstructions?: string;
+  };
+  orderId?: string;
+  total: number;
+  paymentMethod: string;
+};

@@ -18,8 +18,11 @@ import { useCart } from "@/contexts/cart-provider";
 import { useCartUI } from "@/contexts/cart-ui-provider";
 import { MpesaStep } from "../mpesa-payment-step";
 import { useOrder } from "@/contexts/order-context";
-import { toast } from "sonner";
 import { formatCurrency } from "@/utils/currency-formatters";
+import api from "@/lib/api-client";
+import { ApiResponse } from "@/types/api";
+import type { OrderResponse } from "@/types/responses";
+import { OrderPayload } from "@/types/cart";
 
 export function MpesaPaymentForm({
   setStep,
@@ -35,16 +38,40 @@ export function MpesaPaymentForm({
     defaultValues: { phoneNumber: pickupInfo.phone || "" },
   });
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
     setStep("processing");
-    setCartSnapshot({ items: [...cartItems], total: grandTotal });
-    setTimeout(() => {
-      clearCart();
-      toast.success(
-        "You will receive an email shortly with your order details",
-      );
-      setCurrentCheckoutStep("success");
-    }, 5000);
+    setCartSnapshot({ items: cartItems, total: grandTotal });
+    console.log("pickupInfo ---->", pickupInfo);
+    console.log(cartItems);
+
+    const payload: OrderPayload = {
+      items: cartItems,
+      pickupInfo: {
+        fullName: pickupInfo.fullName || "",
+        email: pickupInfo.email || "",
+        phone: pickupInfo.phone || "",
+        pickupDate: pickupInfo.pickupDate || "",
+        pickupTime: pickupInfo.pickupDate || "",
+        specialInstructions: pickupInfo.instructions || "",
+      },
+      total: grandTotal,
+      paymentMethod: "Mpesa",
+    };
+
+    //Calling the payment api endpoint
+    const { data } = await api.post<OrderPayload, ApiResponse<OrderResponse>>(
+      "/payment",
+      payload,
+    );
+
+    console.log("Data returned ------>", data);
+    // setTimeout(() => {
+    //   clearCart();
+    //   toast.success(
+    //     "You will receive an email shortly with your order details",
+    //   );
+    //   setCurrentCheckoutStep("success");
+    // }, 5000);
   };
 
   return (
