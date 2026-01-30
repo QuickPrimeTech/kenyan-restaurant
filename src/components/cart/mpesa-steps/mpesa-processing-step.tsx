@@ -8,7 +8,7 @@ export function MpesaProcessingStep() {
   const { phoneNumber } = useOrder();
 
   return (
-    <div className="text-center space-y-4 p-4 text-sm">
+    <div className="text-center space-y-4 p-4 text-sm max-sm:mb-12">
       {/* Icon */}
       <div className="size-18 mx-auto rounded-full bg-card border flex items-center justify-center">
         <div className="relative">

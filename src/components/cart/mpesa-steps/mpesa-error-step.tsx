@@ -15,7 +15,7 @@ export function MpesaErrorStep({ onRetry, setStep }: MpesaErrorStepProps) {
   const { phoneNumber } = useOrder();
 
   return (
-    <div className="text-center space-y-4 p-4 text-sm">
+    <div className="text-center space-y-4 p-4 text-sm max-sm:mb-12">
       {/* Icon */}
       <div className="size-18 mx-auto rounded-full flex items-center justify-center bg-red-200 dark:bg-red-950">
         <div className="relative">
