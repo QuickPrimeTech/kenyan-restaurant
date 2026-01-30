@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { MpesaPaymentForm } from "./mpesa-steps/mpesa-payment-form";
 import { MpesaProcessingStep } from "./mpesa-steps/mpesa-processing-step";
 import { MpesaErrorStep } from "./mpesa-steps/mpesa-error-step";
@@ -15,28 +15,46 @@ export type MpesaStep = "phone" | "processing" | "error";
 export function MpesaPaymentStep() {
   const { cartItems, grandTotal, setCartSnapshot, clearCart } = useCart();
   const { setCurrentCheckoutStep } = useCartUI();
-  const { pickupInfo } = useOrder();
+  const { pickupInfo, phoneNumber, setPhoneNumber } = useOrder();
   const [step, setStep] = useState<MpesaStep>("phone");
-
-  // Store orderId and phone for retry functionality
   const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
-  const [submittedPhone, setSubmittedPhone] = useState<string>("");
 
+  // Use a cleanup function ref to ensure we always close connections
   const eventSourceRef = useRef<EventSource | null>(null);
+  const isConnectingRef = useRef(false); // Prevent double-clicks
 
-  // Cleanup SSE on unmount
-  useEffect(() => {
-    return () => {
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-      }
-    };
+  // Centralized cleanup function
+  const closeConnection = useCallback(() => {
+    if (eventSourceRef.current) {
+      console.log("Closing existing SSE connection");
+      eventSourceRef.current.close();
+      eventSourceRef.current = null;
+    }
+    isConnectingRef.current = false;
   }, []);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      closeConnection();
+    };
+  }, [closeConnection]);
+
   const handlePayment = async (values: PhoneData, isRetry = false) => {
+    // Prevent multiple simultaneous connection attempts
+    if (isConnectingRef.current) {
+      console.log("Already connecting...");
+      return;
+    }
+
+    setPhoneNumber(() => values.phoneNumber);
+
+    isConnectingRef.current = true;
     setStep("processing");
 
-    // Only update cart snapshot on first attempt
+    // CRITICAL: Close any existing connection before creating new one
+    closeConnection();
+
     if (!isRetry) {
       setCartSnapshot({ items: cartItems, total: grandTotal });
     }
@@ -54,12 +72,10 @@ export function MpesaPaymentStep() {
       },
       total: grandTotal,
       paymentMethod: "Mpesa",
-      // ↓↓↓ KEY: Include orderId on retry so backend doesn't create new order
       orderId: isRetry ? activeOrderId : undefined,
     };
 
     try {
-      // 1. Initiate payment through Next.js
       const response = await fetch("/api/payments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -81,14 +97,12 @@ export function MpesaPaymentStep() {
         throw new Error("No payment ID received for tracking");
       }
 
-      // Store orderId and phone for potential retry (only on first attempt)
       if (!isRetry && orderId) {
         setActiveOrderId(orderId);
-        setSubmittedPhone(values.phoneNumber);
+        setPhoneNumber(values.phoneNumber);
       }
 
-      // 2. Connect DIRECTLY to PrimeAPI SSE (bypass Next.js)
-      // FIXED: Removed space after unique_id=
+      // CRITICAL FIX: No space in URL!
       const eventSource = new EventSource(
         `https://api.quickprimetech.com/v1/payments/stream?unique_id=${uniqueId}`,
       );
@@ -97,64 +111,68 @@ export function MpesaPaymentStep() {
 
       eventSource.onopen = () => {
         console.log(
-          `SSE connection opened for ${isRetry ? "RETRY" : "new"} payment`,
+          `SSE connected for ${isRetry ? "retry" : "new"} payment: ${uniqueId}`,
         );
       };
 
       eventSource.onmessage = (event) => {
-        const update = JSON.parse(event.data);
-        console.log("Payment update:", update);
+        try {
+          const update = JSON.parse(event.data);
+          console.log("Payment update:", update);
 
-        // Handle initial connection message
-        if (update.status === "listening" || update.status === "connected") {
-          console.log("Waiting for M-Pesa confirmation...");
-          return;
-        }
+          if (update.status === "listening" || update.status === "connected") {
+            console.log("Waiting for M-Pesa confirmation...");
+            return;
+          }
 
-        // Handle completion
-        if (update.status === "success") {
-          eventSource.close();
-          clearCart();
-          // Clear active order on success (payment flow complete)
-          setActiveOrderId(null);
-          setSubmittedPhone("");
-          toast.success("Payment successful! Check your email for details.");
-          setCurrentCheckoutStep("success");
-        } else if (update.status === "failed") {
-          eventSource.close();
-          // Keep activeOrderId for retry!
-          toast.error(update.resultDesc || "Payment failed. Please try again.");
-          setStep("error");
-        } else if (update.status === "timeout") {
-          eventSource.close();
-          toast.error("Payment timed out. Please check your M-Pesa messages.");
-          setStep("error"); // Go to error step so they can retry
+          // Close connection and cleanup for all terminal states
+          closeConnection();
+
+          if (update.status === "success") {
+            clearCart();
+            setActiveOrderId(null);
+            setPhoneNumber("");
+            toast.success("Payment successful! Check your email for details.");
+            setCurrentCheckoutStep("success");
+          } else if (update.status === "failed") {
+            toast.error(
+              update.resultDesc || "Payment failed. Please try again.",
+            );
+            setStep("error");
+          } else if (update.status === "timeout") {
+            toast.error(
+              "Payment timed out. Please check your M-Pesa messages.",
+            );
+            setStep("error");
+          }
+        } catch (parseError) {
+          console.error("Failed to parse SSE data:", parseError);
         }
       };
 
       eventSource.onerror = (error) => {
         console.error("SSE error:", error);
-        eventSource.close();
+        closeConnection();
         toast.error("Connection lost. Please retry.");
         setStep("error");
       };
     } catch (error: any) {
       console.error("Payment error:", error);
+      closeConnection();
       toast.error(error.message || "Payment failed");
-      setStep("error"); // Go to error step on exception too
+      setStep("error");
     }
   };
 
-  // Retry handler: uses stored phone and orderId
   const handleRetry = () => {
-    if (!activeOrderId || !submittedPhone) {
+    if (!activeOrderId || !phoneNumber) {
       toast.error("Session expired, please start over");
+      setActiveOrderId(null);
       setStep("phone");
       return;
     }
 
-    // Retry with same phone number and existing orderId
-    handlePayment({ phoneNumber: submittedPhone }, true);
+    handlePayment({ phoneNumber }, true);
   };
 
   if (step === "processing") {
@@ -162,12 +180,7 @@ export function MpesaPaymentStep() {
   }
 
   if (step === "error") {
-    return (
-      <MpesaErrorStep
-        onRetry={handleRetry} // Now actually triggers payment, not just change step
-        setStep={setStep}
-      />
-    );
+    return <MpesaErrorStep onRetry={handleRetry} setStep={setStep} />;
   }
 
   return (

@@ -15,6 +15,8 @@ export type PickupInfo = {
 type OrderContextType = {
   pickupInfo: PickupInfo;
   setPickupInfo: React.Dispatch<React.SetStateAction<PickupInfo>>;
+  phoneNumber: string | null;
+  setPhoneNumber: React.Dispatch<React.SetStateAction<string | null>>;
   openDialog: boolean;
   setOpenDialog: (open: boolean) => void;
 };
@@ -23,11 +25,15 @@ const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export function OrderProvider({ children }: { children: React.ReactNode }) {
   const [pickupInfo, setPickupInfo] = useState<PickupInfo>({});
+  const [phoneNumber, setPhoneNumber] =
+    useState<OrderContextType["phoneNumber"]>(null);
   const [openDialog, setOpenDialog] = useState(false);
   console.log(pickupInfo);
   return (
     <OrderContext.Provider
       value={{
+        phoneNumber,
+        setPhoneNumber,
         pickupInfo,
         setPickupInfo,
         openDialog,

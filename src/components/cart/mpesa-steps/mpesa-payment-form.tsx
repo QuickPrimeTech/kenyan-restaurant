@@ -11,7 +11,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { phoneSchema, PhoneData } from "@/schemas/cart/mpesa-payment";
 import { useCart } from "@/contexts/cart-provider";
@@ -25,11 +25,11 @@ type MpesaPaymentFormProps = {
 export function MpesaPaymentForm({ onSubmit }: MpesaPaymentFormProps) {
   const { grandTotal } = useCart();
   const { setCurrentCheckoutStep } = useCartUI();
-  const { pickupInfo } = useOrder();
+  const { pickupInfo, phoneNumber } = useOrder();
 
   const phoneForm = useForm<PhoneData>({
     resolver: zodResolver(phoneSchema),
-    defaultValues: { phoneNumber: pickupInfo.phone || "" },
+    defaultValues: { phoneNumber: phoneNumber || pickupInfo.phone || "" },
   });
 
   return (

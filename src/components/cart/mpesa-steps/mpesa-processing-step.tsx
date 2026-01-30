@@ -5,7 +5,7 @@ import { CheckCircle, Smartphone } from "lucide-react";
 
 export function MpesaProcessingStep() {
   const { grandTotal } = useCart();
-  const { pickupInfo } = useOrder();
+  const { phoneNumber } = useOrder();
 
   return (
     <div className="text-center space-y-4 p-4 text-sm">
@@ -44,7 +44,7 @@ export function MpesaProcessingStep() {
         <div>
           <p className="text-xs text-muted-foreground">Phone Number</p>
           <p className="font-semibold text-gray-900 dark:text-gray-100">
-            {pickupInfo.phone}
+            {phoneNumber}
           </p>
         </div>
 
