@@ -50,7 +50,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
                 Ksh {menuItem.price.toFixed(2)}
               </div>
               <Badge variant={"secondary"} size="lg">
-                {menuItem.category}
+                {`${menuItem.category} Category`}
               </Badge>
             </div>
             <OrderWarning className={"mt-4"} menuItem={menuItem} />

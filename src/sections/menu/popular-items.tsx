@@ -20,14 +20,14 @@ type PopularItemsContextType = {
 };
 
 const PopularItemsContext = createContext<PopularItemsContextType | undefined>(
-  undefined
+  undefined,
 );
 
 const usePopularItems = () => {
   const context = useContext(PopularItemsContext);
   if (!context) {
     throw new Error(
-      "usePopularItems must be used within a PopularItems component"
+      "usePopularItems must be used within a PopularItems component",
     );
   }
   return context;
@@ -53,7 +53,7 @@ const PopularItems = ({
     if (!rootRef.current) return;
 
     const viewport = rootRef.current.querySelector(
-      "[data-slot='scroll-area-viewport']"
+      "[data-slot='scroll-area-viewport']",
     ) as HTMLDivElement | null;
 
     if (!viewport) return;
@@ -140,8 +140,7 @@ const PopularItemsContent = ({
 };
 
 // Scroll buttons component
-interface PopularItemsScrollButtonsProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+interface PopularItemsScrollButtonsProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "outline" | "ghost";
   size?: "default" | "sm" | "lg" | "icon" | "icon-sm";
 }

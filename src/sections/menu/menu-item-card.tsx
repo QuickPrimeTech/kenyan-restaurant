@@ -21,7 +21,8 @@ const cardVariants = cva("relative cursor-pointer overflow-hidden", {
     },
     variant: {
       popular: "bg-background",
-      regular: "border-b lg:border-b-0 rounded-bl-none lg:rounded-md md:bg-card",
+      regular:
+        "border-b lg:border-b-0 rounded-bl-none lg:rounded-md md:bg-card",
     },
   },
   defaultVariants: {
@@ -54,7 +55,7 @@ export function MenuItemCard({
         className={cn(
           "relative w-36 aspect-square ",
           orientation === "square" &&
-            "lg:w-50 shrink-0 rounded-md overflow-hidden border",
+            "w-full shrink-0 rounded-md overflow-hidden border",
         )}
       >
         <ImageWithFallback

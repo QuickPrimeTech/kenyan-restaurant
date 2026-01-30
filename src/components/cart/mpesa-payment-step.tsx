@@ -166,7 +166,7 @@ export function MpesaPaymentStep() {
 
   const handleRetry = () => {
     if (!activeOrderId || !phoneNumber) {
-      toast.error("Session expired, please start over");
+      toast.error("Session expired, please enter your pickup details");
       setActiveOrderId(null);
       setStep("phone");
       return;

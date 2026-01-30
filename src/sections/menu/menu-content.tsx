@@ -46,7 +46,13 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
         cats.add(item.category);
       }
     });
-    return ["Popular Dishes", ...cats];
+
+    // Convert to array and sort alphabetically (case-insensitive)
+    const sortedCats = Array.from(cats).sort((a, b) =>
+      a.toLowerCase().localeCompare(b.toLowerCase()),
+    );
+
+    return ["Popular Dishes", ...sortedCats];
   }, [menuItems]);
 
   useEffect(() => {
@@ -147,17 +153,19 @@ export default function MenuContent({ menuItems }: MenuContentProps) {
           )}
 
           {/* Menu Sections */}
-          {Object.entries(groupedMenuItems).map(([category, items]) => (
-            <MenuSection
-              key={category}
-              ref={(el) => {
-                registerSection(category, el);
-              }}
-              onClick={handleItemClick}
-              title={category}
-              items={items}
-            />
-          ))}
+          {Object.entries(groupedMenuItems)
+            .sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()))
+            .map(([category, items]) => (
+              <MenuSection
+                key={category}
+                ref={(el) => {
+                  registerSection(category, el);
+                }}
+                onClick={handleItemClick}
+                title={category}
+                items={items}
+              />
+            ))}
 
           {/* No results message */}
           {searchQuery && Object.keys(groupedMenuItems).length === 0 && (
