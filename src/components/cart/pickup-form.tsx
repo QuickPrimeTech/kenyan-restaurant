@@ -21,7 +21,6 @@ import { PickupFormValues, pickupSchema } from "@/schemas/cart/pickup-form";
 import { site } from "@/config/site-config";
 import { useCartUI } from "@/contexts/cart-ui-provider";
 
-
 export function PickupForm() {
   const { setPickupInfo } = useOrder();
   const { setCurrentCheckoutStep } = useCartUI();
@@ -51,7 +50,6 @@ export function PickupForm() {
     }
   }, [form]);
 
-
   // onSubmit will receive typed values (date is Date due to schema)
   const onSubmit = (values: PickupFormValues) => {
     localStorage.setItem(
@@ -61,19 +59,19 @@ export function PickupForm() {
         email: values.email,
         phone: values.phone,
         instructions: values.instructions,
-      })
+      }),
     );
 
-
     // ✅ Store all pickup details in context
-    setPickupInfo({
+    setPickupInfo((prevData) => ({
+      ...prevData,
       fullName: values.fullName,
       phone: values.phone,
       email: values.email,
       instructions: values.instructions,
-    });
+    }));
 
-  setCurrentCheckoutStep("payment");
+    setCurrentCheckoutStep("payment");
   };
 
   return (
@@ -182,12 +180,18 @@ export function PickupForm() {
         </CardContent>
       </Card>
       <div className="flex gap-2">
-        <Button variant={"outline"} type="submit" size="lg" className="flex-1" onClick={() => setCurrentCheckoutStep("cart")}>
-        Back to Cart
-      </Button>
-      <Button type="submit" size="lg" className="flex-1">
-        Continue to Payment <ArrowRight />
-      </Button>
+        <Button
+          variant={"outline"}
+          type="submit"
+          size="lg"
+          className="flex-1"
+          onClick={() => setCurrentCheckoutStep("cart")}
+        >
+          Back to Cart
+        </Button>
+        <Button type="submit" size="lg" className="flex-1">
+          Continue to Payment <ArrowRight />
+        </Button>
       </div>
     </form>
   );
