@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -20,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Gift, Check, Smartphone, X, Copy } from "lucide-react";
+import { Gift, Check, Smartphone, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -83,7 +82,7 @@ export function WhatsAppCampaignPopup() {
 
   useEffect(() => {
     const alreadyRegistered = localStorage.getItem(
-      "whatsapp-campaign-registered"
+      "whatsapp-campaign-registered",
     );
     const alreadyDismissed = sessionStorage.getItem("whatsapp-popup-dismissed");
     if (alreadyRegistered || alreadyDismissed) return;
@@ -105,7 +104,7 @@ export function WhatsAppCampaignPopup() {
       localStorage.setItem("whatsapp-discount-code", "WHATSAPP10");
       setIsSuccess(true);
       toast.success(
-        "Successfully registered! Check your WhatsApp for your discount code."
+        "Successfully registered! Check your WhatsApp for your discount code.",
       );
     } catch {
       toast.error("Registration failed. Please try again.");
@@ -178,23 +177,12 @@ export function WhatsAppCampaignPopup() {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent
-        className="w-[95vw] max-w-sm mx-auto max-h-[95vh] gap-0 p-0 overflow-hidden"
-        showCloseButton={false}
-      >
-        <DialogHeader className="relative z-10 shadow-sm">
+      <DialogContent className="w-[95vw] max-w-sm mx-auto max-h-[95vh] gap-0 p-0 overflow-hidden">
+        <DialogHeader className="relative shadow-sm">
           <DialogTitle className="sr-only">
             Signup to our whatsapp campaign
           </DialogTitle>
           <div className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleClose}
-              className="absolute top-1 right-1 size-8 z-50 hover:text-white hover:bg-green-700 text-white"
-            >
-              <X />
-            </Button>
             <div className="text-center">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
                 <FaWhatsapp className="size-5" />
