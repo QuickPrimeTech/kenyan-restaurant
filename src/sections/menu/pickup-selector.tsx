@@ -6,12 +6,30 @@ import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { formatTime } from "@/utils/time-formatters";
 import { formatPickupDate } from "@/utils/pickup-slot-generator";
+import { VariantProps, cva } from "class-variance-authority";
 
-export function PickupSelector() {
+const pickupSelectorVariants = cva(
+  "flex items-center gap-2 px-6 rounded-full bg-muted text-sm font-bold",
+  {
+    variants: {
+      variant: {
+        default: "",
+        dark: "",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  },
+);
+
+export function PickupSelector({
+  variant,
+}: VariantProps<typeof pickupSelectorVariants>) {
   const isMobile = useMediaQuery("(max-width:640px)");
   const { pickupInfo, setOpenDialog } = useOrder();
 
-  const label = 
+  const label =
     pickupInfo.pickupDate && pickupInfo.pickupTime
       ? `${formatPickupDate(pickupInfo.pickupDate)}, ${formatTime(pickupInfo.pickupTime)}`
       : "Select pickup time";
@@ -19,7 +37,7 @@ export function PickupSelector() {
   return (
     <>
       <div className="flex gap-2 mb-8">
-        <div className="flex items-center gap-2 px-6 rounded-full bg-muted text-sm font-bold">
+        <div className={cn(pickupSelectorVariants({ variant }))}>
           <MapPin className="size-5" />
           Pickup
         </div>

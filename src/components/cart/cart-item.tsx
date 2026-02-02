@@ -1,7 +1,5 @@
 "use client";
-
 import { useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import {
@@ -18,6 +16,7 @@ import { useCart } from "@/contexts/cart-provider";
 import { CartItem as CartItemType } from "@/types/cart";
 import { ItemDetail } from "@/sections/menu/item-detail-dialog";
 import { cn } from "@/lib/utils";
+import { ImageWithFallback } from "@ui/image";
 
 type CartItemProps = {
   cartItem: CartItemType;
@@ -47,24 +46,24 @@ export function CartItem({ cartItem, size = "big" }: CartItemProps) {
         onClick={() => setOpen(true)}
       >
         <div className="flex items-center gap-4">
-          {cartItem.image_url && (
-            <div
-              className={cn(
-                "relative size-16 bg-muted rounded-md overflow-hidden flex-shrink-0",
-                size === "small" && "size-10 rounded-xs",
-              )}
-            >
-              <Image
-                src={cartItem.image_url}
-                alt={cartItem.name}
-                placeholder={cartItem.menuItem.lqip ? "blur" : "empty"}
-                blurDataURL={cartItem.menuItem.lqip || undefined}
-                fill
-                sizes="48px"
-                className="object-cover"
-              />
-            </div>
-          )}
+          <div
+            className={cn(
+              "relative size-16 bg-muted rounded-md overflow-hidden flex-shrink-0",
+              size === "small" && "size-10 rounded-xs",
+            )}
+          >
+            <ImageWithFallback
+              src={cartItem.image_url}
+              alt={cartItem.name}
+              placeholder={cartItem.menuItem.lqip ? "blur" : "empty"}
+              blurDataURL={cartItem.menuItem.lqip || undefined}
+              iconProps={{ className: "size-3.5" }}
+              textProps={{ className: "hidden" }}
+              fill
+              sizes="48px"
+              className="object-cover"
+            />
+          </div>
           <div className="flex-1 min-w-0">
             <h4
               className={cn(

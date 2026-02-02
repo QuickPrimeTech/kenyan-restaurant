@@ -20,6 +20,7 @@ import {
 import { PickupFormValues, pickupSchema } from "@/schemas/cart/pickup-form";
 import { site } from "@/config/site-config";
 import { useCartUI } from "@/contexts/cart-ui-provider";
+import { PickupSelector } from "@/sections/menu/pickup-selector";
 
 export function PickupForm() {
   const { setPickupInfo } = useOrder();
@@ -99,17 +100,17 @@ export function PickupForm() {
           </p>
         </CardContent>
       </Card>
-
       {/* Schedule */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            Schedule Pickup
+            Pickup Details
           </CardTitle>
-          <CardDescription>Choose your preferred date & time</CardDescription>
+          <CardDescription>Fill in your pickup information</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <PickupSelector variant={"dark"} />
           {/* Full Name */}
           <div className="space-y-2">
             <Label>Full Name *</Label>
