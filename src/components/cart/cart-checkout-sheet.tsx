@@ -31,8 +31,8 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import Link from "next/link";
-import { useCart } from "@/contexts/cart-provider";
-import { useCartUI } from "@/contexts/cart-ui-provider";
+import { useCartStore } from "@/stores/use-cart-store";
+import { useCartUIStore } from "@/stores/use-cart-ui-store";
 import { CartItem } from "./cart-item";
 import { PickupForm } from "./pickup-form";
 import { CartSuccess } from "./cart-success";
@@ -48,13 +48,13 @@ const STEP_META = {
 };
 
 export function CartCheckoutSheet() {
-  const { cartItems, cartSnapshot, cartItemsCount, clearCart } = useCart();
+  const { cartItems, cartSnapshot, cartItemsCount, clearCart } = useCartStore();
   const {
     isCartCheckoutOpen,
     openCartCheckout,
     currentCheckoutStep,
     setCurrentCheckoutStep,
-  } = useCartUI();
+  } = useCartUIStore();
 
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 

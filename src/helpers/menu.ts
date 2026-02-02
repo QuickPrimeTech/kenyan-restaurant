@@ -1,4 +1,4 @@
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { CartItem, CartItemChoices, RawCartOptions } from "@/types/cart";
 import { MenuChoice, MenuItem } from "@/types/menu";
 import { toast } from "sonner";
@@ -77,7 +77,7 @@ export const compareChoices = (
 };
 
 export const useHandleCart = () => {
-  const { addToCart, updateCartItem } = useCart();
+  const { addToCart, updateCartItem } = useCartStore();
 
   const onAdd = (
     raw: RawCartOptions,

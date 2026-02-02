@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useOrder } from "@/contexts/order-context";
+import { useOrderStore } from "@/stores/use-order-store";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import z from "zod";
@@ -42,7 +42,7 @@ export const PickupDialog = () => {
 
   const defaultDate = AVAILABLE_DATES.find((d) => !d.isClosed)?.value;
 
-  const { pickupInfo, setPickupInfo, openDialog, setOpenDialog } = useOrder();
+  const { pickupInfo, setPickupInfo, openDialog, setOpenDialog } = useOrderStore();
 
   const form = useForm<PickupFormValues>({
     resolver: zodResolver(pickupSchema),
@@ -97,11 +97,10 @@ export const PickupDialog = () => {
                             key={d.value}
                             disabled={d.isClosed}
                             onClick={() => field.onChange(d.value)}
-                            className={`gap-8 rounded-2xl transition-all shadow-sm cursor-pointer ${
-                              field.value === d.value
+                            className={`gap-8 rounded-2xl transition-all shadow-sm cursor-pointer ${field.value === d.value
                                 ? "bg-foreground dark:bg-foreground text-background dark:hover:bg-foreground/95 hover:bg-foreground/95 hover:text-background"
                                 : "border bg-background hover:border-foreground/20"
-                            }`}
+                              }`}
                           >
                             <p className="text-base font-bold">{d.label.day}</p>
                             <p className="font-bold whitespace-nowrap">

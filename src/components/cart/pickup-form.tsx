@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MapPin, Clock, ArrowRight } from "lucide-react";
-import { useOrder } from "@/contexts/order-context";
+import { useOrderStore } from "@/stores/use-order-store";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,12 +19,12 @@ import {
 
 import { PickupFormValues, pickupSchema } from "@/schemas/cart/pickup-form";
 import { site } from "@/config/site-config";
-import { useCartUI } from "@/contexts/cart-ui-provider";
+import { useCartUIStore } from "@/stores/use-cart-ui-store";
 import { PickupSelector } from "@/sections/menu/pickup-selector";
 
 export function PickupForm() {
-  const { setPickupInfo } = useOrder();
-  const { setCurrentCheckoutStep } = useCartUI();
+  const { setPickupInfo } = useOrderStore();
+  const { setCurrentCheckoutStep } = useCartUIStore();
   const form = useForm<PickupFormValues>({
     resolver: zodResolver(pickupSchema),
     mode: "onTouched",

@@ -14,13 +14,9 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Form } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { ReactNode, useEffect, useMemo } from "react";
 import { MenuChoice } from "@/types/menu";
-import {
-  ChoicesFormProvider,
-  useChoicesForm,
-} from "@/contexts/choices-form-context";
 import { cn } from "@/lib/utils";
 import { createItemSchema } from "@/schemas/menu";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +30,7 @@ import {
   NumberFieldInput,
 } from "@/components/ui/number-field";
 import { ZodObject } from "zod";
-import { useOrder } from "@/contexts/order-context";
+import { useOrderStore } from "@/stores/use-order-store";
 
 type ChoicesFormProps = {
   choices: MenuChoice[];
@@ -44,6 +40,12 @@ type ChoicesFormProps = {
   children?: ReactNode;
   basePrice: number;
   setDirty?: (open: boolean) => void;
+  // Schema is now optional prop, if not provided it's created internally.
+  // But if children need it, they must receive it too.
+  // To allow flexibility, we can expose the schema creation via a hook or just
+  // let the parent pass it if necessary.
+  // For now, I'll keep the internal creation but expose a way to get it?
+  // Actually, to support existing children, I'll update the components export.
 } & React.ComponentProps<"form">;
 
 export function ChoicesForm({
@@ -59,11 +61,11 @@ export function ChoicesForm({
 }: ChoicesFormProps) {
   const choicesSchema = useMemo(
     () => createItemSchema(choices, defaultQuantity),
-    [choices],
+    [choices, defaultQuantity],
   );
 
-  //Getting info from the order context
-  const { pickupInfo, setOpenDialog } = useOrder();
+  //Getting info from the order store
+  const { pickupInfo, setOpenDialog } = useOrderStore();
 
   const form = useForm({
     resolver: zodResolver(choicesSchema),
@@ -82,7 +84,7 @@ export function ChoicesForm({
 
   useEffect(() => {
     setDirty?.(isActuallyDirty);
-  }, [isActuallyDirty]);
+  }, [isActuallyDirty, setDirty]);
 
   const watchedValues = form.watch();
   const totalPrice = calculateTotalPrice(watchedValues, choices, basePrice);
@@ -98,50 +100,45 @@ export function ChoicesForm({
   };
 
   return (
-    <ChoicesFormProvider
-      value={{
-        form,
-        choicesSchema,
-        choices,
-        basePrice,
-        totalPrice,
-        defaultValues,
-      }}
-    >
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(
-            (data) => {
-              handleSubmit(data as RawCartOptions);
-            },
-            (errors) => {
-              // Scroll to first error
-              const firstErrorField = Object.keys(errors)[0];
-              if (firstErrorField) {
-                const el = document.getElementById(firstErrorField);
-                if (el) {
-                  el.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                  (el as HTMLElement).focus({ preventScroll: true });
-                }
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(
+          (data) => {
+            handleSubmit(data as RawCartOptions);
+          },
+          (errors) => {
+            // Scroll to first error
+            const firstErrorField = Object.keys(errors)[0];
+            if (firstErrorField) {
+              const el = document.getElementById(firstErrorField);
+              if (el) {
+                el.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+                (el as HTMLElement).focus({ preventScroll: true });
               }
-            },
-          )}
-          className={cn("space-y-6", className)}
-          {...props}
-        >
-          {children}
-        </form>
-      </Form>
-    </ChoicesFormProvider>
+            }
+          },
+        )}
+        className={cn("space-y-6", className)}
+        {...props}
+      >
+        {children}
+      </form>
+    </Form>
   );
 }
 
 // Choice Item Component for better organization
-const ChoiceItem = ({ choice }: { choice: MenuChoice }) => {
-  const { form, choicesSchema } = useChoicesForm();
+export const ChoiceItem = ({
+  choice,
+  choicesSchema,
+}: {
+  choice: MenuChoice;
+  choicesSchema: ZodObject;
+}) => {
+  const form = useFormContext();
   const choiceId = choice.id;
   const isSingle = choice.maxSelectable === 1 && choice.required;
 
@@ -266,11 +263,9 @@ const MultipleChoiceOptions = ({
               )}
               title={
                 isDisabled
-                  ? `You are only allowed to select up to ${
-                      choice.maxSelectable
-                    } option${
-                      (choice.maxSelectable || choice.options.length) > 1 && "s"
-                    }`
+                  ? `You are only allowed to select up to ${choice.maxSelectable
+                  } option${(choice.maxSelectable || choice.options.length) > 1 && "s"
+                  }`
                   : ``
               }
             >
@@ -329,19 +324,25 @@ const OptionLabel = ({
   </Label>
 );
 
-export function ChoicesContent() {
-  const { choices } = useChoicesForm();
+export function ChoicesContent({
+  choices,
+  schema,
+}: {
+  choices: MenuChoice[];
+  schema: ZodObject;
+}) {
+  const form = useFormContext();
 
   return (
     <div className="space-y-4">
       {/* Choices */}
       {choices.map((choice) => (
-        <ChoiceItem key={choice.id} choice={choice} />
+        <ChoiceItem key={choice.id} choice={choice} choicesSchema={schema} />
       ))}
 
       {/* Special Instructions */}
       <FormField
-        control={useChoicesForm().form.control}
+        control={form.control}
         name="specialInstructions"
         render={({ field }) => (
           <FormItem>
@@ -365,7 +366,7 @@ export function ChoicesContent() {
 }
 
 export function QuantitySelector() {
-  const { form } = useChoicesForm();
+  const form = useFormContext();
 
   return (
     <FormField

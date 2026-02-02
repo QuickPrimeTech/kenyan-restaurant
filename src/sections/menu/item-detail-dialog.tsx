@@ -17,7 +17,7 @@ import { AddToCartButton } from "./add-cart-button";
 import { ShareMenuButton } from "./common/share-menu-button";
 import { useHandleCart } from "@/helpers/menu";
 import { CartItem, RawCartOptions } from "@/types/cart";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
@@ -31,8 +31,9 @@ import {
   AlertDialogContent
 } from "@/components/ui/alert-dialog";
 import { CloseAlert } from "./common/close-alert";
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { OrderWarning } from "./order-warning";
+import { createItemSchema } from "@/schemas/menu";
 
 interface ItemDetailProps {
   item: MenuItem | null;
@@ -51,7 +52,7 @@ export function ItemDetail({
   const [isDirty, setIsDirty] = useState<boolean>(false);
   const [alertDialogOpen, onAlertDialogChange] = useState<boolean>(false);
   const { onAdd, onEdit } = useHandleCart();
-  const { removeFromCart } = useCart();
+  const { removeFromCart } = useCartStore();
 
   const handleChange = (open: boolean) => {
     if (open) {
@@ -66,7 +67,16 @@ export function ItemDetail({
     onOpenChange(open);
   };
 
-  if (!item) return null;
+  const schema = useMemo(() => {
+    if (!item) return undefined;
+    // We can default quantity to 1 for schema generation purposes if needed, 
+    // or use the actual default quantity if available.
+    // The schema depends on quantity only for max quantity check which might no longer be in schema?
+    // Actually, createItemSchema takes (choices, defaultQuantity).
+    return createItemSchema(item.choices, defaultValues?.quantity ?? 1);
+  }, [item, defaultValues]);
+
+  if (!item || !schema) return null;
 
   const handleAdd = (values: RawCartOptions, totalPrice: number) => {
     if (defaultValues) {
@@ -151,7 +161,7 @@ export function ItemDetail({
         </div>
         <OrderWarning className={"mt-4"} menuItem={item} />
       </div>
-      <ChoicesContent />
+      <ChoicesContent choices={item.choices} schema={schema} />
       {footerButtons}
     </div>
   );

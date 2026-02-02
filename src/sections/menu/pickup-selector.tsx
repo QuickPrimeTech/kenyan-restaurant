@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Clock, MapPin, ChevronDown } from "lucide-react";
-import { useOrder } from "@/contexts/order-context";
+import { useOrderStore } from "@/stores/use-order-store";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { formatTime } from "@/utils/time-formatters";
@@ -27,7 +27,7 @@ export function PickupSelector({
   variant,
 }: VariantProps<typeof pickupSelectorVariants>) {
   const isMobile = useMediaQuery("(max-width:640px)");
-  const { pickupInfo, setOpenDialog } = useOrder();
+  const { pickupInfo, setOpenDialog } = useOrderStore();
 
   const label =
     pickupInfo.pickupDate && pickupInfo.pickupTime
@@ -55,7 +55,7 @@ export function PickupSelector({
               className={cn(
                 "font-bold",
                 !pickupInfo.pickupDate ||
-                  (!pickupInfo.pickupTime && "text-muted-foreground"),
+                (!pickupInfo.pickupTime && "text-muted-foreground"),
               )}
             >
               {label}

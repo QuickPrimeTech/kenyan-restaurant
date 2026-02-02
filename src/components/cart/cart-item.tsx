@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { CartItem as CartItemType } from "@/types/cart";
 import { ItemDetail } from "@/sections/menu/item-detail-dialog";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ type CartItemProps = {
 };
 
 export function CartItem({ cartItem, size = "big" }: CartItemProps) {
-  const { removeFromCart, updateQuantity } = useCart();
+  const { removeFromCart, updateQuantity } = useCartStore();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [open, setOpen] = useState(false);
   const changeQty = (qty: number) =>

@@ -6,12 +6,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { formatCurrency } from "@/utils/currency-formatters";
 import { PriceBreakdown } from "./price-breakdown";
-import { useCart } from "@/contexts/cart-provider";
-import { useCartUI } from "@/contexts/cart-ui-provider";
+import { useCartStore } from "@/stores/use-cart-store";
+import { useCartUIStore } from "@/stores/use-cart-ui-store";
 
 export function CartSuccess() {
-  const { cartSnapshot } = useCart();
-  const { openCartCheckout, setCurrentCheckoutStep } = useCartUI();
+  const { cartSnapshot } = useCartStore();
+  const { openCartCheckout, setCurrentCheckoutStep } = useCartUIStore();
 
   const handleCompletion = () => {
     // Close the cart checkout and reset to cart step

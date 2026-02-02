@@ -1,7 +1,7 @@
 // @/components/cart/mpesa-steps/mpesa-error-step.tsx
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { Smartphone, XCircle } from "lucide-react";
-import { useOrder } from "@/contexts/order-context";
+import { useOrderStore } from "@/stores/use-order-store";
 import { MpesaStep } from "../mpesa-payment-step";
 import { Button } from "@/components/ui/button";
 
@@ -11,8 +11,8 @@ type MpesaErrorStepProps = {
 };
 
 export function MpesaErrorStep({ onRetry, setStep }: MpesaErrorStepProps) {
-  const { grandTotal } = useCart();
-  const { phoneNumber } = useOrder();
+  const { grandTotal } = useCartStore();
+  const { phoneNumber } = useOrderStore();
 
   return (
     <div className="text-center space-y-4 p-4 text-sm max-sm:mb-12">

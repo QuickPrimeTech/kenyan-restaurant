@@ -1,11 +1,11 @@
 // @/components/cart/mpesa-steps/mpesa-processing-step.tsx
-import { useCart } from "@/contexts/cart-provider";
-import { useOrder } from "@/contexts/order-context";
+import { useCartStore } from "@/stores/use-cart-store";
+import { useOrderStore } from "@/stores/use-order-store";
 import { CheckCircle, Smartphone } from "lucide-react";
 
 export function MpesaProcessingStep() {
-  const { grandTotal } = useCart();
-  const { phoneNumber } = useOrder();
+  const { grandTotal } = useCartStore();
+  const { phoneNumber } = useOrderStore();
 
   return (
     <div className="text-center space-y-4 p-4 text-sm max-sm:mb-12">

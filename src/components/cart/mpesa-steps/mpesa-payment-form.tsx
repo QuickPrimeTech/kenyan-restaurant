@@ -14,18 +14,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { phoneSchema, PhoneData } from "@/schemas/cart/mpesa-payment";
-import { useCart } from "@/contexts/cart-provider";
-import { useCartUI } from "@/contexts/cart-ui-provider";
-import { useOrder } from "@/contexts/order-context";
+import { useCartStore } from "@/stores/use-cart-store";
+import { useCartUIStore } from "@/stores/use-cart-ui-store";
+import { useOrderStore } from "@/stores/use-order-store";
 import { formatCurrency } from "@/utils/currency-formatters";
 
 type MpesaPaymentFormProps = {
   onSubmit: (values: PhoneData) => void;
 };
 export function MpesaPaymentForm({ onSubmit }: MpesaPaymentFormProps) {
-  const { grandTotal } = useCart();
-  const { setCurrentCheckoutStep } = useCartUI();
-  const { pickupInfo, phoneNumber } = useOrder();
+  const { grandTotal } = useCartStore();
+  const { setCurrentCheckoutStep } = useCartUIStore();
+  const { pickupInfo, phoneNumber } = useOrderStore();
 
   const phoneForm = useForm<PhoneData>({
     resolver: zodResolver(phoneSchema),

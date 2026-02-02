@@ -6,7 +6,7 @@ import { ImageWithFallback } from "@/components/ui/image";
 import type { MenuItem } from "@/types/menu";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { countItems } from "@/helpers/menu";
 
 const cardVariants = cva("relative cursor-pointer overflow-hidden", {
@@ -45,7 +45,7 @@ export function MenuItemCard({
 }: VariantProps<typeof cardVariants> &
   React.ComponentProps<"div"> &
   MenuItemCardProps) {
-  const { cartItems } = useCart();
+  const { cartItems } = useCartStore();
   const cartItemsCount = countItems(cartItems, menuItem);
 
   return (
@@ -55,7 +55,7 @@ export function MenuItemCard({
         className={cn(
           "relative w-36 aspect-square ",
           orientation === "square" &&
-            "w-full shrink-0 rounded-md overflow-hidden border",
+          "w-full shrink-0 rounded-md overflow-hidden border",
         )}
       >
         <ImageWithFallback

@@ -1,16 +1,16 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { cn } from "@/lib/utils";
-import { useCartUI } from "@/contexts/cart-ui-provider";
+import { useCartUIStore } from "@/stores/use-cart-ui-store";
 
 export function CartButton({
   className,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { cartItemsCount, total } = useCart();
-  const { openCartCheckout } = useCartUI();
+  const { cartItemsCount, total } = useCartStore();
+  const { openCartCheckout } = useCartUIStore();
 
   return (
     <Button

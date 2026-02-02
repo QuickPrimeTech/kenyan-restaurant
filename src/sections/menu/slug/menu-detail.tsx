@@ -5,15 +5,21 @@ import { MenuItem } from "@/types/menu";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
 import { countItems, useHandleCart } from "@/helpers/menu";
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { ImageWithFallback } from "@/components/ui/image";
 import { OrderWarning } from "@/sections/menu/order-warning";
+import { useMemo } from "react";
+import { createItemSchema } from "@/schemas/menu";
 
 export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const { cartItems } = useCart();
+  const { cartItems } = useCartStore();
   const { onAdd } = useHandleCart();
   const cartItemsCount = countItems(cartItems, menuItem);
+
+  const schema = useMemo(() => {
+    return createItemSchema(menuItem.choices, 1);
+  }, [menuItem]);
 
   return (
     <section className="md:px-6 lg:px-8">
@@ -60,7 +66,7 @@ export function MenuDetail({ menuItem }: { menuItem: MenuItem }) {
             onAdd={(values, totalPrice) => onAdd(values, totalPrice, menuItem)}
             choices={menuItem.choices}
           >
-            <ChoicesContent />
+            <ChoicesContent choices={menuItem.choices} schema={schema} />
             <div className="flex gap-2 md:gap-3">
               <QuantitySelector />
               <AddToCartButton

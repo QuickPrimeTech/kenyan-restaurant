@@ -4,18 +4,18 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { MpesaPaymentForm } from "./mpesa-steps/mpesa-payment-form";
 import { MpesaProcessingStep } from "./mpesa-steps/mpesa-processing-step";
 import { MpesaErrorStep } from "./mpesa-steps/mpesa-error-step";
-import { useCart } from "@/contexts/cart-provider";
-import { useOrder } from "@/contexts/order-context";
+import { useCartStore } from "@/stores/use-cart-store";
+import { useOrderStore } from "@/stores/use-order-store";
 import { PhoneData } from "@/schemas/cart/mpesa-payment";
 import { toast } from "sonner";
-import { useCartUI } from "@/contexts/cart-ui-provider";
+import { useCartUIStore } from "@/stores/use-cart-ui-store";
 
 export type MpesaStep = "phone" | "processing" | "error";
 
 export function MpesaPaymentStep() {
-  const { cartItems, grandTotal, setCartSnapshot, clearCart } = useCart();
-  const { setCurrentCheckoutStep } = useCartUI();
-  const { pickupInfo, phoneNumber, setPhoneNumber } = useOrder();
+  const { cartItems, grandTotal, setCartSnapshot, clearCart } = useCartStore();
+  const { setCurrentCheckoutStep } = useCartUIStore();
+  const { pickupInfo, phoneNumber, setPhoneNumber } = useOrderStore();
   const [step, setStep] = useState<MpesaStep>("phone");
   const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
 
@@ -47,7 +47,7 @@ export function MpesaPaymentStep() {
       return;
     }
 
-    setPhoneNumber(() => values.phoneNumber);
+    setPhoneNumber(values.phoneNumber);
 
     isConnectingRef.current = true;
     setStep("processing");
@@ -131,7 +131,7 @@ export function MpesaPaymentStep() {
           if (update.status === "success") {
             clearCart();
             setActiveOrderId(null);
-            setPhoneNumber("");
+            setPhoneNumber(null);
             toast.success("Payment successful! Check your email for details.");
             setCurrentCheckoutStep("success");
           } else if (update.status === "failed") {

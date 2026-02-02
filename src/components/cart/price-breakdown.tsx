@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/currency-formatters";
@@ -15,7 +15,7 @@ export const PriceBreakdown = ({
   className,
   cartSnapshot,
 }: PriceBreakdownProps) => {
-  const { cartItemsCount, total } = useCart();
+  const { cartItemsCount, total } = useCartStore();
 
   // Define tax rates
   const TOURISM_TAX = 0.16; // 16%

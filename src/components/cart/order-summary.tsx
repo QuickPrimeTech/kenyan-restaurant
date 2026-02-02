@@ -1,10 +1,10 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useCart } from "@/contexts/cart-provider";
+import { useCartStore } from "@/stores/use-cart-store";
 import { PriceBreakdown } from "./price-breakdown";
 import { CartItem } from "./cart-item";
 
 export const OrderSummary = () => {
-  const { cartItems } = useCart();
+  const { cartItems } = useCartStore();
 
   return (
     <div className="bg-card rounded-xl p-4 space-y-3 shadow-luxury">
@@ -13,7 +13,7 @@ export const OrderSummary = () => {
       <ScrollArea className="h-40 pr-2">
         <div className="space-y-2">
           {cartItems.map((cartItem) => (
-            <CartItem cartItem={cartItem} key={cartItem.cartItemId} size="small"/>
+            <CartItem cartItem={cartItem} key={cartItem.cartItemId} size="small" />
           ))}
         </div>
       </ScrollArea>

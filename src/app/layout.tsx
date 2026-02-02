@@ -8,10 +8,7 @@ import { site } from "@/config/site-config";
 import { ContactButton } from "@/components/contact-button";
 import { WhatsAppCampaignPopup } from "@/components/whatsapp-campaign-popup";
 import { ThemeProvider } from "@/components/theme-provider";
-import { CartProvider } from "@/contexts/cart-provider";
-import { CartUIProvider } from "@/contexts/cart-ui-provider";
 import { CartCheckoutSheet } from "@/components/cart/cart-checkout-sheet";
-import { OrderProvider } from "@/contexts/order-context";
 import { PickupDialog } from "@/sections/menu/pickup-dialog";
 import { CartButton } from "@/components/cart/cart-button";
 
@@ -73,22 +70,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <CartUIProvider>
-            <OrderProvider>
-              <CartProvider>
-                <Navbar />
-                {children}
-                <ContactButton />
-                <WhatsAppCampaignPopup />
-                <Toaster richColors position="top-center" />
-                {/* Dialog */}
-                <CartCheckoutSheet />
-                <CartButton />
-                <PickupDialog />
-                <Footer />
-              </CartProvider>
-            </OrderProvider>
-          </CartUIProvider>
+          <Navbar />
+          {children}
+          <ContactButton />
+          <WhatsAppCampaignPopup />
+          <Toaster richColors position="top-center" />
+          {/* Dialog */}
+          <CartCheckoutSheet />
+          <CartButton />
+          <PickupDialog />
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
