@@ -74,7 +74,7 @@ export function MpesaPaymentForm({ onSubmit }: MpesaPaymentFormProps) {
             <div className="flex justify-between items-center">
               <span className="font-semibold">Total Amount:</span>
               <span className="text-xl font-bold text-green-600 dark:text-green-400">
-                Ksh {grandTotal.toFixed(2)}
+                Ksh {formatCurrency(Math.ceil(grandTotal))}
               </span>
             </div>
           </div>
@@ -96,7 +96,7 @@ export function MpesaPaymentForm({ onSubmit }: MpesaPaymentFormProps) {
               className="flex-1 bg-green-600 hover:bg-green-700"
             >
               <Smartphone />
-              Pay ksh {formatCurrency(grandTotal)}
+              Pay ksh {formatCurrency(Math.ceil(grandTotal))}
             </Button>
           </div>
         </form>
