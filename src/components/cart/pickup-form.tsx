@@ -110,7 +110,9 @@ export function PickupForm() {
           <CardDescription>Fill in your pickup information</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/*  Pickup Selector */}
           <PickupSelector variant={"dark"} />
+
           {/* Full Name */}
           <div className="space-y-2">
             <Label>Full Name *</Label>

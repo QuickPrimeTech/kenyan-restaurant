@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Open_Sans, Montserrat } from "next/font/google";
+import { Open_Sans, Lora } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/layouts/navbar";
 import { Footer } from "@/layouts/footer";
@@ -16,7 +16,7 @@ import { PickupDialog } from "@/sections/menu/pickup-dialog";
 import { CartButton } from "@/components/cart/cart-button";
 
 // Headings
-const montserrat = Montserrat({
+const montserrat = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-montserrat",

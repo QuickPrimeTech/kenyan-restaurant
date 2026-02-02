@@ -47,6 +47,7 @@ export function PickupSelector({
           onClick={() => setOpenDialog(true)}
           size={isMobile ? "default" : "xl"}
           className="shadow-sm cursor-pointer"
+          type="button"
         >
           <div className="flex items-center gap-2">
             <Clock />
