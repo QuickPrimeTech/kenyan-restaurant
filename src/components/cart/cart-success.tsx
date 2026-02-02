@@ -78,7 +78,7 @@ export function CartSuccess() {
       <Button
         onClick={handleCompletion}
         size="xl"
-        className="w-full rounded-xl shadow-md"
+        className="w-full rounded-xl shadow-md max-sm:mb-12"
       >
         Done
         <CheckCircle2 className="size-6" />

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -108,11 +109,13 @@ export function CartCheckoutSheet() {
                 <p className="text-muted-foreground mb-4">
                   Add some delicious items to get started!
                 </p>
-                <Button asChild size="xl">
-                  <Link href="/menu">
-                    <ShoppingBag /> Start Shopping
-                  </Link>
-                </Button>
+                <SheetClose asChild>
+                  <Button asChild size="xl">
+                    <Link href="/menu">
+                      <ShoppingBag /> Start Shopping
+                    </Link>
+                  </Button>
+                </SheetClose>
               </div>
             ) : (
               <>
