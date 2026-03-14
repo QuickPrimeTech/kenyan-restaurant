@@ -1,177 +1,279 @@
-// components/reservations/steps/reservation-form.tsx
-
 "use client";
-import { JSX, useState } from "react";
-import { DateTimeStep } from "../../components/reservations/steps/date-time-step";
-import { PartyDetailsStep } from "../../components/reservations/steps/party-details-step";
-import { TableSelectionStep } from "../../components/reservations/steps/table-selection-step";
-import { ContactInfoStep } from "../../components/reservations/steps/contact-info-steps";
-import { ConfirmationStep } from "../../components/reservations/steps/confirmation-step";
-import type { ReservationData } from "@/types/reservations";
-import { RESERVATION_STEPS } from "@/constants/reservation";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  validateReservationStep,
-  showStepValidationError,
-} from "@/utils/reservation-validation";
-import { MultiStepFormWrapper } from "@/components/ui/multi-step-form-wrapper";
-import { SuccessStep } from "../../components/reservations/steps/success-step";
+  ChevronRight,
+  ChevronLeft,
+  User,
+  Clock,
+  UtensilsCrossed,
+  NotebookText,
+  CheckCircle,
+  Loader,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "@/components/ui/form";
 
-/**
- * ReservationForm Component
- *
- * This is the main component that orchestrates the entire reservation process.
- * It manages the multi-step form flow, data state, validation, and step navigation.
- *
- * Features:
- * - Multi-step form with progress tracking
- * - Comprehensive form validation at each step
- * - State management for all reservation data
- * - Error handling with toast notifications
- * - Responsive design for mobile and desktop
- *
- * Architecture:
- * - Uses a centralized state object for all form data
- * - Each step is a separate component with its own validation
- * - Navigation is controlled by validation rules
- * - Toast notifications provide user feedback
- */
-export function ReservationForm(): JSX.Element {
-  // Current step index (0-based)
-  const [currentStep, setCurrentStep] = useState<number>(0);
+import { PersonalInfoStep } from "./personal-info-step";
+import { ReservationDetailsStep } from "./reservation-details-step";
+import { DiningPreferenceStep } from "./dining-preference-step";
+import { AdditionalInfoStep } from "./additional-info-step";
+import { SuccessStep } from "./success-step";
 
-  // Main reservation data state - this holds all form data
-  const [reservationData, setReservationData] = useState<ReservationData>({
-    // Date and time selection
-    date: null,
-    time: "",
+import { FormSchema, ReservationFormValues } from "@/schemas/reservations";
 
-    // Party information
-    partySize: 2,
-    occasion: "",
-    specialRequests: "",
+export const ReservationFormSection = ({
+  guestCounts,
+  occasions,
+}: {
+  guestCounts: string[];
+  occasions: string[];
+}) => {
+  const [step, setStep] = useState(1);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-    // Table selection
-    diningArea: "indoor",
-    tableId: "",
-    tableName: "",
-
-    // Contact information
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    dietaryRestrictions: "",
+  const form = useForm<ReservationFormValues>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      date: new Date(),
+      time: "",
+      guests: "",
+      diningPreference: "",
+      occasion: "",
+      requests: "",
+    },
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
-  /**
-   * Updates reservation data with partial updates
-   * This function is passed to each step component to update the central state
-   *
-   * @param data - Partial reservation data to merge with current state
-   */
-  const updateReservationData = (data: Partial<ReservationData>): void => {
-    setReservationData((prev: ReservationData) => ({
-      ...prev,
-      ...data,
-    }));
-  };
+  // -------------------------
+  // Step navigation
+  // -------------------------
+  const handleNextStep = async () => {
+    let fieldsToValidate: (keyof ReservationFormValues)[] = [];
 
-  /**
-   * Handles navigation to the next step
-   * Validates current step before allowing navigation
-   */
-  const handleNext = (): void => {
-    // Validate current step before proceeding
-    if (!validateReservationStep(currentStep, reservationData)) {
-      showStepValidationError(currentStep, reservationData);
+    if (step === 1)
+      fieldsToValidate = ["firstName", "lastName", "email", "phone"];
+    if (step === 2) fieldsToValidate = ["date", "time", "guests"];
+    if (step === 3) fieldsToValidate = ["diningPreference"];
+    if (step === 4) fieldsToValidate = ["occasion", "requests"];
+
+    const isValid = await form.trigger(fieldsToValidate);
+
+    if (!isValid) {
+      toast.error("Please check the highlighted fields and try again.");
       return;
     }
 
-    // Navigate to next step if not at the end
-    if (currentStep < RESERVATION_STEPS.length - 1) {
-      setCurrentStep(currentStep + 1);
+    // ✅ Special case for last step: submit instead of going to step 5
+    if (step === 4) {
+      onSubmit(form.getValues());
+    } else {
+      setStep((prev) => prev + 1);
     }
   };
 
-  /**
-   * Handles navigation to the previous step
-   * No validation required for going backwards
-   */
-  const handlePrevious = (): void => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+  const handlePrevStep = () => setStep((prev) => prev - 1);
+
+  const onSubmit = async (values: ReservationFormValues) => {
+    try {
+      setIsSubmitting(true);
+      const res = await fetch("/api/notifications/reservations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        // 🔎 Handle Zod validation errors from backend
+        if (res.status === 400 && data?.details) {
+          const { fieldErrors, formErrors } = data.details;
+
+          // Show form-wide errors
+          if (formErrors?.length) {
+            formErrors.forEach((msg: string) => toast.error(msg));
+          }
+
+          // Show field-specific errors
+          if (fieldErrors) {
+            Object.entries(fieldErrors).forEach(([field, errors]) => {
+              if (Array.isArray(errors)) {
+                errors.forEach((msg) => toast.error(`${field}: ${msg}`));
+              }
+            });
+          }
+        } else {
+          toast.error(data?.error || "Failed to send reservation request.");
+        }
+        return;
+      }
+
+      // ✅ Success
+      toast.success("Your reservation request has been sent successfully!");
+      setIsSubmitted(true);
+      form.reset();
+    } catch {
+      toast.error("Problem occurred. Please check your internet connection!");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  /**
-   * Determines if the current step is valid for navigation
-   * Used to enable/disable the Next button
-   *
-   * @returns Boolean indicating if current step is valid
-   */
-  const isCurrentStepValid = (): boolean => {
-    return validateReservationStep(currentStep, reservationData);
+  const handleNewReservation = () => {
+    setStep(1);
+    setIsSubmitted(false);
+    form.reset();
   };
 
-  /**
-   * Renders the appropriate step component based on current step
-   * Each step component receives the reservation data and update function
-   *
-   * @returns JSX element for the current step
-   */
-  const renderCurrentStep = (): JSX.Element => {
-    const stepProps = {
-      data: reservationData,
-      onUpdate: updateReservationData,
-    };
-
-    switch (currentStep) {
-      case 0:
-        return <DateTimeStep {...stepProps} />;
-
-      case 1:
-        return <PartyDetailsStep {...stepProps} />;
-
-      case 2:
-        return <TableSelectionStep {...stepProps} />;
-
-      case 3:
-        return <ContactInfoStep {...stepProps} />;
-
-      case 4:
-        return <ConfirmationStep data={reservationData} />;
-      case 5:
-        return (
-          <SuccessStep
-            name={`${reservationData.firstName} ${reservationData.lastName}`}
-            date={reservationData.date}
-            time={reservationData.time}
-          />
-        );
-
-      default:
-        // Fallback - should never happen
-        return <div>Invalid step</div>;
-    }
-  };
+  const stepLabels = [
+    { label: "Personal Info", icon: <User className="h-4 w-4" /> },
+    { label: "Date & Time", icon: <Clock className="h-4 w-4" /> },
+    {
+      label: "Dining Preference",
+      icon: <UtensilsCrossed className="h-4 w-4" />,
+    },
+    { label: "Additional Info", icon: <NotebookText className="h-4 w-4" /> },
+    { label: "Confirmed", icon: <CheckCircle className="h-4 w-4" /> },
+  ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-2 sm:p-8">
-      <MultiStepFormWrapper
-        steps={RESERVATION_STEPS}
-        currentStep={currentStep}
-        onNext={handleNext}
-        onPrevious={handlePrevious}
-        nextDisabled={!isCurrentStepValid()}
-        nextLabel={
-          currentStep === RESERVATION_STEPS.length - 2
-            ? "Confirm Reservation"
-            : "Continue"
-        }
-        showNavigation={currentStep < RESERVATION_STEPS.length - 1} // Hide navigation on confirmation step
-      >
-        {renderCurrentStep()}
-      </MultiStepFormWrapper>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-3xl mx-auto">
+        <Card className="bg-card border-border shadow-lg transform transition-all duration-500 hover:shadow-xl">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl md:text-4xl font-bold text-foreground mb-4 wrap-break-word px-2 sm:px-0">
+              {!isSubmitted && "Book Your Experience"}
+            </CardTitle>
+
+            {/* Step Indicators */}
+            {!isSubmitted && (
+              <div className="flex justify-center gap-2 md:gap-4 flex-wrap mb-4 overflow-x-auto whitespace-nowrap scrollbar-hide">
+                {stepLabels.slice(0, 4).map((item, index) => {
+                  const current = index + 1;
+                  return (
+                    <div
+                      key={index}
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 transform shrink-0",
+                        current === step
+                          ? "bg-primary text-primary-foreground shadow-md scale-105"
+                          : current < step
+                            ? "bg-primary/20 text-primary"
+                            : "bg-muted text-muted-foreground",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "w-5 h-5 rounded-full flex items-center justify-center border border-current text-xs",
+                          current === step
+                            ? "bg-primary-foreground text-primary"
+                            : "",
+                        )}
+                      >
+                        {item.icon}
+                      </span>
+                      <span className="hidden sm:inline">{item.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {!isSubmitted && (
+              <p className="text-muted-foreground text-sm md:text-base">
+                Step {step} of 4
+              </p>
+            )}
+          </CardHeader>
+
+          <CardContent className="p-4 sm:p-8">
+            {isSubmitted ? (
+              <SuccessStep
+                reservationData={form.getValues()}
+                onNewReservation={handleNewReservation}
+              />
+            ) : (
+              <Form {...form}>
+                <form className="space-y-6 md:space-y-8">
+                  {step === 1 && <PersonalInfoStep form={form} />}
+                  {step === 2 && (
+                    <ReservationDetailsStep
+                      form={form}
+                      guestCounts={guestCounts}
+                    />
+                  )}
+                  {step === 3 && <DiningPreferenceStep form={form} />}
+                  {step === 4 && (
+                    <AdditionalInfoStep form={form} occasions={occasions} />
+                  )}
+
+                  {/* Navigation Buttons */}
+                  <div
+                    className={cn(
+                      "flex gap-2  justify-start",
+                      step > 1 && "justify-between",
+                    )}
+                  >
+                    {step > 1 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={handlePrevStep}
+                        className="border-primary text-primary hover:bg-primary/10 transition-all duration-300"
+                      >
+                        <ChevronLeft className="h-4 w-4 mr-2" />
+                        Back
+                      </Button>
+                    )}
+                    <Button
+                      type="button"
+                      onClick={handleNextStep}
+                      size="default"
+                      disabled={isSubmitting}
+                      className={cn(
+                        "ml-auto transition-all duration-300",
+                        step === 4
+                          ? "bg-gradient-primary hover:opacity-90 text-lg px-6 py-3"
+                          : "bg-primary hover:bg-primary/90",
+                      )}
+                    >
+                      {step < 4 ? (
+                        <>
+                          Next
+                          <ChevronRight />
+                        </>
+                      ) : isSubmitting ? (
+                        <>
+                          <Loader className="animate-spin" />
+                          Confirming...
+                        </>
+                      ) : (
+                        <>
+                          Confirm Reservation
+                          <CheckCircle />
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
-}
+};
